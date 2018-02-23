@@ -1,0 +1,6 @@
+[submodule "modules"]
+	path = modules
+	url = git@github.com:bclarkx2/pathfinder-modules.git
+[submodule "web"]
+	path = web
+	url = https://github.com/josephvolpe/pathfinder-web.git
