@@ -1,0 +1,18 @@
+Brian Clark (bpc30)
+
+## Progress
+
+Created test functions for mapping module
+Set up virtual environment for processing modules
+Created basic mapping processing module
+    Geometry class to encapsulate camera/field geometry
+    Basic command line operations for mapping
+Set up git submodules that we eventually ended up not using
+
+## Files
+
+modules/requirements.txt
+modules/mapping.py
+modules/test
+modules/test/test_mapping.py
+
