@@ -1,0 +1,14 @@
+# Weekly updates for Frank Hucek
+1) Updated Web server with latest packages
+   + python/pip - both versions 2.7 and 3.6
+   + node version 9.3.0
+   + npm version 5.6.0 - Node package manager
+     - Had to take special care to avoid issue #19883 on github.com/npm.
+     - This issue is occurring upon update of npm to version 5.7.0.
+     - It is crashing user's filesystems.
+     - Look here for more information: https://github.com/npm/npm/issues/19883
+
+2) Created users for group members on web server.
+   + Still todo: enable ssh for each user and set up file permissions
+
+3) Initialized Express web server for project.
