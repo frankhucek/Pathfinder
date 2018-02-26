@@ -95,10 +95,9 @@ class Geometry(object):
         return reflected
 
     def translate_blueprint(self, coord):
-        # translated_x = coord[0] - self.top_left_map_corner[0]
-        # translated_y = self.top_left_map_corner[1] - coord[1]
-        return coord[0:2] - self.top_left_map_corner[0:2]
-        # return [translated_x, translated_y]
+        coord_xy = self.xy(coord)
+        top_left_xy = self.xy(self.top_left_map_corner)
+        return coord_xy - top_left_xy
 
     def reflect_blueprint(self, coord):
         reflected = deepcopy(coord)
