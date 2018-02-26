@@ -5,6 +5,8 @@ Brian Clark (bpc30)
 # This week:
 Make sure that map coordinates start at 0,0
 Manifest reader
+Modify input parameters so that the mapping takes pixel positions
+    -should use the manifest height/width
 Real life example picture/manifest
 Fortify command line usage
 
