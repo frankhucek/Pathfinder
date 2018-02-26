@@ -1,0 +1,21 @@
+{
+    "JobID": 12345,
+    "geometry": {
+        "upperleft": {
+            "position": [250, 250],
+            "distance": 21.21320344
+        },
+        "upperright": {
+            "position": [750, 250],
+            "distance": 21.21320344
+        },
+        "lowerleft": {
+            "position": [250, 750],
+            "distance": 21.21320344
+        },
+        "lowerright": {
+            "position": [750, 750],
+            "distance": 21.21320344
+        }
+    }
+}
