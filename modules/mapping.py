@@ -85,7 +85,6 @@ class Geometry(object):
         return map_corner
 
     def transform_itb(self, image_coord):
-        # import pdb; pdb.set_trace()
         image_vector = Geometry.add_z(image_coord)
         scale = (np.dot(self.normal, self.top_left_map_corner) /
                  np.dot(self.normal, image_vector))
