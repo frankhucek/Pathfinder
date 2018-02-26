@@ -12,6 +12,7 @@ between image and blueprint coordinates.
 
 import argparse
 import numpy as np
+from copy import deepcopy
 
 
 ###############################################################################
@@ -84,11 +85,30 @@ class Geometry(object):
         return map_corner
 
     def transform_itb(self, image_coord):
+        # import pdb; pdb.set_trace()
         image_vector = Geometry.add_z(image_coord)
         scale = (np.dot(self.normal, self.top_left_map_corner) /
                  np.dot(self.normal, image_vector))
         blueprint_coord = scale * image_vector
-        return blueprint_coord
+        translated = self.translate_blueprint(blueprint_coord)
+        reflected = self.reflect_blueprint(translated)
+        return reflected
+
+    def translate_blueprint(self, coord):
+        # translated_x = coord[0] - self.top_left_map_corner[0]
+        # translated_y = self.top_left_map_corner[1] - coord[1]
+        return coord[0:2] - self.top_left_map_corner[0:2]
+        # return [translated_x, translated_y]
+
+    def reflect_blueprint(self, coord):
+        reflected = deepcopy(coord)
+        multiplicand = 1 if reflected[1] == 0 else -1
+        reflected[1] *= multiplicand
+        return reflected
+
+    @staticmethod
+    def xy(three_d_coord):
+        return three_d_coord[0:2]
 
 
 ###############################################################################
