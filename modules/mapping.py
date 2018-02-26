@@ -164,8 +164,10 @@ def normalize(vec):
     return vec / norm(vec)
 
 
-def format_coord(coord):
-    return "{}\n{}".format(*coord)
+def format_coord(coord, precision):
+    double_str = "{:0." + str(precision) + "f}"
+    fmt_str = "{}\n{}".format(double_str, double_str)
+    return fmt_str.format(*coord)
 
 
 def get_args():
@@ -179,6 +181,10 @@ def get_args():
                         help="coordinates to map")
     parser.add_argument("manifest",
                         help="job_manifest_file")
+    parser.add_argument("-p", "--precision",
+                        type=int,
+                        default=3,
+                        help="number of decimal points")
     return parser.parse_args()
 
 
@@ -200,7 +206,7 @@ def main():
     elif args.op == IMAGE_TO_BLUEPRINT:
         transformed = image_to_blueprint(coord, geometry, dim)
 
-    print(format_coord(transformed))
+    print(format_coord(transformed, args.precision))
 
 
 if __name__ == '__main__':
