@@ -1,5 +1,8 @@
 Brian Clark (bpc30)
 
+## Time
+Sunday: 8-11:15
+
 ## TODO
 
 # This week:
@@ -7,16 +10,23 @@ Make sure that map coordinates start at 0,0
 Manifest reader
 Modify input parameters so that the mapping takes pixel positions
     -should use the manifest height/width
-Real life example picture/manifest
 Fortify command line usage
+Real life example picture/manifest
 
 # Stretch:
+Add error handling to mapping.py
 Python test coverage tools
 Beef up unit tests
+Add error handling to manifest.py
 
 # Later:
 blueprint_to_image
 real life example picture for bti
+make sure we won't be surprised by inverting normals
+documentation (for mapping especially)
+
+# Maybe:
+Add unit tests to manifest.py
 
 
 ## Progress
