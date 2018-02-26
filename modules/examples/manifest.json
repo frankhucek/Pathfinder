@@ -1,6 +1,8 @@
 {
     "JobID": 12345,
     "geometry": {
+        "height": 1000,
+        "width": 1000,
         "upperleft": {
             "position": [250, 250],
             "distance": 21.21320344

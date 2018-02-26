@@ -20,6 +20,9 @@ GEOMETRY = "geometry"
 POSITION = "position"
 DISTANCE = "distance"
 
+HEIGHT = "height"
+WIDTH = "width"
+
 CORNERS = [
     "upperleft",
     "upperright",
@@ -61,6 +64,14 @@ class Manifest(object):
     def corner_distances(self):
         return self._corner_attr(DISTANCE)
 
+    def _height(self):
+        return self._geometry()[HEIGHT]
+
+    def _width(self):
+        return self._geometry()[WIDTH]
+
+    def dimensions(self):
+        return self._width(), self._height()
 
 ###############################################################################
 # Helper functions                                                            #
