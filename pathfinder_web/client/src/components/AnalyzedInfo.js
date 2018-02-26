@@ -1,6 +1,6 @@
 var React = require('react');
 
-class RetailMap extends React.Component {
+class AnalyzedInfo extends React.Component {
   constructor() {
     super();
   }
