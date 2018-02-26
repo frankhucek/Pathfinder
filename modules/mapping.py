@@ -14,6 +14,8 @@ import argparse
 import numpy as np
 from copy import deepcopy
 
+from manifest import Manifest
+
 
 ###############################################################################
 # Constants                                                                   #
@@ -36,14 +38,23 @@ class Geometry(object):
     """Describes camera geometry"""
 
     @staticmethod
-    def from_file(manifest):
+    def from_file(manifest_filepath):
         """tool for making a Geometry object from a manifest"""
-        pass
+        manifest = Manifest.from_file(manifest_filepath)
+        distances = manifest.corner_distances()
+        raw_positions = manifest.image_corners()
+        dim = manifest.dimensions()
+
+        positions = [center_coordinate(x, dim)
+                     for x in raw_positions]
+
+        geom = Geometry.make(positions, distances)
+        return geom
 
     @staticmethod
     def make(image_corners, distances):
         """Geometry builder -- good for error checking"""
-        pass
+        return Geometry(image_corners, distances)
 
     def __init__(self, image_corners, distances):
         super(Geometry, self).__init__()
@@ -130,6 +141,12 @@ def blueprint_to_image(blueprint_coord):
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
+
+def center_coordinate(coord, dimension):
+    return [center(c, d) for c, d in zip(coord, dimension)]
+
+def center(value, normalization):
+    return (value - normalization) / normalization
 
 def norm(vec):
     return np.linalg.norm(vec)
