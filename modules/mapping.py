@@ -38,15 +38,13 @@ class Geometry(object):
     """Describes camera geometry"""
 
     @staticmethod
-    def from_file(manifest_filepath):
+    def from_manifest(manifest):
         """tool for making a Geometry object from a manifest"""
-        manifest = Manifest.from_file(manifest_filepath)
         distances = manifest.corner_distances()
         raw_positions = manifest.image_corners()
         dim = manifest.dimensions()
 
-        positions = [center_coordinate(x, dim)
-                     for x in raw_positions]
+        positions = center_img_coords(raw_positions, dim)
 
         geom = Geometry.make(positions, distances)
         return geom
@@ -124,16 +122,17 @@ class Geometry(object):
 # Mapping Functions                                                           #
 ###############################################################################
 
-def image_to_blueprint(image_coord, geometry):
+def image_to_blueprint(pixel_coord, geom, dim):
     '''Map image coordinates to blueprint coordinates
 
     Input: (x,y)
     '''
-    blueprint_coord = geometry.transform_itb(image_coord)
+    image_coord = center_img_coord(pixel_coord, dim)
+    blueprint_coord = geom.transform_itb(image_coord)
     return blueprint_coord
 
 
-def blueprint_to_image(blueprint_coord):
+def blueprint_to_image(blueprint_coord, geom, dim):
     image_coord = blueprint_coord
     return image_coord
 
@@ -142,11 +141,17 @@ def blueprint_to_image(blueprint_coord):
 # Helper functions                                                            #
 ###############################################################################
 
-def center_coordinate(coord, dimension):
-    return [center(c, d) for c, d in zip(coord, dimension)]
+def center_img_coords(coords, dim):
+    return [center_img_coord(x, dim) for x in coords]
+
+
+def center_img_coord(coord, dim):
+    return [center(c, d) for c, d in zip(coord, dim)]
+
 
 def center(value, normalization):
     return (value - normalization) / normalization
+
 
 def norm(vec):
     return np.linalg.norm(vec)
@@ -183,12 +188,14 @@ def main():
     args = get_args()
 
     coord = args.coord
-    geometry = Geometry.from_file(args.manifest)
+    manifest = Manifest.from_file(args.manifest)
+    dim = manifest.dimensions()
+    geometry = Geometry.from_manifest(manifest)
 
     if args.op == BLUEPRINT_TO_IMAGE:
-        transformed = blueprint_to_image(coord, geometry)
+        transformed = blueprint_to_image(coord, geometry, dim)
     elif args.op == IMAGE_TO_BLUEPRINT:
-        transformed = image_to_blueprint(coord, geometry)
+        transformed = image_to_blueprint(coord, geometry, dim)
 
     print(format_coord(transformed))
 
