@@ -197,7 +197,7 @@ def test_compute_normal(raw_3d):
 
 def test_project_corners(image_corners, distances, raw_3d):
     mapped = Geometry.project_corners(image_corners,
-                                              distances)
+                                      distances)
     assert_close(raw_3d, mapped)
 
 
