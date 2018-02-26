@@ -1,5 +1,22 @@
 Brian Clark (bpc30)
 
+## TODO
+
+# This week:
+Make sure that map coordinates start at 0,0
+Manifest reader
+Real life example picture/manifest
+Fortify command line usage
+
+# Stretch:
+Python test coverage tools
+Beef up unit tests
+
+# Later:
+blueprint_to_image
+real life example picture for bti
+
+
 ## Progress
 
 Created test functions for mapping module
