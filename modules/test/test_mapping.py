@@ -118,8 +118,6 @@ def manifest():
 ###############################################################################
 
 def test_from_file(manifest):
-    # manifest_mock = MagicMock(return_value=Manifest(manifest))
-    # with patch("manifest.Manifest.from_file", manifest_mock):
     man = Manifest(manifest)
     dim = man.dimensions()
     geom = Geometry.from_manifest(man)
