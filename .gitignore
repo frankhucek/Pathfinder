@@ -5,3 +5,4 @@
 
 # Python cache
 *__pycache__/
+modules/.cache
