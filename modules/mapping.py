@@ -4,6 +4,10 @@
 
 The mapping.py module provides several functions for transforming
 between image and blueprint coordinates.
+
+Example usage:
+python3 mapping.py itb 350 450 examples/manifest.json
+
 '''
 
 ###############################################################################
