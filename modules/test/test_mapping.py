@@ -1,17 +1,28 @@
 
+import sys
+from pathlib import Path
+parent_dir = Path(__file__).parents[1]
+if parent_dir not in sys.path:
+    sys.path.append(str(parent_dir))
+
 ###############################################################################
 # Imports                                                                     #
 ###############################################################################
+
+from pytest import fixture
+import numpy as np
+
+from unittest.mock import patch, MagicMock
+
+from manifest import Manifest
 
 
 ###############################################################################
 # Unit under test                                                             #
 ###############################################################################
 
-from .. import mapping
-
-from pytest import fixture
-import numpy as np
+import mapping
+from mapping import Geometry
 
 
 ###############################################################################
@@ -72,12 +83,83 @@ def map_corners():
 
 @fixture
 def sample_geom():
-    return mapping.Geometry(pixel_coords(), distances())
+    return Geometry(pixel_coords(), distances())
+
+
+@fixture
+def manifest():
+    return {
+        "JobID": 12345,
+        "geometry": {
+            "height": 1000,
+            "width": 1000,
+            "upperleft": {
+                "position": [250, 250],
+                "distance": 21.21320344
+            },
+            "upperright": {
+                "position": [750, 250],
+                "distance": 21.21320344
+            },
+            "lowerleft": {
+                "position": [250, 750],
+                "distance": 21.21320344
+            },
+            "lowerright": {
+                "position": [750, 750],
+                "distance": 21.21320344
+            }
+        }
+    }
 
 
 ###############################################################################
 # TestCases                                                                   #
 ###############################################################################
+
+def test_from_file(manifest):
+    # manifest_mock = MagicMock(return_value=Manifest(manifest))
+    # with patch("manifest.Manifest.from_file", manifest_mock):
+    man = Manifest(manifest)
+    dim = man.dimensions()
+    geom = Geometry.from_manifest(man)
+
+    pixel_coord = [350, 450]
+    blueprint_coord = [2, 4]
+
+    transformed = mapping.image_to_blueprint(pixel_coord,
+                                             geom,
+                                             dim)
+
+    assert_close(blueprint_coord, transformed)
+
+
+def test_center_img_coords(manifest):
+    man = Manifest(manifest)
+    dim = man.dimensions()
+
+    raw = man.image_corners()
+
+    translated = mapping.center_img_coords(raw, dim)
+
+    expected = [[-0.25, 0.25],
+                [0.25, 0.25],
+                [-0.25, -0.25],
+                [0.25, -0.25]]
+
+    assert_close(expected, translated)
+
+
+def test_center_img_coord_one(manifest):
+    man = Manifest(manifest)
+    dim = man.dimensions()
+
+    raw = [250, 250]
+    translated = mapping.center_img_coord(raw, dim)
+    expected = [-0.25, 0.25]
+
+    assert_close(expected, translated)
+
 
 def test_transform_itb_translated_corner():
     pixel_coords = [[-0.25, 0.25],
@@ -85,7 +167,7 @@ def test_transform_itb_translated_corner():
                     [-0.25, -0.25],
                     [0.25, -0.25]]
     distances = [21.21320344] * 4
-    geom = mapping.Geometry(pixel_coords, distances)
+    geom = Geometry(pixel_coords, distances)
 
     transformed = [geom.transform_itb(x) for x in pixel_coords]
 
@@ -112,18 +194,18 @@ def test_transform_itb_corners(sample_geom, pixel_coords, map_corners):
 
 def test_compute_normal(raw_3d):
     assert_close(np.array([0, 0, -1]),
-                 mapping.Geometry.compute_normal(raw_3d))
+                 Geometry.compute_normal(raw_3d))
 
 
 def test_project_corners(image_corners, distances, raw_3d):
-    mapped = mapping.Geometry.project_corners(image_corners,
+    mapped = Geometry.project_corners(image_corners,
                                               distances)
     assert_close(raw_3d, mapped)
 
 
 def test_add_zs(pixel_coords, image_corners):
     assert_close(image_corners,
-                 mapping.Geometry.add_zs(pixel_coords))
+                 Geometry.add_zs(pixel_coords))
 
 
 ###############################################################################

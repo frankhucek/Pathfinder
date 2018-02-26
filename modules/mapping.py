@@ -146,11 +146,14 @@ def center_img_coords(coords, dim):
 
 
 def center_img_coord(coord, dim):
-    return [center(c, d) for c, d in zip(coord, dim)]
+    new_x = center(coord[0], dim[0])
+    new_y = -center(coord[1], dim[1])
+    return [new_x, new_y]
 
 
 def center(value, normalization):
-    return (value - normalization) / normalization
+    half_normalization = normalization / 2
+    return (value - half_normalization) / normalization
 
 
 def norm(vec):
