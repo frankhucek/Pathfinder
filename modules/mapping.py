@@ -130,21 +130,6 @@ class Geometry(object):
 
         return [u, v]
 
-    def translate_blueprint(self, coord):
-        coord_xy = self.xy(coord)
-        top_left_xy = self.xy(self.top_left_map_corner)
-        return coord_xy - top_left_xy
-
-    def reflect_blueprint(self, coord):
-        reflected = deepcopy(coord)
-        multiplicand = 1 if reflected[1] == 0 else -1
-        reflected[1] *= multiplicand
-        return reflected
-
-    @staticmethod
-    def xy(three_d_coord):
-        return three_d_coord[0:2]
-
 
 ###############################################################################
 # Mapping Functions                                                           #
