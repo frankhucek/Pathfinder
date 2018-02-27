@@ -47,23 +47,26 @@ class Geometry(object):
         distances = manifest.corner_distances()
         raw_positions = manifest.image_corners()
         dim = manifest.dimensions()
+        fov = manifest.fov()
 
         positions = center_img_coords(raw_positions, dim)
 
-        geom = Geometry.make(positions, distances)
+        geom = Geometry.make(fov, positions, distances)
         return geom
 
     @staticmethod
-    def make(image_corners, distances):
+    def make(fov, image_corners, distances):
         """Geometry builder -- good for error checking"""
-        return Geometry(image_corners, distances)
+        return Geometry(fov, image_corners, distances)
 
-    def __init__(self, image_corners, distances):
+    def __init__(self, fov, image_corners, distances):
         super(Geometry, self).__init__()
-        self.image_corners = Geometry.add_zs(image_corners)
+        self.fov = fov
+        self.viewplane_corners = Geometry.to_view_planes(fov, image_corners)
         self.distances = distances
 
-        self.map_corners = Geometry.project_corners(self.image_corners,
+        self.map_corners = Geometry.project_corners(self.viewplane_corners,
+                                                    fov,
                                                     distances)
 
         self.top_left_map_corner = self.map_corners[0]
@@ -78,33 +81,54 @@ class Geometry(object):
         n = normalize(np.cross(m_ab, m_ac))
         return n
 
-    @staticmethod
-    def add_zs(pairs):
-        return [Geometry.add_z(pair) for pair in pairs]
+    def orthonormals(self):
+        m_a, m_b, m_c = self.map_corners[0:3]
+        m_ab = m_b - m_a
+        m_ac = m_c - m_a
+        return m_ab, m_ac
 
     @staticmethod
-    def add_z(pair):
-        return np.array(pair + [1])
+    def project_corners(viewplane_corners, fov, distances):
+        return [Geometry.project_corner(vc, fov, d)
+                for vc, d in zip(viewplane_corners, distances)]
 
     @staticmethod
-    def project_corners(image_corners, distances):
-        return [Geometry.project_corner(ic, d)
-                for ic, d in zip(image_corners, distances)]
-
-    @staticmethod
-    def project_corner(image_corner, distance):
-        scale = distance / norm(image_corner)
-        map_corner = scale * image_corner
+    def project_corner(viewplane_corner, fov, distance):
+        scale = distance / norm(viewplane_corner)
+        map_corner = scale * viewplane_corner
         return map_corner
 
-    def transform_itb(self, image_coord):
-        image_vector = Geometry.add_z(image_coord)
+    @staticmethod
+    def to_view_planes(fov, image_coords):
+        return [Geometry.to_view_plane(fov, image_coord)
+                for image_coord in image_coords]
+
+    @staticmethod
+    def to_view_plane(fov, image_coord):
+        vec = np.array(image_coord + [1])
+        return vec * fov
+
+    def s_to_view_plane(self, image_coord):
+        return Geometry.to_view_plane(self.fov, image_coord)
+
+    def _raw_transform_itb(self, image_coord):
+        image_vector = self.s_to_view_plane(image_coord)
         scale = (np.dot(self.normal, self.top_left_map_corner) /
                  np.dot(self.normal, image_vector))
         blueprint_coord = scale * image_vector
-        translated = self.translate_blueprint(blueprint_coord)
-        reflected = self.reflect_blueprint(translated)
-        return reflected
+        return blueprint_coord
+
+    def transform_itb(self, image_coord):
+        blueprint_coord = self._raw_transform_itb(image_coord)
+        translated = blueprint_coord - self.top_left_map_corner
+
+        # TODO potentially make the yaxis calculated?
+        xaxis, yaxis = self.orthonormals()
+
+        u = np.dot(translated, xaxis) / norm(xaxis)
+        v = np.dot(translated, yaxis) / norm(yaxis)
+
+        return [u, v]
 
     def translate_blueprint(self, coord):
         coord_xy = self.xy(coord)

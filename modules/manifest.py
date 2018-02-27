@@ -23,6 +23,8 @@ DISTANCE = "distance"
 HEIGHT = "height"
 WIDTH = "width"
 
+FOV = "fov"
+
 CORNERS = [
     "upperleft",
     "upperright",
@@ -72,6 +74,9 @@ class Manifest(object):
 
     def dimensions(self):
         return self._width(), self._height()
+
+    def fov(self):
+        return self._geometry()[FOV]
 
 ###############################################################################
 # Helper functions                                                            #
