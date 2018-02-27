@@ -1,9 +1,13 @@
 
 import sys
 from pathlib import Path
+cur_dir = Path(__file__).parents[0]
 parent_dir = Path(__file__).parents[1]
 if parent_dir not in sys.path:
     sys.path.append(str(parent_dir))
+if cur_dir not in sys.path:
+    sys.path.append(str(cur_dir))
+
 
 ###############################################################################
 # Imports                                                                     #
@@ -15,6 +19,7 @@ import numpy as np
 from unittest.mock import patch, MagicMock
 
 from manifest import Manifest
+from common import assert_close
 
 
 ###############################################################################
@@ -26,15 +31,13 @@ from mapping import Geometry
 
 
 ###############################################################################
-# Constants                                                                   #
-###############################################################################
-
-FLOAT_TOLERANCE = 0.01
-
-
-###############################################################################
 # Fixtures                                                                    #
 ###############################################################################
+
+@fixture
+def fov():
+    return [1.0, 1.0, 1.0]
+
 
 @fixture
 def pixel_coords():
@@ -83,7 +86,7 @@ def map_corners():
 
 @fixture
 def sample_geom():
-    return Geometry(pixel_coords(), distances())
+    return Geometry(fov(), pixel_coords(), distances())
 
 
 @fixture
@@ -93,6 +96,7 @@ def manifest():
         "geometry": {
             "height": 1000,
             "width": 1000,
+            "fov": [1.0, 1.0, 1.0],
             "upperleft": {
                 "position": [250, 250],
                 "distance": 21.21320344
@@ -165,7 +169,8 @@ def test_transform_itb_translated_corner():
                     [-0.25, -0.25],
                     [0.25, -0.25]]
     distances = [21.21320344] * 4
-    geom = Geometry(pixel_coords, distances)
+    fov = [1.0, 1.0, 1.0]
+    geom = Geometry(fov, pixel_coords, distances)
 
     transformed = [geom.transform_itb(x) for x in pixel_coords]
 
@@ -184,7 +189,10 @@ def test_transform_itb_middle(sample_geom):
                  sample_geom.transform_itb(image_coord))
 
 
-def test_transform_itb_corners(sample_geom, pixel_coords, map_corners):
+def test_transform_itb_corners(sample_geom,
+                               pixel_coords,
+                               map_corners):
+    # import pdb; pdb.set_trace()
     for pixel_coord, map_corner in zip(pixel_coords, map_corners):
         transformed = sample_geom.transform_itb(pixel_coord)
         assert_close(map_corner, transformed)
@@ -195,20 +203,8 @@ def test_compute_normal(raw_3d):
                  Geometry.compute_normal(raw_3d))
 
 
-def test_project_corners(image_corners, distances, raw_3d):
+def test_project_corners(image_corners, distances, raw_3d, fov):
     mapped = Geometry.project_corners(image_corners,
+                                      fov,
                                       distances)
     assert_close(raw_3d, mapped)
-
-
-def test_add_zs(pixel_coords, image_corners):
-    assert_close(image_corners,
-                 Geometry.add_zs(pixel_coords))
-
-
-###############################################################################
-# Helpers                                                                          #
-###############################################################################
-
-def assert_close(a, b, atol=FLOAT_TOLERANCE):
-    np.testing.assert_allclose(a, b, atol=atol)
