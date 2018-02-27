@@ -81,6 +81,4 @@ def test_corners(paper_manifest, dim, geom, blueprint_coords):
     corners = [mapping.image_to_blueprint(x, geom, dim)
                for x in paper_manifest.image_corners()]
 
-    print(corners)
-
     assert_close(blueprint_coords, corners, atol=0.5)
