@@ -16,7 +16,6 @@ python3 mapping.py itb 350 450 examples/manifest.json
 
 import argparse
 import numpy as np
-from copy import deepcopy
 
 from manifest import Manifest
 
