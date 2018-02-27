@@ -2,6 +2,8 @@ Brian Clark (bpc30)
 
 ## Time
 Sunday: 8-11:15
+Monday: 7-9
+Tuesday: 11-12, 3-5
 
 ## TODO
 
@@ -24,6 +26,7 @@ blueprint_to_image
 real life example picture for bti
 make sure we won't be surprised by inverting normals
 documentation (for mapping especially)
+Allow nonquadrilateral fields
 
 # Maybe:
 Add unit tests to manifest.py
