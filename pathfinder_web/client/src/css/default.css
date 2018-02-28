@@ -17,8 +17,8 @@ body {
 
 .login-box {
     font-family: 'Kameron', serif;
-    width: 280px;
-    height: 250px;
+    width: 340px;
+    height: 330px;
     padding-top: 10px;
     padding-left: 20px;
     margin: auto;
@@ -35,9 +35,8 @@ body {
 }
 
 .upload-images-box {
-    width: 100px;
-    height: 100px;
-    background-color:
+    padding-top: 20px;
+    overflow: hidden;
 }
 
 .enter-button {
