@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import './css/default.css';
 import Login from './components/Login.js';
+import JobInfo from './components/JobInfo.js';
+import './css/default.css';
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loggedIn: false
+        };
+    }
+
     render() {
         return (
-            <html>
-                <head>
-                    <link href="https://fonts.googleapis.com/css?family=Kameron" rel="stylesheet"/>
-                </head>
-                <body>
-                    <div className="root">
-                        <Login />
-                    </div>
-                </body>
-            </html>
+            <Login/>
         )
     }
 }
