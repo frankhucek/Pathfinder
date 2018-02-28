@@ -6,8 +6,10 @@ class Images extends React.Component {
   }
 
   render() {
-      <div>
-        //Add images from GoPro or submitted images from .zip
-      </div>
+      return(
+          <div>
+            //Add images from GoPro or submitted images from .zip
+          </div>
+      )
   }
 }

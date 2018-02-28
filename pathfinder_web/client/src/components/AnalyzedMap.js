@@ -1,13 +1,18 @@
 var React = require('react');
 
 class AnalyzedMap extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+        mapType: this.props.mapType
+    }
   }
 
   render() {
-      <div>
-        //Add image of heatmap or coordinate mappping and possible interaction
-      </div>
+      return (
+          <div>
+              //Add image of heatmap or coordinate mappping and possible interaction
+          </div>
+      )
   }
 }

@@ -6,8 +6,10 @@ class NavBar extends React.Component {
   }
 
   render() {
-      <div>
-        //Add html of navbar at top
-      </div>
+      return(
+          <div>
+            //Add html of navbar at top
+          </div>
+      )
   }
 }

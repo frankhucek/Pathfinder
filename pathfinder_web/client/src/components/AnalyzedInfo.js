@@ -1,13 +1,13 @@
-var React = require('react');
+import React, { Component } from 'react';
 
-class AnalyzedInfo extends React.Component {
-  constructor() {
-    super();
-  }
-
+class AnalyzedInfo extends Component {
   render() {
-      <div>
-        //Add image of retail mappping and possible interaction
-      </div>
+      return(
+          <div>
+            //Add image of retail mappping and possible interaction
+          </div>
+      )
   }
 }
+
+export default AnalyzedInfo;
