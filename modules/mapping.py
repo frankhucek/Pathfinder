@@ -4,6 +4,10 @@
 
 The mapping.py module provides several functions for transforming
 between image and blueprint coordinates.
+
+Example usage:
+python3 mapping.py itb 350 450 examples/manifest.json
+
 '''
 
 ###############################################################################
@@ -12,6 +16,8 @@ between image and blueprint coordinates.
 
 import argparse
 import numpy as np
+
+from manifest import Manifest
 
 
 ###############################################################################
@@ -35,21 +41,31 @@ class Geometry(object):
     """Describes camera geometry"""
 
     @staticmethod
-    def from_file(manifest):
+    def from_manifest(manifest):
         """tool for making a Geometry object from a manifest"""
-        pass
+        distances = manifest.corner_distances()
+        raw_positions = manifest.image_corners()
+        dim = manifest.dimensions()
+        fov = manifest.fov()
+
+        positions = center_img_coords(raw_positions, dim)
+
+        geom = Geometry.make(fov, positions, distances)
+        return geom
 
     @staticmethod
-    def make(image_corners, distances):
+    def make(fov, image_corners, distances):
         """Geometry builder -- good for error checking"""
-        pass
+        return Geometry(fov, image_corners, distances)
 
-    def __init__(self, image_corners, distances):
+    def __init__(self, fov, image_corners, distances):
         super(Geometry, self).__init__()
-        self.image_corners = Geometry.add_zs(image_corners)
+        self.fov = fov
+        self.viewplane_corners = Geometry.to_view_planes(fov, image_corners)
         self.distances = distances
 
-        self.map_corners = Geometry.project_corners(self.image_corners,
+        self.map_corners = Geometry.project_corners(self.viewplane_corners,
+                                                    fov,
                                                     distances)
 
         self.top_left_map_corner = self.map_corners[0]
@@ -64,47 +80,71 @@ class Geometry(object):
         n = normalize(np.cross(m_ab, m_ac))
         return n
 
-    @staticmethod
-    def add_zs(pairs):
-        return [Geometry.add_z(pair) for pair in pairs]
+    def orthonormals(self):
+        m_a, m_b, m_c = self.map_corners[0:3]
+        m_ab = m_b - m_a
+        m_ac = m_c - m_a
+        return m_ab, m_ac
 
     @staticmethod
-    def add_z(pair):
-        return np.array(pair + [1])
+    def project_corners(viewplane_corners, fov, distances):
+        return [Geometry.project_corner(vc, fov, d)
+                for vc, d in zip(viewplane_corners, distances)]
 
     @staticmethod
-    def project_corners(image_corners, distances):
-        return [Geometry.project_corner(ic, d)
-                for ic, d in zip(image_corners, distances)]
-
-    @staticmethod
-    def project_corner(image_corner, distance):
-        scale = distance / norm(image_corner)
-        map_corner = scale * image_corner
+    def project_corner(viewplane_corner, fov, distance):
+        scale = distance / norm(viewplane_corner)
+        map_corner = scale * viewplane_corner
         return map_corner
 
-    def transform_itb(self, image_coord):
-        image_vector = Geometry.add_z(image_coord)
+    @staticmethod
+    def to_view_planes(fov, image_coords):
+        return [Geometry.to_view_plane(fov, image_coord)
+                for image_coord in image_coords]
+
+    @staticmethod
+    def to_view_plane(fov, image_coord):
+        vec = np.array(image_coord + [1])
+        return vec * fov
+
+    def s_to_view_plane(self, image_coord):
+        return Geometry.to_view_plane(self.fov, image_coord)
+
+    def _raw_transform_itb(self, image_coord):
+        image_vector = self.s_to_view_plane(image_coord)
         scale = (np.dot(self.normal, self.top_left_map_corner) /
                  np.dot(self.normal, image_vector))
         blueprint_coord = scale * image_vector
         return blueprint_coord
+
+    def transform_itb(self, image_coord):
+        blueprint_coord = self._raw_transform_itb(image_coord)
+        translated = blueprint_coord - self.top_left_map_corner
+
+        # TODO potentially make the yaxis calculated?
+        xaxis, yaxis = self.orthonormals()
+
+        u = np.dot(translated, xaxis) / norm(xaxis)
+        v = np.dot(translated, yaxis) / norm(yaxis)
+
+        return [u, v]
 
 
 ###############################################################################
 # Mapping Functions                                                           #
 ###############################################################################
 
-def image_to_blueprint(image_coord, geometry):
+def image_to_blueprint(pixel_coord, geom, dim):
     '''Map image coordinates to blueprint coordinates
 
     Input: (x,y)
     '''
-    blueprint_coord = geometry.transform_itb(image_coord)
+    image_coord = center_img_coord(pixel_coord, dim)
+    blueprint_coord = geom.transform_itb(image_coord)
     return blueprint_coord
 
 
-def blueprint_to_image(blueprint_coord):
+def blueprint_to_image(blueprint_coord, geom, dim):
     image_coord = blueprint_coord
     return image_coord
 
@@ -112,6 +152,21 @@ def blueprint_to_image(blueprint_coord):
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
+
+def center_img_coords(coords, dim):
+    return [center_img_coord(x, dim) for x in coords]
+
+
+def center_img_coord(coord, dim):
+    new_x = center(coord[0], dim[0])
+    new_y = -center(coord[1], dim[1])
+    return [new_x, new_y]
+
+
+def center(value, normalization):
+    half_normalization = normalization / 2
+    return (value - half_normalization) / normalization
+
 
 def norm(vec):
     return np.linalg.norm(vec)
@@ -121,8 +176,10 @@ def normalize(vec):
     return vec / norm(vec)
 
 
-def format_coord(coord):
-    return "{}\n{}".format(*coord)
+def format_coord(coord, precision):
+    double_str = "{:0." + str(precision) + "f}"
+    fmt_str = "{}\n{}".format(double_str, double_str)
+    return fmt_str.format(*coord)
 
 
 def get_args():
@@ -136,6 +193,10 @@ def get_args():
                         help="coordinates to map")
     parser.add_argument("manifest",
                         help="job_manifest_file")
+    parser.add_argument("-p", "--precision",
+                        type=int,
+                        default=3,
+                        help="number of decimal points")
     return parser.parse_args()
 
 
@@ -148,14 +209,16 @@ def main():
     args = get_args()
 
     coord = args.coord
-    geometry = Geometry.from_file(args.manifest)
+    manifest = Manifest.from_file(args.manifest)
+    dim = manifest.dimensions()
+    geometry = Geometry.from_manifest(manifest)
 
     if args.op == BLUEPRINT_TO_IMAGE:
-        transformed = blueprint_to_image(coord, geometry)
+        transformed = blueprint_to_image(coord, geometry, dim)
     elif args.op == IMAGE_TO_BLUEPRINT:
-        transformed = image_to_blueprint(coord, geometry)
+        transformed = image_to_blueprint(coord, geometry, dim)
 
-    print(format_coord(transformed))
+    print(format_coord(transformed, args.precision))
 
 
 if __name__ == '__main__':
