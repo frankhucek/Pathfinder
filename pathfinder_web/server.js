@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
 var schema = './data/schema.js'
+var { apolloUploadExpress } = require('apollo-upload-server');
 
 var app = express();
 
@@ -14,8 +15,15 @@ app.use(cookieParser())
 app.use('/graphql', graphqlHTTP({
   schema: schema,
   rootValue: root,
-  graphiql: true,
+  graphiql: false,
 }));
+
+app.use(
+  '/graphql',
+  bodyParser.json(),
+  apolloUploadExpress(/* Options */),
+  graphqlExpress(/* … */)
+)
 
 app.listen(4000);
 
