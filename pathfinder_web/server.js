@@ -3,11 +3,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
-var schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
+var schema = './data/schema.js'
 
 var app = express();
 
