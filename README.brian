@@ -1,18 +1,52 @@
 Brian Clark (bpc30)
 
-## Progress
+## Progress 3/2
 
-Created test functions for mapping module
-Set up virtual environment for processing modules
-Created basic mapping processing module
-    Geometry class to encapsulate camera/field geometry
-    Basic command line operations for mapping
-Set up git submodules that we eventually ended up not using
+* Modify Geometry objects to account for camera's field of view
+* Translate blueprint coordinates so that top left corner is always at 0,0
+* Create a manifest.py module responsible for reading job manifest JSON
+* Modify mapping API so that image_to_blueprint transform inputs are in term of pixel positions on the images.
+* Create an example image (modules/examples/desk.jpg) and use it to create realistic mapping tests (modules/test/test_paper_mapping.py)
+* Write common testing module (modules/test/common.py) to put helpful testing constructs
 
-## Files
 
-modules/requirements.txt
+## Files 3/2
+
 modules/mapping.py
-modules/test
+modules/manifest.py
+modules/test/common.py
 modules/test/test_mapping.py
+modules/test/test_paper_mapping.py
 
+
+## Time 3/2
+Sunday: 8-11:15
+Monday: 7-9
+Tuesday: 11-12, 3-5
+
+
+## TODO
+
+# This week:
+Make sure that map coordinates start at 0,0
+Manifest reader
+Modify input parameters so that the mapping takes pixel positions
+    -should use the manifest height/width
+Fortify command line usage
+Real life example picture/manifest
+
+# Stretch:
+Add error handling to mapping.py
+Python test coverage tools
+Beef up unit tests
+Add error handling to manifest.py
+
+# Later:
+blueprint_to_image
+real life example picture for bti
+make sure we won't be surprised by inverting normals
+documentation (for mapping especially)
+Allow nonquadrilateral fields
+
+# Maybe:
+Add unit tests to manifest.py
