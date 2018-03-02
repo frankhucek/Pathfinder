@@ -1,0 +1,14 @@
+[Unit]
+Description=Pathfinder's Camera Service
+After=network.target
+
+[Serevice]
+ExecStart=/usr/bin/python3 /home/frank/Code/srproj/rpi_camera_modules/pathfinder_camera_service.py
+WorkingDirectory=/home/frank/Code/srproj/rpi_camera_modules
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=frank
+
+[Install]
+WantedBy=multi-user.target

@@ -1,14 +1,13 @@
 # Weekly updates for Frank Hucek
-1) Updated Web server with latest packages
-   + python/pip - both versions 2.7 and 3.6
-   + node version 9.3.0
-   + npm version 5.6.0 - Node package manager
-     - Had to take special care to avoid issue #19883 on github.com/npm.
-     - This issue is occurring upon update of npm to version 5.7.0.
-     - It is crashing user's filesystems.
-     - Look here for more information: https://github.com/npm/npm/issues/19883
+# Week of 2/23 - 3/2
 
-2) Created users for group members on web server.
-   + Still todo: enable ssh for each user and set up file permissions
+### Switched Camera device from GoPro to RPi with camera module
+    - After much consideration, the GoPro was too limited.
+    - We decided it would be easier to use a Raspberry Pi with attached camera module for image collection
+    * This week, I went to Thinkbox for a few pieces, and put together a working raspberry pi system running the most recent version of Raspbian OS with an attached camera module.
+    * I setup the Raspbian system service we will be using to capture photos and send them to the remote server once connected to Wifi.
+    * I wrote camera scripts in python for the service to interface and capture image data to the proper job directory
 
-3) Initialized Express web server for project.
+### Files changed/added
+    - Contents of rpi_camera_modules
+    * NOTE: rpi_camera_modules doesn't run on the server, but runs on the RPi, but the code is included here for the purposes of version control.
