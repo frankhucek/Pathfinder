@@ -11,8 +11,10 @@ class AnalyzedMap extends React.Component {
   render() {
       return (
           <div>
-              //Add image of heatmap or coordinate mappping and possible interaction
+              {/*Add image of heatmap or coordinate mappping and possible interaction*/}
           </div>
       )
   }
 }
+
+export default AnalyzedMap;

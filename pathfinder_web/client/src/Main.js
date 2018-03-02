@@ -12,8 +12,17 @@ class Main extends Component {
     }
 
     render() {
+
+        let content = null;
+        if (!this.state.loggedIn) {
+            content = <JobInfo/>;
+        } else {
+            content = <Login />;
+        }
         return (
-            <Login/>
+            <div className="main">
+                {content}
+            </div>
         )
     }
 }

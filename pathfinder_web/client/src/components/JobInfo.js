@@ -7,12 +7,14 @@ import AnalyzedInfo from './AnalyzedInfo.js';
 class JobInfo extends Component {
     render() {
         return (
-            <div className="job-info">
+            <div className="job-info-page">
                 <NavBar/>
-                <Images/>
-                <AnalyzedMap mapType="heatmap"/>
-                <AnalyzedMap mapType="blueprint"/>
-                <AnalyzedInfo/>
+                <div className="job-info-data">
+                    <Images/>
+                    <AnalyzedMap mapType="heatmap"/>
+                    <AnalyzedMap mapType="blueprint"/>
+                    <AnalyzedInfo/>
+                </div>
             </div>
         )
     }

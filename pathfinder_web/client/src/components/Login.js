@@ -35,7 +35,7 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <div className="job-id-box">
+            <div className="login-job-id-box">
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Job ID:

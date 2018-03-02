@@ -4,7 +4,7 @@ class AnalyzedInfo extends Component {
   render() {
       return(
           <div>
-            //Add image of retail mappping and possible interaction
+              {/*Info analyze*/}
           </div>
       )
   }
