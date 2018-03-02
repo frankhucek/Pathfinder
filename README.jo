@@ -1,4 +1,18 @@
 For 2/23
+oo
 Installed React within the Express directory (client)
 Hooked up React and Express
 Started making React components
+
+3/2
+Editing CSS for the frontend as a whole
+Working on form of the Login page and the Job Info presentation for the images
+Attempting to connect React,Express, Node.js with GraphQL for allowing easy access to the database (TODO: finish setup)
+Installed react slider for slideshow of images
+Added a dummy data/job_1 folder for holding images prior to actual data collection for use in presentation/manual testing
+
+TODO:
+Continue working on CSS 
+Finsih Job Info presentation
+Finish GraphQL connections
+Figure out connections with data/ folder where Job images may be held
