@@ -1,0 +1,21 @@
+[run]
+omit = 
+    */__pycache__/*
+    */venv/*
+    */test/*
+    requirements.txt
+    */__init__.py
+    run-tests
+branch = True
+
+[report]
+sort = Cover
+fail_under = 90
+precision = 0
+exclude_lines = 
+    if __name__ == ['"]__main__['"]:
+    main()
+
+[html]
+directory = test/htmlcov
+title = Modules Coverage
