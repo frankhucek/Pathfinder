@@ -15,7 +15,10 @@ python3 mapping.py itb 350 450 examples/manifest.json
 ###############################################################################
 
 import argparse
+import os
 import numpy as np
+
+from itertools import combinations
 
 from manifest import Manifest
 
@@ -26,11 +29,6 @@ from manifest import Manifest
 
 BLUEPRINT_TO_IMAGE = "bti"
 IMAGE_TO_BLUEPRINT = "itb"
-
-OPERATIONS = [
-    BLUEPRINT_TO_IMAGE,
-    IMAGE_TO_BLUEPRINT
-]
 
 
 ###############################################################################
@@ -56,6 +54,14 @@ class Geometry(object):
     @staticmethod
     def make(fov, image_corners, distances):
         """Geometry builder -- good for error checking"""
+
+        if any(x <= 0 for x in fov):
+            raise ValueError("All FOV values must be positive")
+        elif any_negative(distances):
+            raise ValueError("All corner distances must be positive")
+        elif any_same(image_corners):
+            raise ValueError("Cannot have overlapping corners")
+
         return Geometry(fov, image_corners, distances)
 
     def __init__(self, fov, image_corners, distances):
@@ -139,6 +145,11 @@ def image_to_blueprint(pixel_coord, geom, dim):
 
     Input: (x,y)
     '''
+    if any_negative(pixel_coord):
+        raise ValueError("All pixel positions must be positive")
+    elif pixel_out_of_bounds(pixel_coord, dim):
+        raise ValueError("Pixel positions must be inside img dimensions")
+
     image_coord = center_img_coord(pixel_coord, dim)
     blueprint_coord = geom.transform_itb(image_coord)
     return blueprint_coord
@@ -147,6 +158,22 @@ def image_to_blueprint(pixel_coord, geom, dim):
 def blueprint_to_image(blueprint_coord, geom, dim):
     image_coord = blueprint_coord
     return image_coord
+
+
+###############################################################################
+# Validation                                                                  #
+###############################################################################
+
+def any_negative(lis):
+    return any(x < 0 for x in lis)
+
+
+def pixel_out_of_bounds(pixel_coord, dim):
+    return any(x > y for x, y in zip(pixel_coord, dim))
+
+
+def any_same(lis):
+    return any(x == y for x, y in combinations(lis, 2))
 
 
 ###############################################################################
@@ -182,16 +209,34 @@ def format_coord(coord, precision):
     return fmt_str.format(*coord)
 
 
+###############################################################################
+# CLI                                                                         #
+###############################################################################
+
+OPERATIONS = {
+    BLUEPRINT_TO_IMAGE: blueprint_to_image,
+    IMAGE_TO_BLUEPRINT: image_to_blueprint
+}
+
+
+def is_manifest_filepath(filepath):
+    if os.path.isfile(filepath):
+        return filepath
+    else:
+        raise argparse.ArgumentError("Manifest file DNE!")
+
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("op",
-                        choices=OPERATIONS,
+                        choices=OPERATIONS.keys(),
                         help="Mapping operation")
     parser.add_argument("coord",
                         type=float,
                         nargs=2,
                         help="coordinates to map")
     parser.add_argument("manifest",
+                        type=is_manifest_filepath,
                         help="job_manifest_file")
     parser.add_argument("-p", "--precision",
                         type=int,
@@ -209,14 +254,12 @@ def main():
     args = get_args()
 
     coord = args.coord
-    manifest = Manifest.from_file(args.manifest)
+    manifest = Manifest.from_filepath(args.manifest)
     dim = manifest.dimensions()
     geometry = Geometry.from_manifest(manifest)
 
-    if args.op == BLUEPRINT_TO_IMAGE:
-        transformed = blueprint_to_image(coord, geometry, dim)
-    elif args.op == IMAGE_TO_BLUEPRINT:
-        transformed = image_to_blueprint(coord, geometry, dim)
+    op = OPERATIONS[args.op]
+    transformed = op(coord, geometry, dim)
 
     print(format_coord(transformed, args.precision))
 
