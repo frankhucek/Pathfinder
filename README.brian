@@ -19,34 +19,28 @@ modules/test/test_mapping.py
 modules/test/test_paper_mapping.py
 
 
-## Time 3/2
-Sunday: 8-11:15
-Monday: 7-9
-Tuesday: 11-12, 3-5
+## Time 3/9
+Saturday 7-9:30
 
 
-## TODO
+## TODO 3/9
 
 # This week:
-Make sure that map coordinates start at 0,0
-Manifest reader
-Modify input parameters so that the mapping takes pixel positions
-    -should use the manifest height/width
-Fortify command line usage
-Real life example picture/manifest
-
-# Stretch:
 Add error handling to mapping.py
 Python test coverage tools
 Beef up unit tests
 Add error handling to manifest.py
-
-# Later:
 blueprint_to_image
 real life example picture for bti
+
+# Stretch:
 make sure we won't be surprised by inverting normals
 documentation (for mapping especially)
 Allow nonquadrilateral fields
+
+
+# Later:
+
 
 # Maybe:
 Add unit tests to manifest.py
