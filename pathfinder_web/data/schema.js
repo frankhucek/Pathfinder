@@ -1,14 +1,7 @@
 import { makeExectuableScheme } from 'graphql-tools';
+import resolvers from './resolvers';
 
 const schema = `
-  type Query {
-    job(id: Int!): Job
-  }
-
-  type Mutation {
-    createJob(images: [Image]!): Job
-  }
-
   type Job {
     id: Int!
     images: [Image]!
@@ -16,8 +9,38 @@ const schema = `
     blueprint: Image
     retail: Image
   }
-`
 
-export default makeExectuableSchema({}
+  type Query {
+    job(id: Int!): Job
+  }
+
+  type Mutation {
+    createJob(
+      id: Int
+      images: [Image]!
+    ): Job
+    createHeatmap(
+      id: Int
+      heatmap: Image
+    ): Job
+    createBlueprint(
+      id: Int
+      blueprint: Image
+    ): Job
+    createRetailMap(
+      id: Int
+      retail: Image
+    ): Job
+  }
+
+  schema {
+    query: Query
+    mutation: Mutation
+  }
+`;
+
+const schema =  makeExectuableSchema({
     typeDefs: schema,
+    resolvers
 });
+export { schema };
