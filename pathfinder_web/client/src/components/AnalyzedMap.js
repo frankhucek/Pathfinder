@@ -1,4 +1,4 @@
-var React = require('react');
+import React, { Component } from 'react';
 
 class AnalyzedMap extends React.Component {
   constructor(props) {
