@@ -14,6 +14,8 @@ if cur_dir not in sys.path:
 ###############################################################################
 
 from pytest import fixture
+import pytest
+import argparse
 import numpy as np
 
 from unittest.mock import patch, MagicMock
@@ -91,7 +93,7 @@ def sample_geom():
 
 @fixture
 def manifest():
-    return {
+    return Manifest({
         "JobID": 12345,
         "geometry": {
             "height": 1000,
@@ -114,17 +116,71 @@ def manifest():
                 "distance": 21.21320344
             }
         }
-    }
+    })
+
+
+@fixture
+def dim():
+    return manifest().dimensions()
+
+
+@fixture
+def geom():
+    return Geometry.from_manifest(manifest())
+
+
+def fake_parse(arg_strings):
+    class MockParser(argparse.ArgumentParser):
+        def parse_args(self):
+            return super().parse_args(arg_strings)
+    argparse_mock = MagicMock(ArgumentParser=MockParser)
+
+    with patch("mapping.argparse", argparse_mock):
+        args = mapping.get_args()
+    return args
 
 
 ###############################################################################
 # TestCases                                                                   #
 ###############################################################################
 
-def test_from_file(manifest):
-    man = Manifest(manifest)
-    dim = man.dimensions()
-    geom = Geometry.from_manifest(man)
+def test_identical_image_corners(fov, distances):
+    image_corners = [[-0.24, 0.34],
+                     [0.1, 0.4],
+                     [-0.14, -0.2],
+                     [-0.14, -0.2]]
+    with pytest.raises(ValueError):
+        Geometry.make(fov, image_corners, distances)
+
+
+def test_geometry_neg_distances(fov, image_corners):
+    with pytest.raises(ValueError):
+        Geometry.make(fov, image_corners, [3.0, -4.3, 0.0])
+
+
+def test_geometry_neg_fov(image_corners, distances):
+    with pytest.raises(ValueError):
+        Geometry.make([-3.0, 2.0, 1.0], image_corners, distances)
+
+
+def test_geometry_zero_fov():
+    with pytest.raises(ValueError):
+        Geometry.make([0.0, 2.0, 1.0], image_corners, distances)
+
+
+def test_itb_negative_coords(geom, dim):
+    pixel_coord = [-5, -5]
+    with pytest.raises(ValueError):
+        mapping.image_to_blueprint(pixel_coord, geom, dim)
+
+
+def test_itb_oob_coords(geom, dim):
+    pixel_coord = [9999999, 99999999]
+    with pytest.raises(ValueError):
+        mapping.image_to_blueprint(pixel_coord, geom, dim)
+
+
+def test_from_file(geom, dim):
 
     pixel_coord = [350, 450]
     blueprint_coord = [2, 4]
@@ -136,11 +192,8 @@ def test_from_file(manifest):
     assert_close(blueprint_coord, transformed)
 
 
-def test_center_img_coords(manifest):
-    man = Manifest(manifest)
-    dim = man.dimensions()
-
-    raw = man.image_corners()
+def test_center_img_coords(dim, manifest):
+    raw = manifest.image_corners()
 
     translated = mapping.center_img_coords(raw, dim)
 
@@ -152,9 +205,7 @@ def test_center_img_coords(manifest):
     assert_close(expected, translated)
 
 
-def test_center_img_coord_one(manifest):
-    man = Manifest(manifest)
-    dim = man.dimensions()
+def test_center_img_coord_one(dim):
 
     raw = [250, 250]
     translated = mapping.center_img_coord(raw, dim)
@@ -208,3 +259,34 @@ def test_project_corners(image_corners, distances, raw_3d, fov):
                                       fov,
                                       distances)
     assert_close(raw_3d, mapped)
+
+
+def test_format_coord():
+    assert "1.00\n2.00" == mapping.format_coord([1.0, 2.0], 2)
+
+
+def test_cli_nominal():
+    arg_strings = ["itb", "350", "450", "examples/manifest.json"]
+    args = fake_parse(arg_strings)
+
+    assert args.op == "itb"
+    assert args.coord == [350, 450]
+    assert args.manifest == "examples/manifest.json"
+
+
+def test_cli_invalid_op():
+    arg_strings = ["fake", "350", "450", "examples/manifest.json"]
+    with pytest.raises(SystemExit):
+        fake_parse(arg_strings)
+
+
+def test_cli_non_int_coord():
+    arg_strings = ["itb", "a", "450", "examples/manifest.json"]
+    with pytest.raises(SystemExit):
+        fake_parse(arg_strings)
+
+
+def test_cli_non_file_manifest():
+    arg_strings = ["itb", "350", "450", "NOT_A_FILE"]
+    with pytest.raises(SystemExit):
+        fake_parse(arg_strings)

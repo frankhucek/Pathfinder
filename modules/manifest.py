@@ -37,14 +37,40 @@ CORNERS = [
 # Classes                                                                     #
 ###############################################################################
 
+class ManifestError(Exception):
+    """Error indicating malformed manifest
+
+    Note that the fact that this error was _not_ thrown does
+    not indicate the _values_ in the manifest are valid. This
+    only ensures that all the necessary parts are present.
+    """
+    def __init__(self):
+        super().__init__()
+
+
 class Manifest(object):
 
     @staticmethod
-    def from_file(manifest_filepath):
+    def from_filepath(manifest_filepath):
         with open(manifest_filepath) as manifest_file:
-            manifest_json = json.load(manifest_file)
+            return Manifest.from_file(manifest_file)
+
+    @staticmethod
+    def from_file(manifest_file):
+        manifest_json = json.load(manifest_file)
         manifest = Manifest(manifest_json)
+        manifest.verify()
         return manifest
+
+    def verify(self):
+        """Ensure that this manifest obj can call all req methods"""
+        try:
+            self.image_corners()
+            self.corner_distances()
+            self.dimensions()
+            self.fov()
+        except KeyError:
+            raise ManifestError("Invalid manifest structure")
 
     def __init__(self, manifest_json):
         super(Manifest, self).__init__()

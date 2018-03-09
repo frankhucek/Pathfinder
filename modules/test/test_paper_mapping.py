@@ -55,6 +55,14 @@ def paper_manifest():
 
 
 @fixture
+def image_corners():
+    return [[357, 674]
+            [832, 674]
+            [255, 766]
+            [939, 768]]
+
+
+@fixture
 def blueprint_coords():
     return [[0.0, 0.0],
             [42.0, 0.0],
@@ -76,7 +84,15 @@ def geom():
 # Test cases                                                                  #
 ###############################################################################
 
-def test_corners(paper_manifest, dim, geom, blueprint_coords):
+def test_bti_corners(paper_manifest, dim, geom, image_corners, blueprint_coords):
+    
+    results = [mapping.blueprint_to_image(x, geom, dim)
+               for x in blueprint_coords]
+
+    assert_close(image_corners, results)
+
+
+def test_itb_corners(paper_manifest, dim, geom, blueprint_coords):
 
     corners = [mapping.image_to_blueprint(x, geom, dim)
                for x in paper_manifest.image_corners()]

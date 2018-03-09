@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+# evaluate options, set report flag
+report_option=""
+html_dir=""
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+    printf "usage: ./run-tests [--report]\n"
+    exit 0
+elif [ "$1" = "--report" ] || [ "$1" = "-r" ]; then
+    report_option="--cov-report=html"
+    shift
+fi
+
+# run tests
+pytest --cov                        \
+       --cov-config .coveragerc     \
+       $report_option               \
+       "$@"                         \
+       .
+
+# Check for report
+if ! [ -z "$report_option" ] ; then
+    html_dir=$(cat .coveragerc | grep directory | cut -d= -f2 | tr -d '[:space:]')
+    sensible-browser "$html_dir/index.html"
+fi
+
+# Cleanup
+[ -f ".coverage" ] && rm ".coverage"
