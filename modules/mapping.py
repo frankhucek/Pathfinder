@@ -135,16 +135,31 @@ class Geometry(object):
 
         return [u, v]
 
+    def transform_bti(self, blueprint_coord):
+
+        blueprint_vec = blueprint_coord * self.orthonormals
+
+        projected_vec = self.top_left_map_corner + blueprint_vec
+
+        # divide by z to arrive on viewplane
+        viewplane_vec = projected_vec / projected_vec[2]
+
+        # divide by FOV to arrive on image
+        image_vec = np.divide(viewplane_vec, self.fov)
+        
+        # remove z to get image coordinates
+        image_coord = image_vec[0:2]
+
+        return image_coord
+
 
 ###############################################################################
 # Mapping Functions                                                           #
 ###############################################################################
 
 def image_to_blueprint(pixel_coord, geom, dim):
-    '''Map image coordinates to blueprint coordinates
+    '''Map image coordinates to blueprint coordinates'''
 
-    Input: (x,y)
-    '''
     if any_negative(pixel_coord):
         raise ValueError("All pixel positions must be positive")
     elif pixel_out_of_bounds(pixel_coord, dim):
@@ -156,7 +171,10 @@ def image_to_blueprint(pixel_coord, geom, dim):
 
 
 def blueprint_to_image(blueprint_coord, geom, dim):
-    image_coord = blueprint_coord
+    '''Map blueprint coordinates to image coordinates'''
+
+    image_coord = geom.transform_bti(blueprint_coord)
+    image_coord = uncenter_img_coord(image_coord, dim)
     return image_coord
 
 
@@ -193,6 +211,16 @@ def center_img_coord(coord, dim):
 def center(value, normalization):
     half_normalization = normalization / 2
     return (value - half_normalization) / normalization
+
+
+def uncenter_img_coord(coord, dim):
+    new_x = uncenter(coord[0], dim[0])
+    new_y = -uncenter(coord[1], dim[1])
+    return [new_x, new_y]
+
+
+def uncenter(value, normalization):
+    return (value * normalization) + (normalization / 2)
 
 
 def norm(vec):
