@@ -1,11 +1,11 @@
 # virtualenv
-
 */venv/
 
 
 # Python cache
 __pycache__/
 .cache/
+*.pyc
 
 # pytest
 htmlcov/
