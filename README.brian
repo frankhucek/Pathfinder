@@ -3,8 +3,8 @@ Brian Clark (bpc30)
 ## Progress 3/9
 
 * Add significant error handling to mapping.py
-** Checking for out-of-bounds pixels
-** Ensure cmd line options are valid
+ * Checking for out-of-bounds pixels
+ * Ensure cmd line options are valid
 * Set up Python test runner to discover and run all pytest unit tests, as well as display coverage results
 * Add error handling to manifest.py: ensures that any Manifest object contains all the necessary geometric components
 * Support for blueprint_to_image conversions in the mapping module
