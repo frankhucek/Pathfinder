@@ -1,12 +1,14 @@
 # Weekly updates for Frank Hucek
-# Week of 2/23 - 3/2
+# Week of 3/3 - 3/9
 
-### Switched Camera device from GoPro to RPi with camera module
-    - After much consideration, the GoPro was too limited.
-    - We decided it would be easier to use a Raspberry Pi with attached camera module for image collection
-    * This week, I went to Thinkbox for a few pieces, and put together a working raspberry pi system running the most recent version of Raspbian OS with an attached camera module.
-    * I setup the Raspbian system service we will be using to capture photos and send them to the remote server once connected to Wifi.
-    * I wrote camera scripts in python for the service to interface and capture image data to the proper job directory
+### Wrote Client/Server communication scripts
+    - RPI image services must snap photos then send each photo to the awaiting web server
+    - The web server must listen on a socket for incoming data.
+    - Once the web server accepts a connection, it will wait for the client to send an image over the connection. This image will be written to its appropriate place in our directory structure.
+    
+### Further refined pathfinder_camera_service
+    - The RPI system service now will include the python socket scripts
+    - NOTE: the remote server script will also be included in the modules folder of our directory structure on the server.
 
 ### Files changed/added
     - Contents of rpi_camera_modules
