@@ -10,9 +10,14 @@ Attempting to connect React,Express, Node.js with GraphQL for allowing easy acce
 Installed react slider for slideshow of images
 Added a dummy data/job_1 folder for holding images prior to actual data collection for use in presentation/manual testing
 
-TODO:
-Continue working on CSS 
-Finsih Job Info presentation
-Finish GraphQL connections
-Figure out connections with data/ folder where Job images may be held
+3/9
+Finishing schemas for GraphQL
+Continue GraphQL connections
+Work on the React components for the analyzed maps presented (heatmap, coordinates) using hardcoded dummy images
+Working on CSS
 
+TODO:
+Continue working on CSS
+Finish Job Info presentation
+Finish GraphQL connections
+Figure out connections with data/ folder where Job images may be held/ server setup
