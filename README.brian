@@ -1,26 +1,30 @@
 Brian Clark (bpc30)
 
-## Progress 3/2
+## Progress 3/9
 
-* Modify Geometry objects to account for camera's field of view
-* Translate blueprint coordinates so that top left corner is always at 0,0
-* Create a manifest.py module responsible for reading job manifest JSON
-* Modify mapping API so that image_to_blueprint transform inputs are in term of pixel positions on the images.
-* Create an example image (modules/examples/desk.jpg) and use it to create realistic mapping tests (modules/test/test_paper_mapping.py)
-* Write common testing module (modules/test/common.py) to put helpful testing constructs
+* Add significant error handling to mapping.py
+** Checking for out-of-bounds pixels
+** Ensure cmd line options are valid
+* Set up Python test runner to discover and run all pytest unit tests, as well as display coverage results
+* Add error handling to manifest.py: ensures that any Manifest object contains all the necessary geometric components
+* Support for blueprint_to_image conversions in the mapping module
 
 
-## Files 3/2
+## Files 3/9
 
 modules/mapping.py
 modules/manifest.py
-modules/test/common.py
 modules/test/test_mapping.py
 modules/test/test_paper_mapping.py
+modules/run-tests
+modules/.coveragerc
 
 
-## Time 3/9
-Saturday 7-9:30
+
+
+
+
+
 
 
 ## TODO 3/9
