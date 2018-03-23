@@ -1,4 +1,19 @@
 # Weekly updates for Frank Hucek
+# Week of 3/16 - 3/23
+### Generated Public/Private key pair for RPI
+    - This is necessary to secure the communication to and from the remote server
+    - Imported RPI public key on remote web server
+    
+### Completely re-wrote Client/Server scripts
+    - It is INCREDIBLY insecure to have a server socket listening on a port and write whatever it recieves to file
+    - Interfaces with GNUPG installed on both systems
+    - Client signs a message in socket connection to verify its identity.
+    - Server now verifies identity of client before writing photo data to file.
+    - Client/Server scripts are now ready to be run on each device, and photos sent from the client will be written to the server in a secure manner.
+
+### Installed, configured, and updated additional packages on remote server and RPI
+    - Including GPG, node, graphql
+
 # Week of 3/3 - 3/9
 
 ### Wrote Client/Server communication scripts

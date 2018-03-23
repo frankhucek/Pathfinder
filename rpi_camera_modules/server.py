@@ -5,34 +5,45 @@ This script runs on the remote server to receive an image from a raspberry pi ru
 import io
 import socket
 import struct
-from PIL import Image
+import gnupg # python-gnupg package NOT gnupg package
 
-# Start a socket listening for connections on 0.0.0.0:8000 (0.0.0.0 means
-# all interfaces)
-server_socket = socket.socket()
-server_socket.bind(('0.0.0.0', 8000))
-server_socket.listen(0)
+local_host = "localhost"
+local_host_port = 3001 # port forwarded and ready to go
+username_to_verify = "pathfinder_camera"
 
-# Accept a single connection and make a file-like object out of it
-connection = server_socket.accept()[0].makefile('rb')
-try:
+def write_photo_to_file(filename, client_socket):
+    f = open(filename,'wb')
+    data_recv = client_socket.recv(2048)
+    while data_recv:
+        f.write(data_recv)
+        data_recv = client_socket.recv(2048)
+    f.close()
+    return
+
+def listen_for_photos():
+    s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((local_host, local_host_port))
+    s.listen(1) # only queue 1 connection right now
+
+    # create gpg instance
+    gpg = gnupg.GPG(gnupghome='~/.gnupg')
+    
     while True:
-        # Read the length of the image as a 32-bit unsigned int. If the
-        # length is zero, quit the loop
-        image_len = struct.unpack('<L', connection.read(struct.calcsize('<L')))[0]
-        if not image_len:
-            break
-        # Construct a stream to hold the image data and read the image
-        # data from the connection
-        image_stream = io.BytesIO()
-        image_stream.write(connection.read(image_len))
-        # Rewind the stream, open it as an image with PIL and do some
-        # processing on it
-        image_stream.seek(0)
-        image = Image.open(image_stream)
-        print('Image is %dx%d' % image.size)
-        image.verify()
-        print('Image is verified')
-finally:
-    connection.close()
-    server_socket.close()
+        (client_socket, addr) = s.accept()
+        signed_data = client_socket.recv(2048)
+        
+        # verify signed_data
+        verified = gpg.verify(signed_data)
+
+        if verified.username is not None and username_to_verify in verified.username:
+            # signature verified, continue
+            client_socket.send(b"VERIFIED")
+            
+            write_photo_to_file("tempphoto.jpg", client_socket)
+            client_socket.close()
+        else:
+            client_socket.close()
+    s.close()
+    return
+
+listen_for_photos()
