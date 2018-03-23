@@ -101,3 +101,8 @@ body {
     margin-right: 2%;
     border-radius: 7px 7px 0 0;
 }
+
+.whitespace {
+  width: 50%;
+  background-color: white;
+}

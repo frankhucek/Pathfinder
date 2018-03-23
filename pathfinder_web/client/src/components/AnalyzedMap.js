@@ -32,4 +32,12 @@ class AnalyzedMap extends React.Component {
   }
 }
 
+class Whitespace extends React.Component {
+  render() {
+    return (
+      <div class="whitespace">
+      </div>
+    )
+  }
+}
 export default AnalyzedMap;
