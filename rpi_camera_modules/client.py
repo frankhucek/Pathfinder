@@ -17,25 +17,23 @@ def send_photo(filename):
     s.connect((remote_host, remote_host_port))
     
     # send signed data to server and wait for response
-    signed_data = signed_connection_data()
-    s.send(signed_data)
-    was_i_verified = s.recv(1024)
-    if was_i_verified == b"VERIFIED":
-        print("I was verified, so let's send some photos")
-        #s.send(filename)
-        f = open(filename, "rb")
-        data_to_send= f.read(2048)
+    detached_sig_data = signed_connection_data(filename)
+    s.send(detached_sig_data)
+    ack = s.recv(1024)
+    if ack == b"ACK":
+        file_to_send = open(filename, "rb")
+        data_to_send= file_to_send.read(2048)
         while data_to_send:
             s.send(data_to_send)
-            data_to_send = f.read(2048)
-        f.close()
+            data_to_send = file_to_send.read(2048)
+        #file_to_send.close()
     s.close()
     return
 
-def signed_connection_data():
-    date = time.ctime()
+def signed_connection_data(filename):
     gpg = gnupg.GPG(gnupghome='~/.gnupg')
     with open(passphrase_file) as f:
-        password = f.read().splitlines()[0]
-        signed_data = gpg.sign(date, passphrase=password)
-        return signed_data.data
+        with open(filename, "rb") as file_to_sign:
+            password = f.read().splitlines()[0]
+            detached_sig = gpg.sign_file(file_to_sign, detach=True, binary=True, passphrase=password)
+            return detached_sig.data

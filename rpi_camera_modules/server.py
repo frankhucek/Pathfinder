@@ -20,6 +20,20 @@ def write_photo_to_file(filename, client_socket):
     f.close()
     return
 
+def recv_photo(filename, sigfile, gpg, client_socket):
+    f = open(filename, "wb")
+    data_recv = client_socket.recv(2048)
+    data = b''
+    while data_recv:
+        data += data_recv
+        data_recv = client_socket.recv(2048)
+
+    verified = gpg.verify_data(sigfile, data)
+    if verified.valid:
+        f.write(data)
+    f.close()
+    
+
 def listen_for_photos():
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((local_host, local_host_port))
@@ -30,19 +44,18 @@ def listen_for_photos():
     
     while True:
         (client_socket, addr) = s.accept()
-        signed_data = client_socket.recv(2048)
-        
-        # verify signed_data
-        verified = gpg.verify(signed_data)
+        detached_sig_data = client_socket.recv(2048)
 
-        if verified.username is not None and username_to_verify in verified.username:
-            # signature verified, continue
-            client_socket.send(b"VERIFIED")
-            
-            write_photo_to_file("tempphoto.jpg", client_socket)
-            client_socket.close()
-        else:
-            client_socket.close()
+        sig_file = open("tempphotojpg.sig", "wb")
+        sig_file.write(detached_sig_data)
+        sig_file.close()
+
+        client_socket.send(b"ACK")
+
+        recv_photo("tempphoto.jpg", "tempphotojpg.sig", gpg, client_socket)
+
+        client_socket.close()
+        
     s.close()
     return
 
