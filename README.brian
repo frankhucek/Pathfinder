@@ -1,23 +1,17 @@
 Brian Clark (bpc30)
 
-## Progress 3/9
+## Progress 3/23
 
-* Add significant error handling to mapping.py
- * Checking for out-of-bounds pixels
- * Ensure cmd line options are valid
-* Set up Python test runner to discover and run all pytest unit tests, as well as display coverage results
-* Add error handling to manifest.py: ensures that any Manifest object contains all the necessary geometric components
-* Support for blueprint_to_image conversions in the mapping module
+* Created outline for build_heatmap function on heatmap.py module
+* Created command line interface for heatmap.py module
+* Measured and took several test images for heatmapping
 
 
 ## Files 3/9
 
-modules/mapping.py
-modules/manifest.py
-modules/test/test_mapping.py
-modules/test/test_paper_mapping.py
-modules/run-tests
-modules/.coveragerc
+modules/heatmap.py
+modules/test/test_heatmap.py
+modules/examples/heatmap/
 
 
 
@@ -28,6 +22,27 @@ modules/.coveragerc
 
 
 ## TODO 3/9
+
+# This week:
+heatmap outline
+heatmap cmd line usage
+access.py
+
+
+# Stretch:
+real life bti example
+error handling for heatmap
+
+
+# Later:
+make sure we won't be surprised by inverting normals
+documentation (for mapping especially)
+
+
+# Maybe:
+Add unit tests to manifest.py
+Allow nonquadrilateral fields
+/9
 
 # This week:
 Add error handling to mapping.py
