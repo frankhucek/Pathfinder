@@ -9,6 +9,7 @@ Brian Clark (bpc30)
 
 ## Files 3/9
 
+NOTE: All changes made on mapping-dev branch
 modules/heatmap.py
 modules/test/test_heatmap.py
 modules/examples/heatmap/
