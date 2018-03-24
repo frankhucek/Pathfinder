@@ -105,7 +105,15 @@ def is_movement(color_set):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--arg")
+    parser.add_argument("op",
+                        choices=["build_heatmap"])
+    parser.add_argument("images",
+                        action="append",
+                        help="Image files")
+    parser.add_argument("output",
+                        help="name of output file")
+    parser.add_argument("manifest",
+                        help="manifest filepath")
     return parser.parse_args()
 
 
@@ -116,6 +124,14 @@ def get_args():
 def main():
 
     args = get_args()
+
+    manifest = Manifest.from_file(args.manifest)
+
+    if args.op == "build_heatmap":
+        build_heatmap(args.images,
+                      args.output,
+                      manifest,
+                      None)
 
 
 if __name__ == '__main__':
