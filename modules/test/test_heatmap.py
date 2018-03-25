@@ -68,6 +68,20 @@ def test_trim_by_date(images, period):
     assert 5 == len(trimmed)
 
 
+def test_trim_by_date_all(images):
+    period = TimePeriod(datetime(2018, 3, 23, 21, 15, 23),
+                        datetime(2018, 3, 23, 21, 15, 44))
+    trimmed = heatmap.trim_by_date(images, period)
+    assert 7 == len(trimmed)
+
+
+def test_trim_by_date_none(images):
+    period = TimePeriod(datetime(2018, 3, 23, 21, 15, 44),
+                        datetime(2018, 3, 23, 21, 15, 23))
+    trimmed = heatmap.trim_by_date(images, period)
+    assert 0 == len(trimmed)
+
+
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################

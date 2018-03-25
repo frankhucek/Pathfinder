@@ -35,7 +35,7 @@ class TimePeriod(object):
         self.end = end
 
     def contains(self, dt):
-        return self.start < dt and dt < self.end
+        return self.start <= dt and dt <= self.end
 
 
 class Heatmap(object):
