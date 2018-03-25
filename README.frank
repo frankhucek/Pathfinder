@@ -1,12 +1,29 @@
 # Weekly updates for Frank Hucek
-# Week of 2/23 - 3/2
+# Week of 3/16 - 3/23
+### Generated Public/Private key pair for RPI
+    - This is necessary to secure the communication to and from the remote server
+    - Imported RPI public key on remote web server
+    
+### Completely re-wrote Client/Server scripts
+    - It is INCREDIBLY insecure to have a server socket listening on a port and write whatever it recieves to file
+    - Interfaces with GNUPG installed on both systems
+    - Client signs a message in socket connection to verify its identity.
+    - Server now verifies identity of client before writing photo data to file.
+    - Client/Server scripts are now ready to be run on each device, and photos sent from the client will be written to the server in a secure manner.
 
-### Switched Camera device from GoPro to RPi with camera module
-    - After much consideration, the GoPro was too limited.
-    - We decided it would be easier to use a Raspberry Pi with attached camera module for image collection
-    * This week, I went to Thinkbox for a few pieces, and put together a working raspberry pi system running the most recent version of Raspbian OS with an attached camera module.
-    * I setup the Raspbian system service we will be using to capture photos and send them to the remote server once connected to Wifi.
-    * I wrote camera scripts in python for the service to interface and capture image data to the proper job directory
+### Installed, configured, and updated additional packages on remote server and RPI
+    - Including GPG, node, graphql
+
+# Week of 3/3 - 3/9
+
+### Wrote Client/Server communication scripts
+    - RPI image services must snap photos then send each photo to the awaiting web server
+    - The web server must listen on a socket for incoming data.
+    - Once the web server accepts a connection, it will wait for the client to send an image over the connection. This image will be written to its appropriate place in our directory structure.
+    
+### Further refined pathfinder_camera_service
+    - The RPI system service now will include the python socket scripts
+    - NOTE: the remote server script will also be included in the modules folder of our directory structure on the server.
 
 ### Files changed/added
     - Contents of rpi_camera_modules
