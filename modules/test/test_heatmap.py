@@ -17,6 +17,8 @@ import os
 
 from PIL import Image
 
+from common import assert_close
+
 from datetime import datetime
 from pytest import fixture
 import pytest
@@ -100,6 +102,15 @@ def test_windows(images):
     windows = heatmap.windows(images, 3)
     assert 4 == len(windows)
     assert all(3 == len(x) for x in windows)
+
+
+def test_coordinates():
+    dim = (3, 4)
+    coords = {(0, 0), (1, 0), (2, 0),
+              (0, 1), (1, 1), (2, 1),
+              (0, 2), (1, 2), (2, 2),
+              (0, 3), (1, 3), (2, 3)}
+    assert coords == heatmap.coordinates(dim)
 
 
 ###############################################################################

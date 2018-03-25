@@ -5,6 +5,7 @@
 ###############################################################################
 
 import argparse
+import itertools
 
 from datetime import datetime
 
@@ -131,8 +132,9 @@ def windows(images, window_size):
     return chunks
 
 
-def coordinates(manifest):
-    pass
+def coordinates(dim):
+    xs, ys = range(dim[0]), range(dim[1])
+    return set(itertools.product(xs, ys))
 
 
 def extract_color_set(images, coord):
