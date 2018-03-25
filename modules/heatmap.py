@@ -39,6 +39,18 @@ class Heatmap(object):
         pass
 
 
+class BlueprintHeatmap(object):
+
+    def __init__(self, size, scale, points):
+        super(BlueprintHeatmap, self).__init__()
+        self.size = size
+        self.scale = scale
+        self.ponts = points
+
+    def write(self, filepath):
+        pass
+
+
 ###############################################################################
 # Heatmap Tools                                                               #
 ###############################################################################
@@ -66,7 +78,8 @@ def build_heatmap(image_filepaths,
             if is_movement(color_set):
                 heatmap.add(coord)
 
-    heatmap.write(output_filepath)
+    blueprint_heatmap = heatmap.project()
+    blueprint_heatmap.write(output_filepath)
 
 
 ###############################################################################
