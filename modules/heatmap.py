@@ -35,7 +35,7 @@ class Heatmap(object):
     def add(coord):
         pass
 
-    def write(self, filename):
+    def project(self):
         pass
 
 
@@ -51,9 +51,7 @@ def build_heatmap(image_filepaths,
 
     dim = manifest.dimensions()
 
-    images = [Image.open(fp) for fp in image_filepaths]
-    images = trim_by_date(images, delta)
-    images = sort_by_date(images)
+    images = image_obj_sequence(image_filepaths, delta)
 
     image_sets = windows(images, window_size)
 
@@ -74,6 +72,12 @@ def build_heatmap(image_filepaths,
 ###############################################################################
 # Helpers                                                                     #
 ###############################################################################
+
+def image_obj_sequence(image_filepaths, delta):
+    images = [Image.open(fp) for fp in image_filepaths]
+    images = trim_by_date(images, delta)
+    images = sort_by_date(images)
+
 
 def trim_by_date(images, delta):
     pass
