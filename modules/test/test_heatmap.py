@@ -59,6 +59,16 @@ def period():
                       datetime(2018, 3, 23, 21, 15, 42))
 
 
+@fixture
+def first_time():
+    return datetime(2018, 3, 23, 21, 15, 23)
+
+
+@fixture
+def last_time():
+    return datetime(2018, 3, 23, 21, 15, 44)
+
+
 ###############################################################################
 # TestCases                                                                   #
 ###############################################################################
@@ -68,16 +78,14 @@ def test_trim_by_date(images, period):
     assert 5 == len(trimmed)
 
 
-def test_trim_by_date_all(images):
-    period = TimePeriod(datetime(2018, 3, 23, 21, 15, 23),
-                        datetime(2018, 3, 23, 21, 15, 44))
+def test_trim_by_date_all(images, first_time, last_time):
+    period = TimePeriod(first_time, last_time)
     trimmed = heatmap.trim_by_date(images, period)
     assert 7 == len(trimmed)
 
 
-def test_trim_by_date_none(images):
-    period = TimePeriod(datetime(2018, 3, 23, 21, 15, 44),
-                        datetime(2018, 3, 23, 21, 15, 23))
+def test_trim_by_date_none(images, first_time, last_time):
+    period = TimePeriod(last_time, first_time)
     trimmed = heatmap.trim_by_date(images, period)
     assert 0 == len(trimmed)
 
