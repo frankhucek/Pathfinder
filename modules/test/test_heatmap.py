@@ -96,6 +96,12 @@ def test_sort_by_date(images):
         assert heatmap.time_taken(v) <= heatmap.time_taken(w)
 
 
+def test_windows(images):
+    windows = heatmap.windows(images, 3)
+    assert 4 == len(windows)
+    assert all(3 == len(x) for x in windows)
+
+
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################

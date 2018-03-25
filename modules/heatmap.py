@@ -123,7 +123,12 @@ def sort_by_date(images):
 
 
 def windows(images, window_size):
-    pass
+    chunks = []
+    for start in range(len(images) - window_size):
+        end = start + window_size
+        chunk = images[start:end]
+        chunks.append(chunk)
+    return chunks
 
 
 def coordinates(manifest):
