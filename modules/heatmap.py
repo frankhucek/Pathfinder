@@ -6,6 +6,8 @@
 
 import argparse
 
+from datetime import datetime
+
 import numpy as np
 from PIL import Image
 
@@ -17,11 +19,24 @@ from manifest import Manifest
 ###############################################################################
 
 DEFAULT_WINDOW_SIZE = 10
+DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
+DATETIME_EXIF = 36867
 
 
 ###############################################################################
 # Classes                                                                     #
 ###############################################################################
+
+class TimePeriod(object):
+
+    def __init__(self, start, end):
+        super(TimePeriod, self).__init__()
+        self.start = start
+        self.end = end
+
+    def contains(self, dt):
+        return self.start < dt and dt < self.end
+
 
 class Heatmap(object):
 
@@ -58,12 +73,12 @@ class BlueprintHeatmap(object):
 def build_heatmap(image_filepaths,
                   output_filepath,
                   manifest,
-                  delta,
+                  period,
                   window_size=DEFAULT_WINDOW_SIZE):
 
     dim = manifest.dimensions()
 
-    images = image_obj_sequence(image_filepaths, delta)
+    images = image_obj_sequence(image_filepaths, period)
 
     image_sets = windows(images, window_size)
 
@@ -86,14 +101,21 @@ def build_heatmap(image_filepaths,
 # Helpers                                                                     #
 ###############################################################################
 
-def image_obj_sequence(image_filepaths, delta):
+def time_taken(img):
+    dt_str = img._getexif()[DATETIME_EXIF]
+    dt_obj = datetime.strptime(dt_str, DATETIME_FMT)
+    return dt_obj
+
+
+def image_obj_sequence(image_filepaths, period):
     images = [Image.open(fp) for fp in image_filepaths]
-    images = trim_by_date(images, delta)
+    images = trim_by_date(images, period)
     images = sort_by_date(images)
 
 
-def trim_by_date(images, delta):
-    pass
+def trim_by_date(images, period):
+    return [x for x in images
+            if period.contains(time_taken(x))]
 
 
 def sort_by_date(images):
