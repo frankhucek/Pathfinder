@@ -113,6 +113,11 @@ def test_coordinates():
     assert coords == heatmap.coordinates(dim)
 
 
+def test_extract_color_set(images):
+    color_set = heatmap.extract_color_set(images, (0, 0))
+    assert 7 == len(color_set)
+
+
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################

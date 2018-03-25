@@ -138,7 +138,7 @@ def coordinates(dim):
 
 
 def extract_color_set(images, coord):
-    pass
+    return [img.getpixel(coord) for img in images]
 
 
 def is_movement(color_set):
