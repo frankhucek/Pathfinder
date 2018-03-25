@@ -119,7 +119,7 @@ def trim_by_date(images, period):
 
 
 def sort_by_date(images):
-    pass
+    return sorted(images, key=time_taken)
 
 
 def windows(images, window_size):

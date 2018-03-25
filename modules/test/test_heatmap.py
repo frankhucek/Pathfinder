@@ -90,10 +90,18 @@ def test_trim_by_date_none(images, first_time, last_time):
     assert 0 == len(trimmed)
 
 
+def test_sort_by_date(images):
+    std = heatmap.sort_by_date(images)
+    for v, w in pairwise(std):
+        assert heatmap.time_taken(v) <= heatmap.time_taken(w)
+
+
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
 
+def pairwise(lis):
+    return zip(lis, lis[1:])
 
 
 ###############################################################################
