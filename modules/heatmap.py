@@ -45,17 +45,25 @@ class TimePeriod(object):
 
 class Heatmap(object):
 
-    def __init__(self, manifest):
+    @staticmethod
+    def new(manifest):
+        points = np.zeros(manifest.dimensions())
+        return Heatmap(manifest, points)
+
+    def __init__(self, manifest, points):
         super(Heatmap, self).__init__()
-        self.manifest
+        self.manifest = manifest
         self.size = manifest.dimensions()
         self.count = 0
-        self.points = np.zeros(self.size)
+        self.points = points
 
     def add(coord):
         pass
 
     def project(self):
+        pass
+
+    def write(self, filepath):
         pass
 
 
