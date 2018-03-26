@@ -71,6 +71,19 @@ def last_time():
     return datetime(2018, 3, 23, 21, 15, 44)
 
 
+@fixture
+def point():
+    return (2000, 1000)
+
+
+points = [
+    ((2000, 1000), True),
+    ((1000, 2000), False),
+    ((1500, 2000), False),
+    ((2500, 250), False)
+]
+
+
 ###############################################################################
 # TestCases                                                                   #
 ###############################################################################
@@ -113,9 +126,17 @@ def test_coordinates():
     assert coords == heatmap.coordinates(dim)
 
 
-def test_extract_color_set(images):
-    color_set = heatmap.extract_color_set(images, (0, 0))
+def test_extract_color_set(images, point):
+    color_set = heatmap.extract_color_set(images, point)
     assert 7 == len(color_set)
+
+
+@pytest.mark.parametrize("point,res", points, ids=lambda x: str(x))
+def test_is_movement_all(point, res):
+    color_set = heatmap.extract_color_set(images(), point)
+    assert res == heatmap.is_movement(color_set,
+                                      color_thresh=50,
+                                      movement_thresh=0.1)
 
 
 ###############################################################################

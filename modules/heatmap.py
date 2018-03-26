@@ -6,6 +6,7 @@
 
 import argparse
 import itertools
+import math
 
 from datetime import datetime
 
@@ -20,6 +21,9 @@ from manifest import Manifest
 ###############################################################################
 
 DEFAULT_WINDOW_SIZE = 10
+DEFAULT_MOVEMENT_THRESH = 1
+DEFAULT_COLOR_THRESH = 0.1
+
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
 DATETIME_EXIF = 36867
 
@@ -141,8 +145,25 @@ def extract_color_set(images, coord):
     return [img.getpixel(coord) for img in images]
 
 
-def is_movement(color_set):
-    pass
+def are_different(color1, color2,
+                  color_thresh=DEFAULT_COLOR_THRESH):
+    difference = np.array(color2) - np.array(color1)
+    return np.linalg.norm(difference) > color_thresh
+
+
+def is_movement(color_set,
+                color_thresh=DEFAULT_COLOR_THRESH,
+                movement_thresh=DEFAULT_MOVEMENT_THRESH):
+
+    n = len(color_set) - 1
+    num_that_can_be_diff = math.floor((1 - movement_thresh) * n)
+    for c in color_set:
+        remaining = [x for x in color_set if x != c]
+        diff = sum(are_different(c, x, color_thresh)
+                   for x in remaining)
+        if diff >= num_that_can_be_diff:
+            return True
+    return False
 
 
 ###############################################################################
