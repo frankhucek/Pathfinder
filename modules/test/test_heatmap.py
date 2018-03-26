@@ -23,6 +23,8 @@ from datetime import datetime
 from pytest import fixture
 import pytest
 
+from unittest.mock import MagicMock
+
 
 ###############################################################################
 # Unit under test                                                             #
@@ -137,6 +139,14 @@ def test_is_movement_all(point, res):
     assert res == heatmap.is_movement(images(), point,
                                       color_thresh=50,
                                       movement_thresh=0.1)
+
+
+def test_empty_heatmap_print():
+    manifest_mock = MagicMock()
+    manifest_mock.dimensions.return_value = (3, 4)
+    heatmap = Heatmap.new(manifest_mock)
+    print(heatmap)
+    assert False
 
 
 ###############################################################################

@@ -7,6 +7,7 @@
 import argparse
 import itertools
 import math
+import json
 
 from datetime import datetime
 
@@ -57,14 +58,25 @@ class Heatmap(object):
         self.count = 0
         self.points = points
 
-    def add(coord):
-        pass
+    def add(self, coord):
+        self.count += 1
+        self.points[coord] += 1
 
     def project(self):
         pass
 
     def write(self, filepath):
         pass
+
+    def __str__(self):
+        attrs = [self.size[0],
+                 self.size[1],
+                 self.count]
+        attr_str = "\n".join(str(x) for x in attrs)
+        points = json.dumps(self.points,
+                            default=lambda x: list(x))
+        string = "{}\n{}".format(attr_str, points)
+        return string
 
 
 class BlueprintHeatmap(object):
