@@ -93,9 +93,7 @@ def build_heatmap(image_filepaths,
 
         for coord in coordinates(dim):
 
-            color_set = extract_color_set(images, coord)
-
-            if is_movement(color_set):
+            if is_movement(images, coord):
                 heatmap.add(coord)
 
     blueprint_heatmap = heatmap.project()
@@ -151,9 +149,11 @@ def are_different(color1, color2,
     return np.linalg.norm(difference) > color_thresh
 
 
-def is_movement(color_set,
+def is_movement(images, coord,
                 color_thresh=DEFAULT_COLOR_THRESH,
                 movement_thresh=DEFAULT_MOVEMENT_THRESH):
+
+    color_set = extract_color_set(images, coord)
 
     n = len(color_set) - 1
     num_that_can_be_diff = math.floor((1 - movement_thresh) * n)

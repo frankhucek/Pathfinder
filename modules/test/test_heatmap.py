@@ -134,8 +134,7 @@ def test_extract_color_set(images, point):
 
 @pytest.mark.parametrize("point,res", points, ids=lambda x: str(x))
 def test_is_movement_all(point, res):
-    color_set = heatmap.extract_color_set(images(), point)
-    assert res == heatmap.is_movement(color_set,
+    assert res == heatmap.is_movement(images(), point,
                                       color_thresh=50,
                                       movement_thresh=0.1)
 
