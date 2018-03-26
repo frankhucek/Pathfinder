@@ -11,17 +11,8 @@ local_host = "localhost"
 local_host_port = 3001 # port forwarded and ready to go
 username_to_verify = "pathfinder_camera"
 
-def write_photo_to_file(filename, client_socket):
-    f = open(filename,'wb')
-    data_recv = client_socket.recv(2048)
-    while data_recv:
-        f.write(data_recv)
-        data_recv = client_socket.recv(2048)
-    f.close()
-    return
-
 def recv_photo(filename, sigfile, gpg, client_socket):
-    f = open(filename, "wb")
+    #f = open(filename, "wb")
     data_recv = client_socket.recv(2048)
     data = b''
     while data_recv:
@@ -29,11 +20,13 @@ def recv_photo(filename, sigfile, gpg, client_socket):
         data_recv = client_socket.recv(2048)
 
     verified = gpg.verify_data(sigfile, data)
-    if verified.valid:
+    print("username of sign: " + str(verified.username))
+    if verified.valid and username_to_verify in verified.username:
+        f = open(filename, "wb")
         f.write(data)
-    f.close()
+        f.close()
     
-
+### temp sig file gets written no matter what is sent in
 def listen_for_photos():
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((local_host, local_host_port))
@@ -44,15 +37,17 @@ def listen_for_photos():
     
     while True:
         (client_socket, addr) = s.accept()
+        
         detached_sig_data = client_socket.recv(2048)
-
-        sig_file = open("tempphotojpg.sig", "wb")
+        print("client connected with sig: " + str(detached_sig_data))
+        sig_file = open("client.sig", "wb")
         sig_file.write(detached_sig_data)
         sig_file.close()
 
         client_socket.send(b"ACK")
+        print("sent ACK to client")
 
-        recv_photo("tempphoto.jpg", "tempphotojpg.sig", gpg, client_socket)
+        recv_photo("tempphoto.jpg", "client.sig", gpg, client_socket)
 
         client_socket.close()
         

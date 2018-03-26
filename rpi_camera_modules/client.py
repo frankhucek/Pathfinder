@@ -37,3 +37,4 @@ def signed_connection_data(filename):
             password = f.read().splitlines()[0]
             detached_sig = gpg.sign_file(file_to_sign, detach=True, binary=True, passphrase=password)
             return detached_sig.data
+            # return b'gonna get denied'
