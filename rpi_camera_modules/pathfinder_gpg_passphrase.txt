@@ -1,1 +1,1 @@
-srproj
+path_srproj

@@ -13,3 +13,6 @@ htmlcov/
 
 # rpi auth
 rpi_camera_modules/pathfinder_gpg_passphrase.txt
+rpi_camera_modules/~/
+rpi_camera_modules/~
+rpi_camera_modules/~/**
