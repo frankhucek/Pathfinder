@@ -67,7 +67,7 @@ Signs the data contained in 'filename'
 Returns the detached signature in binary bytestring format
 """
 def signed_data(filename, pass_file):
-    gpg = gnupg.GPG(gnupghome='~/.gnupg')
+    gpg = gnupg.GPG()
     with open(pass_file) as f:
         with open(filename, "rb") as file_to_sign:
             password = f.read().splitlines()[0]

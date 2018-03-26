@@ -19,7 +19,7 @@ TIMEOUT = 10
 
 def recv_photo(filename, sigfile, client_socket):
     # create gpg instance
-    gpg = gnupg.GPG(gnupghome='~/.gnupg')
+    gpg = gnupg.GPG()
     
     data_recv = client_socket.recv(16)
     data = b''
