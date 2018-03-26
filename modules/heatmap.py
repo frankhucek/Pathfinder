@@ -95,7 +95,7 @@ def build_heatmap(image_filepaths,
 
     image_sets = windows(images, window_size)
 
-    heatmap = Heatmap(manifest)
+    heatmap = Heatmap.new(manifest)
 
     for image_set in image_sets:
 
