@@ -21,9 +21,9 @@ from manifest import Manifest
 # Constants                                                                   #
 ###############################################################################
 
-DEFAULT_WINDOW_SIZE = 10
-DEFAULT_MOVEMENT_THRESH = 1
-DEFAULT_COLOR_THRESH = 0.1
+DEFAULT_WINDOW_SIZE = 2
+DEFAULT_MOVEMENT_THRESH = 0.1
+DEFAULT_COLOR_THRESH = 50
 
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
 DATETIME_EXIF = 36867
@@ -56,24 +56,33 @@ class Heatmap(object):
         self.manifest = manifest
         self.size = manifest.dimensions()
         self.count = 0
-        self.points = points
+        self._points = points
 
     def add(self, coord):
         self.count += 1
-        self.points[coord] += 1
+        self._points[coord] += 1
+
+    def points(self):
+        return self._points / np.max(self._points)
+        # return self._points
 
     def project(self):
         pass
 
     def write(self, filepath):
-        pass
+        with open(filepath, 'w') as f:
+            f.write(str(self))
+        write_points = self.points() * 255
+        uint_points = write_points.astype('uint8')
+        im = Image.fromarray(uint_points, 'L')
+        im.save("heatmap.bmp")
 
     def __str__(self):
         attrs = [self.size[0],
                  self.size[1],
                  self.count]
         attr_str = "\n".join(str(x) for x in attrs)
-        points = json.dumps(self.points,
+        points = json.dumps(self.points(),
                             default=lambda x: list(x))
         string = "{}\n{}".format(attr_str, points)
         return string
@@ -109,15 +118,18 @@ def build_heatmap(image_filepaths,
 
     heatmap = Heatmap.new(manifest)
 
-    for image_set in image_sets:
+    for idx, image_set in enumerate(image_sets):
+
+        print("image_set: {}".format(idx))
 
         for coord in coordinates(dim):
 
             if is_movement(images, coord):
                 heatmap.add(coord)
 
-    blueprint_heatmap = heatmap.project()
-    blueprint_heatmap.write(output_filepath)
+    heatmap.write(output_filepath)
+    # blueprint_heatmap = heatmap.project()
+    # blueprint_heatmap.write(output_filepath)
 
 
 ###############################################################################
@@ -134,6 +146,7 @@ def image_obj_sequence(image_filepaths, period):
     images = [Image.open(fp) for fp in image_filepaths]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
+    return images
 
 
 def trim_by_date(images, period):
@@ -194,13 +207,13 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("op",
                         choices=["build_heatmap"])
-    parser.add_argument("images",
-                        action="append",
-                        help="Image files")
     parser.add_argument("output",
                         help="name of output file")
     parser.add_argument("manifest",
                         help="manifest filepath")
+    parser.add_argument("images",
+                        nargs="+",
+                        help="Image files")
     return parser.parse_args()
 
 
@@ -212,13 +225,14 @@ def main():
 
     args = get_args()
 
-    manifest = Manifest.from_file(args.manifest)
+    manifest = Manifest.from_filepath(args.manifest)
 
     if args.op == "build_heatmap":
         build_heatmap(args.images,
                       args.output,
                       manifest,
-                      None)
+                      TimePeriod(datetime(2018, 3, 23, 21, 15, 23),
+                                 datetime(2018, 3, 23, 21, 15, 44)))
 
 
 if __name__ == '__main__':
