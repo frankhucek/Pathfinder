@@ -1,4 +1,27 @@
 # Weekly updates for Frank Hucek
+
+# Week of 3/24 - 3/30
+### Set up RPI camera module for test photos
+    - This involved mounting the RPI camera setup on my wall and aiming it at a control grid I made with duct tape.
+    - In order to hold the camera in place, I ended up going to Thinkbox and 3D printing a mount for my specific camera model.
+    - Took a series of 10 photos, including 1 control photo, of a simple scene to test our algorithms on.
+    - NOTE: The 10 photos are included in the commit under the root project directory /jobs/0
+    
+### Optimized RPI client/server scripts
+    - Tested many cases and included proper exception handling so that server socket will not go down for strange reasons.
+    - Added message between client/server to specify job directory and filename of destined photo on server.
+    - Used detached signatures of the actual photo data for perfect data verification. Nothing will be written to the server unless it is from a known client.
+    - Created new GPG keys for clients. Job number will now be reflected on the Key's username itself.
+      Each valid client will have the username format of "pathfinder_cam_<job#>"
+    - The new pathfinder_cam_0 public key is included in the commit
+
+### Files changed/added
+    - Contents of /jobs/0/
+    - rpi_camera_modules/
+      - client.py
+      - server.py
+      - pathfinder_cam_0_public.key
+
 # Week of 3/16 - 3/23
 ### Generated Public/Private key pair for RPI
     - This is necessary to secure the communication to and from the remote server
