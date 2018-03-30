@@ -15,6 +15,7 @@ import numpy as np
 from PIL import Image
 
 from manifest import Manifest
+import cli
 
 
 ###############################################################################
@@ -212,7 +213,8 @@ def get_args():
     parser.add_argument("output",
                         help="name of output file")
     parser.add_argument("manifest",
-                        help="manifest filepath")
+                        help="manifest filepath",
+                        type=cli.is_manifest_filepath)
     parser.add_argument("period",
                         help="time period to trim images",
                         nargs=2,

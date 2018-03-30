@@ -15,12 +15,12 @@ python3 mapping.py itb 350 450 examples/manifest.json
 ###############################################################################
 
 import argparse
-import os
 import numpy as np
 
 from itertools import combinations
 
 from manifest import Manifest
+import cli
 
 
 ###############################################################################
@@ -247,13 +247,6 @@ OPERATIONS = {
 }
 
 
-def is_manifest_filepath(filepath):
-    if os.path.isfile(filepath):
-        return filepath
-    else:
-        raise argparse.ArgumentError("Manifest file DNE!")
-
-
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("op",
@@ -264,7 +257,7 @@ def get_args():
                         nargs=2,
                         help="coordinates to map")
     parser.add_argument("manifest",
-                        type=is_manifest_filepath,
+                        type=cli.is_manifest_filepath,
                         help="job_manifest_file")
     parser.add_argument("-p", "--precision",
                         type=int,
