@@ -117,8 +117,6 @@ def build_heatmap(image_filepaths,
                 heatmap.add(coord)
 
     heatmap.write(output_filepath)
-    # blueprint_heatmap = heatmap.project()
-    # blueprint_heatmap.write(output_filepath)
 
 
 ###############################################################################
