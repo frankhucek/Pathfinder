@@ -191,6 +191,20 @@ def is_movement(images, coord,
 # Command line                                                                #
 ###############################################################################
 
+def parse_time(s):
+    try:
+        return datetime.strptime(s, DATETIME_FMT)
+    except ValueError:
+        msg = "Illegal time format -- use {}".format(DATETIME_FMT)
+        raise argparse.ArgumentTypeError(msg)
+
+
+class MakeTimePeriodAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        time_period = TimePeriod(*values)
+        setattr(namespace, self.dest, time_period)
+
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("op",
@@ -199,6 +213,11 @@ def get_args():
                         help="name of output file")
     parser.add_argument("manifest",
                         help="manifest filepath")
+    parser.add_argument("period",
+                        help="time period to trim images",
+                        nargs=2,
+                        type=parse_time,
+                        action=MakeTimePeriodAction)
     parser.add_argument("images",
                         nargs="+",
                         help="Image files")
