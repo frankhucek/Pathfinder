@@ -6,7 +6,6 @@
 
 import argparse
 import itertools
-import math
 import json
 
 from datetime import datetime
