@@ -96,7 +96,8 @@ def build_heatmap(image_filepaths,
                   output_filepath,
                   manifest,
                   period,
-                  window_size=DEFAULT_WINDOW_SIZE):
+                  window_size=DEFAULT_WINDOW_SIZE,
+                  color_thresh=DEFAULT_COLOR_THRESH):
 
     dim = manifest.dimensions()
 
@@ -112,7 +113,7 @@ def build_heatmap(image_filepaths,
 
         for coord in coordinates(dim):
 
-            if is_movement(images, coord):
+            if is_movement(images, coord, color_thresh):
                 heatmap.add(coord)
 
     heatmap.write(output_filepath)
@@ -223,6 +224,9 @@ def get_args():
     parser.add_argument("window_size",
                         help="size of sliding window",
                         type=int)
+    parser.add_argument("color_thresh",
+                        help="RGB magnitude of color difference",
+                        type=int)
     parser.add_argument("images",
                         nargs="+",
                         help="Image files")
@@ -237,8 +241,6 @@ def main():
 
     args = get_args()
 
-    import pdb; pdb.set_trace()
-
     manifest = Manifest.from_filepath(args.manifest)
 
     if args.op == "build_heatmap":
@@ -246,7 +248,8 @@ def main():
                       args.output,
                       manifest,
                       args.period,
-                      args.window_size)
+                      args.window_size,
+                      args.color_thresh)
 
 
 if __name__ == '__main__':
