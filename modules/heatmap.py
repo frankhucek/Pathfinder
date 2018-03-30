@@ -183,7 +183,15 @@ def are_different(color1, color2,
 
 def is_movement(images, coord,
                 color_thresh=DEFAULT_COLOR_THRESH):
+    '''determine if there is movement at a coordinate
 
+    computes the average color among the color set. Then,
+    checks if any individual color in the set exceeds a
+    certain RGB magnitude difference from the average.
+    If so, it returns true, indicating there is a
+    movement at this coordinate. Should run in time
+    linear to the window size.
+    '''
     color_set = extract_color_set(images, coord)
 
     avg = np.average(color_set, 0)
