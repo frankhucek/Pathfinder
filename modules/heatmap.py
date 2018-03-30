@@ -22,7 +22,6 @@ from manifest import Manifest
 ###############################################################################
 
 DEFAULT_WINDOW_SIZE = 2
-DEFAULT_MOVEMENT_THRESH = 0.1
 DEFAULT_COLOR_THRESH = 50
 
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
@@ -183,20 +182,13 @@ def are_different(color1, color2,
 
 
 def is_movement(images, coord,
-                color_thresh=DEFAULT_COLOR_THRESH,
-                movement_thresh=DEFAULT_MOVEMENT_THRESH):
+                color_thresh=DEFAULT_COLOR_THRESH):
 
     color_set = extract_color_set(images, coord)
 
-    n = len(color_set) - 1
-    num_that_can_be_diff = math.floor((1 - movement_thresh) * n)
-    for c in color_set:
-        remaining = [x for x in color_set if x != c]
-        diff = sum(are_different(c, x, color_thresh)
-                   for x in remaining)
-        if diff >= num_that_can_be_diff:
-            return True
-    return False
+    avg = np.average(color_set, 0)
+    return any(are_different(avg, c, color_thresh)
+               for c in color_set)
 
 
 ###############################################################################
