@@ -87,18 +87,6 @@ class Heatmap(object):
         return string
 
 
-class BlueprintHeatmap(object):
-
-    def __init__(self, size, scale, points):
-        super(BlueprintHeatmap, self).__init__()
-        self.size = size
-        self.scale = scale
-        self.ponts = points
-
-    def write(self, filepath):
-        pass
-
-
 ###############################################################################
 # Heatmap Tools                                                               #
 ###############################################################################
