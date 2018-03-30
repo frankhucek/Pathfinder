@@ -1,18 +1,46 @@
 Brian Clark (bpc30)
 
-## Progress 3/23
+## Progress 3/30
 
-* Created outline for build_heatmap function on heatmap.py module
-* Created command line interface for heatmap.py module
-* Measured and took several test images for heatmapping
+* Fully implement helper functions in heatmap.py
+ * time_taken
+ * image_obj_sequence
+ * trim_by_date
+ * sort_by_date
+ * windows
+ * coordinates
+ * extract_color_set
+ * are_different
+ * is_movement
+* Write automated unit tests for all above helper functions (see modules/test/test_heatmap.py)
+* Create Heatmap object
+ * Functionality to create a new, blank heatmap
+ * Ability to be written to file as both text and binary representation
+ * Ability to record motion points and aggregate them into the heatmap
+* Reimplemented is_movement helper function to use O(window_size) algorithm 
+* Update heatmap.py command line interface
+ * Add command line support for setting allowable image time period in heatmap.py using ISO date strings
+ * CLI support for setting window_thresh
+ * CLI support for setting color_thresh
+ * Refactor is_manifest_filepath into common cli.py module, for use by any other processing module
 
 
-## Files 3/9
+## Files 3/30
 
 NOTE: All changes made on mapping-dev branch
 modules/heatmap.py
+modules/mapping.py
+modules/cli.py
 modules/test/test_heatmap.py
-modules/examples/heatmap/
+
+
+## Time 3/30
+Sunday: 17:00-19:15                 2:15
+Monday: 11:15-12:30, 5:30-6:30      2:15
+Tuesday: 10:30-11:30                1:00
+Thursday: 9:30-9:45, 11:00-11:30    0:45
+----------------------------------------
+Total                               6:15
 
 
 
@@ -22,15 +50,21 @@ modules/examples/heatmap/
 
 
 
-## TODO 3/9
+
+## TODO 3/30
 
 # This week:
-heatmap outline
-heatmap cmd line usage
-access.py
+write helper functions
+test helper functions
+fill out Heatmap class
+better algorithm for is_movement
+write tests for example images
+test Heatmap class
+create access.py
 
 
 # Stretch:
+test bti
 real life bti example
 error handling for heatmap
 
@@ -44,23 +78,3 @@ documentation (for mapping especially)
 Add unit tests to manifest.py
 Allow nonquadrilateral fields
 /9
-
-# This week:
-Add error handling to mapping.py
-Python test coverage tools
-Beef up unit tests
-Add error handling to manifest.py
-blueprint_to_image
-real life example picture for bti
-
-# Stretch:
-make sure we won't be surprised by inverting normals
-documentation (for mapping especially)
-Allow nonquadrilateral fields
-
-
-# Later:
-
-
-# Maybe:
-Add unit tests to manifest.py
