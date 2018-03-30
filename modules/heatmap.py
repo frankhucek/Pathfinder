@@ -220,6 +220,9 @@ def get_args():
                         nargs=2,
                         type=parse_time,
                         action=MakeTimePeriodAction)
+    parser.add_argument("window_size",
+                        help="size of sliding window",
+                        type=int)
     parser.add_argument("images",
                         nargs="+",
                         help="Image files")
@@ -234,14 +237,16 @@ def main():
 
     args = get_args()
 
+    import pdb; pdb.set_trace()
+
     manifest = Manifest.from_filepath(args.manifest)
 
     if args.op == "build_heatmap":
         build_heatmap(args.images,
                       args.output,
                       manifest,
-                      TimePeriod(datetime(2018, 3, 23, 21, 15, 23),
-                                 datetime(2018, 3, 23, 21, 15, 44)))
+                      args.period,
+                      args.window_size)
 
 
 if __name__ == '__main__':
