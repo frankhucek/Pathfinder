@@ -135,22 +135,28 @@ class Geometry(object):
 
         return [u, v]
 
+    def collapse_to_viewplane(self, vec):
+        divisor = vec[2] / self.fov[2]
+        return vec / divisor
+
+    @staticmethod
+    def along_axis(pos, axis):
+        return (pos / norm(axis)) * axis
+
     def transform_bti(self, blueprint_coord):
 
         xaxis, yaxis = self.orthonormals()
 
-        blueprint_vec_x = (blueprint_coord[0] / norm(xaxis)) * xaxis
-        blueprint_vec_y = (blueprint_coord[1] / norm(yaxis)) * yaxis
-        blueprint_vec = blueprint_vec_x + blueprint_vec_y
+        blueprint_vec = sum(self.along_axis(pos, axis) for pos, axis
+                            in zip(blueprint_coord, self.orthonormals()))
 
         projected_vec = self.top_left_map_corner + blueprint_vec
 
         # divide by z to arrive on viewplane
-        viewplane_vec = projected_vec / projected_vec[2]
-        adjusted_fov = self.fov / self.fov[2]
+        viewplane_vec = self.collapse_to_viewplane(projected_vec)
 
         # divide by FOV to arrive on image
-        image_vec = np.divide(viewplane_vec, adjusted_fov)
+        image_vec = np.divide(viewplane_vec, self.fov)
 
         # remove z to get image coordinates
         image_coord = image_vec[0:2]
