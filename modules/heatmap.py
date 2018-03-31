@@ -90,6 +90,10 @@ class Heatmap(object):
         string = "{}\n{}".format(attr_str, points)
         return string
 
+    def add_chunk(self, chunk):
+        #for chunk
+        pass
+
 class PixelChunk(object):
 
     def __init__(self, points, width, height):
@@ -136,7 +140,10 @@ def build_heatmap(image_filepaths,
         print("image_set: {}".format(idx))
 
         all_coordinates = coordinates(dim)
-        #use coordinates for creating chunks
+        #pixel_chunks = pixel_chunks(coordinates)
+        #for pixel_chunk in pixel_chunks
+        #   if is_movement(images, pixel_chunk, color_thresh):
+        #       heatmap.add_chunk(pixel_chunk)
         for coord in all_coordinates:
 
             if is_movement(images, coord, color_thresh):
@@ -180,8 +187,13 @@ def windows(images, window_size):
     return chunks
 
 
-def chunks():
-    pass
+def chunks(all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
+            chunk_height=DEFAULT_CHUNK_HEIGHT):
+    pixel_chunks = []
+    for coord in all_coordinates:
+        pixel_chunk = PixelChunk()
+        pixel_chunks.append(pixel_chunk)
+    return pixel_chunks
 
 
 def coordinates(dim):
