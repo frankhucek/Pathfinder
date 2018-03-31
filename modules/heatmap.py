@@ -109,7 +109,7 @@ class PixelChunk(object):
         pass
 
     def is_different(self, other_chunk):
-        average_rgb_different = are_different_color_chunks(rgb_average(),
+        average_rgb_different = are_different(rgb_average(),
                         other_chunk.rgb_average())
         rgb_variance_different = variance_difference(rgb_variance(),
                         other_chunk.rgb_variance())
@@ -191,7 +191,7 @@ def chunks(all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
             chunk_height=DEFAULT_CHUNK_HEIGHT):
     pixel_chunks = []
     for coord in all_coordinates:
-        pixel_chunk = PixelChunk()
+        pixel_chunk = PixelChunk(coord, chunk_width, chunk_height)
         pixel_chunks.append(pixel_chunk)
     return pixel_chunks
 
@@ -209,6 +209,10 @@ def are_different(color1, color2,
                   color_thresh=DEFAULT_COLOR_THRESH):
     difference = np.array(color2) - np.array(color1)
     return np.linalg.norm(difference) > color_thresh
+
+
+def variance_difference(variance_one, variance_two):
+    pass
 
 
 def is_movement(images, coord,
