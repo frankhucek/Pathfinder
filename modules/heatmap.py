@@ -91,19 +91,23 @@ class Heatmap(object):
         return string
 
     def add_chunk(self, chunk):
-        #for chunk
-        pass
+        for coordinate in chunk.points:
+            add(cordinate)
 
 class PixelChunk(object):
 
-    def __init__(self, points, width, height):
+    def __init__(self, image, points, width, height):
         super(PixelChunk, self).__init__()
+        self.image = image
         self.points = points
         self.width = width
         self.height = height
 
-    def rgb_average(self,):
-        pass
+    def rgb_average(self):
+        val = 0
+        for point in self.points:
+            val = val + (self.image.getpixel(point) ** 2)
+        return math.sqrt(val)
 
     def rgb_variance(self):
         pass
@@ -187,11 +191,11 @@ def windows(images, window_size):
     return chunks
 
 
-def chunks(all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
+def chunks(image, all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
             chunk_height=DEFAULT_CHUNK_HEIGHT):
     pixel_chunks = []
     for coord in all_coordinates:
-        pixel_chunk = PixelChunk(coord, chunk_width, chunk_height)
+        pixel_chunk = PixelChunk(image, coord, chunk_width, chunk_height)
         pixel_chunks.append(pixel_chunk)
     return pixel_chunks
 
