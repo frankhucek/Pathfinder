@@ -16,8 +16,22 @@ Continue GraphQL connections
 Work on the React components for the analyzed maps presented (heatmap, coordinates) using hardcoded dummy images
 Working on CSS
 
+3/16
+Spring Break
+
+3/23
+Fixed a React component bug
+
+3/30
+Worked on creating "pixel chunks" to prevent examining at each pixel individually (heatmap.py)
+Worked on comparing RGB of pixel chunks values to one another to see if there is an actual change
+Laid out default stock versions of analyzedinfo react component to later use for retail (AnalyzedInfo.js)
+Moved out Whitespae component for use in other components (Whitespace.js)
+Researching PIL/pillow python library
+Researchign whether or not graphQL is actually going to be the good choice
+designing website via sketch
+
 TODO:
-Continue working on CSS
-Finish Job Info presentation
+CSS/Web Design
 Finish GraphQL connections
 Figure out connections with data/ folder where Job images may be held/ server setup

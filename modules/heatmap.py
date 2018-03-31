@@ -24,6 +24,10 @@ import cli
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
 
+#Chosen arbitrarly, can test different chunk sizes and determine which is best
+DEFAULT_CHUNK_WIDTH = 36
+DEFAULT_CHUNK_HEIGHT = 36
+
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
 DATETIME_EXIF = 36867
 
@@ -86,6 +90,35 @@ class Heatmap(object):
         string = "{}\n{}".format(attr_str, points)
         return string
 
+    def add_chunk(self, chunk):
+        for coordinate in chunk.points:
+            add(cordinate)
+
+class PixelChunk(object):
+
+    def __init__(self, image, points, width, height):
+        super(PixelChunk, self).__init__()
+        self.image = image
+        self.points = points
+        self.width = width
+        self.height = height
+
+    def rgb_average(self):
+        val = 0
+        for point in self.points:
+            val = val + (self.image.getpixel(point) ** 2)
+        return math.sqrt(val)
+
+    def rgb_variance(self):
+        pass
+
+    def is_different(self, other_chunk):
+        average_rgb_different = are_different(rgb_average(),
+                        other_chunk.rgb_average())
+        rgb_variance_different = variance_difference(rgb_variance(),
+                        other_chunk.rgb_variance())
+        return average_rgb_different or rgb_variance_different
+
 
 ###############################################################################
 # Heatmap Tools                                                               #
@@ -110,7 +143,12 @@ def build_heatmap(image_filepaths,
 
         print("image_set: {}".format(idx))
 
-        for coord in coordinates(dim):
+        all_coordinates = coordinates(dim)
+        #pixel_chunks = pixel_chunks(coordinates)
+        #for pixel_chunk in pixel_chunks
+        #   if is_movement(images, pixel_chunk, color_thresh):
+        #       heatmap.add_chunk(pixel_chunk)
+        for coord in all_coordinates:
 
             if is_movement(images, coord, color_thresh):
                 heatmap.add(coord)
@@ -153,6 +191,15 @@ def windows(images, window_size):
     return chunks
 
 
+def chunks(image, all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
+            chunk_height=DEFAULT_CHUNK_HEIGHT):
+    pixel_chunks = []
+    for coord in all_coordinates:
+        pixel_chunk = PixelChunk(image, coord, chunk_width, chunk_height)
+        pixel_chunks.append(pixel_chunk)
+    return pixel_chunks
+
+
 def coordinates(dim):
     xs, ys = range(dim[0]), range(dim[1])
     return set(itertools.product(xs, ys))
@@ -166,6 +213,10 @@ def are_different(color1, color2,
                   color_thresh=DEFAULT_COLOR_THRESH):
     difference = np.array(color2) - np.array(color1)
     return np.linalg.norm(difference) > color_thresh
+
+
+def variance_difference(variance_one, variance_two):
+    pass
 
 
 def is_movement(images, coord,
