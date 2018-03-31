@@ -66,7 +66,7 @@ class Geometry(object):
 
     def __init__(self, fov, image_corners, distances):
         super(Geometry, self).__init__()
-        self.fov = fov
+        self.fov = np.array(fov)
         self.viewplane_corners = Geometry.to_view_planes(fov, image_corners)
         self.distances = distances
 
@@ -137,16 +137,21 @@ class Geometry(object):
 
     def transform_bti(self, blueprint_coord):
 
-        blueprint_vec = blueprint_coord * self.orthonormals
+        xaxis, yaxis = self.orthonormals()
+
+        blueprint_vec_x = (blueprint_coord[0] / norm(xaxis)) * xaxis
+        blueprint_vec_y = (blueprint_coord[1] / norm(yaxis)) * yaxis
+        blueprint_vec = blueprint_vec_x + blueprint_vec_y
 
         projected_vec = self.top_left_map_corner + blueprint_vec
 
         # divide by z to arrive on viewplane
         viewplane_vec = projected_vec / projected_vec[2]
+        adjusted_fov = self.fov / self.fov[2]
 
         # divide by FOV to arrive on image
-        image_vec = np.divide(viewplane_vec, self.fov)
-        
+        image_vec = np.divide(viewplane_vec, adjusted_fov)
+
         # remove z to get image coordinates
         image_coord = image_vec[0:2]
 
@@ -214,13 +219,16 @@ def center(value, normalization):
 
 
 def uncenter_img_coord(coord, dim):
-    new_x = uncenter(coord[0], dim[0])
-    new_y = -uncenter(coord[1], dim[1])
+    new_x = uncenter(coord[0], dim[0], 1)
+    new_y = uncenter(coord[1], dim[1], -1)
     return [new_x, new_y]
 
 
-def uncenter(value, normalization):
-    return (value * normalization) + (normalization / 2)
+def uncenter(value, normalization, direction):
+    offset = normalization / 2
+    difference = (value * normalization) * direction
+    result = offset + difference
+    return result
 
 
 def norm(vec):
