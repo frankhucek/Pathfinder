@@ -27,6 +27,9 @@ Worked on creating "pixel chunks" to prevent examining at each pixel individuall
 Worked on comparing RGB of pixel chunks values to one another to see if there is an actual change
 Laid out default stock versions of analyzedinfo react component to later use for retail (AnalyzedInfo.js)
 Moved out Whitespae component for use in other components (Whitespace.js)
+Researching PIL/pillow python library
+Researchign whether or not graphQL is actually going to be the good choice
+designing website via sketch
 
 TODO:
 CSS/Web Design
