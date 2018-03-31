@@ -24,6 +24,10 @@ import cli
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
 
+#Chosen arbitrarly, can test different chunk sizes and determine which is best
+DEFAULT_CHUNK_WIDTH = 36
+DEFAULT_CHUNK_HEIGHT = 36
+
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
 DATETIME_EXIF = 36867
 
@@ -86,6 +90,27 @@ class Heatmap(object):
         string = "{}\n{}".format(attr_str, points)
         return string
 
+class PixelChunk(object):
+
+    def __init__(self, points, width, height):
+        super(PixelChunk, self).__init__()
+        self.points = points
+        self.width = width
+        self.height = height
+
+    def rgb_average(self,):
+        pass
+
+    def rgb_variance(self):
+        pass
+
+    def is_different(self, other_chunk):
+        average_rgb_different = are_different_color_chunks(rgb_average(),
+                        other_chunk.rgb_average())
+        rgb_variance_different = variance_difference(rgb_variance(),
+                        other_chunk.rgb_variance())
+        return average_rgb_different or rgb_variance_different
+
 
 ###############################################################################
 # Heatmap Tools                                                               #
@@ -110,7 +135,9 @@ def build_heatmap(image_filepaths,
 
         print("image_set: {}".format(idx))
 
-        for coord in coordinates(dim):
+        all_coordinates = coordinates(dim)
+        #use coordinates for creating chunks
+        for coord in all_coordinates:
 
             if is_movement(images, coord, color_thresh):
                 heatmap.add(coord)
@@ -151,6 +178,10 @@ def windows(images, window_size):
         chunk = images[start:end]
         chunks.append(chunk)
     return chunks
+
+
+def chunks():
+    pass
 
 
 def coordinates(dim):
