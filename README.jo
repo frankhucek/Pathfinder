@@ -25,7 +25,8 @@ Fixed a React component bug
 3/30
 Worked on creating "pixel chunks" to prevent examining at each pixel individually (heatmap.py)
 Worked on comparing RGB of pixel chunks values to one another to see if there is an actual change
-
+Laid out default stock versions of analyzedinfo react component to later use for retail (AnalyzedInfo.js)
+Moved out Whitespae component for use in other components (Whitespace.js)
 
 TODO:
 CSS/Web Design
