@@ -140,12 +140,12 @@ def test_is_movement_all(point, res):
                                       color_thresh=50)
 
 
-def test_empty_heatmap_print():
-    manifest_mock = MagicMock()
-    manifest_mock.dimensions.return_value = (3, 4)
-    heatmap = Heatmap.new(manifest_mock)
-    print(heatmap)
-    assert False
+# def test_empty_heatmap_print():
+#     manifest_mock = MagicMock()
+#     manifest_mock.dimensions.return_value = (3, 4)
+#     heatmap = Heatmap.new(manifest_mock)
+#     print(heatmap)
+#     assert False
 
 
 ###############################################################################
