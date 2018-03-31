@@ -144,6 +144,17 @@ def fake_parse(arg_strings):
 # TestCases                                                                   #
 ###############################################################################
 
+def test_uncenter_img_coords(dim, pixel_coords):
+
+    results = [[500, 500],
+               [1000, 500],
+               [500, 750],
+               [1000, 750]]
+
+    for res, coord in zip(results, pixel_coords):
+        assert_close(res, mapping.uncenter_img_coord(coord, dim))
+
+
 def test_identical_image_corners(fov, distances):
     image_corners = [[-0.24, 0.34],
                      [0.1, 0.4],
