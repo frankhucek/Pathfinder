@@ -180,6 +180,7 @@ def image_obj_sequence(image_filepaths, period):
     images = [Image.open(fp) for fp in image_filepaths]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
+    images = [im.load() for im in images]
     return images
 
 
@@ -216,7 +217,7 @@ def coordinates(dim):
 
 
 def extract_color_set(images, coord):
-    return np.array([img.getpixel(coord) for img in images])
+    return np.array([img[coord] for img in images])
 
 
 def are_different(color1, color2,
