@@ -51,23 +51,33 @@ class Heatmap(object):
 
     @staticmethod
     def new(manifest):
-        points = np.zeros(manifest.dimensions())
+        width, height = manifest.dimensions()
+        points = np.zeros((height, width))
         return Heatmap(manifest, points)
 
     def __init__(self, manifest, points):
         super(Heatmap, self).__init__()
         self.manifest = manifest
-        self.size = manifest.dimensions()
+        self.size = np.flip(manifest.dimensions(), 0)
         self.count = 0
         self._points = points
 
     def add(self, coord):
         self.count += 1
-        self._points[coord] += 1
+        self.set(coord, self.at(coord) + 1)
+
+    def set(self, coord, val):
+        self._points[self._flip(coord)] = val
+
+    def at(self, coord):
+        return self._points[self._flip(coord)]
+
+    def _flip(self, coord):
+        x, y = coord
+        return y, x
 
     def points(self):
         return self._points / np.max(self._points)
-        # return self._points
 
     def project(self):
         pass
