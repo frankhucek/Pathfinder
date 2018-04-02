@@ -216,7 +216,7 @@ def coordinates(dim):
 
 
 def extract_color_set(images, coord):
-    return [img.getpixel(coord) for img in images]
+    return np.array([img.getpixel(coord) for img in images])
 
 
 def are_different(color1, color2,
@@ -242,9 +242,9 @@ def is_movement(images, coord,
     '''
     color_set = extract_color_set(images, coord)
 
-    avg = np.average(color_set, 0)
-    return any(are_different(avg, c, color_thresh)
-               for c in color_set)
+    ptp = np.ptp(color_set)
+    spread = np.linalg.norm(ptp)
+    return spread > color_thresh
 
 
 ###############################################################################
