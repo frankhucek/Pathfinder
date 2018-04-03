@@ -36,6 +36,64 @@ DATETIME_EXIF = 36867
 # Classes                                                                     #
 ###############################################################################
 
+class ImageData(object):
+    """obj that provides data about an image"""
+
+    def __init__(self, manifest):
+        super().__init__()
+        self.manifest = manifest
+
+    @classmethod
+    def create(manifest, filepath):
+        raise NotImplementedError("Implement in subclass")
+
+    def time_taken(self):
+        raise NotImplementedError("Implement in subclass")
+
+    def register(self, heatmap, coord):
+        raise NotImplementedError("Implement in subclass")
+
+    @staticmethod
+    def coordinates(self, dim):
+        raise NotImplementedError("Implement in subclass")
+
+    def at(self, coord):
+        raise NotImplementedError("Implement in subclass")
+
+
+class WholeImageData(ImageData):
+
+    def __init__(self, manifest, img):
+        super().__init__(manifest)
+        self._img = img
+        self._pa = img.load()
+
+    @classmethod
+    def create(cls, manifest, filepath):
+        img = Image.open(filepath)
+        return cls(manifest, img)
+
+    def time_taken(self):
+        dt_str = self._img._getexif()[DATETIME_EXIF]
+        dt_obj = datetime.strptime(dt_str, DATETIME_FMT)
+        return dt_obj
+
+    def register(self, heatmap, coord):
+        heatmap.add(coord)
+
+    @staticmethod
+    def coordinates(dim):
+        xs, ys = range(dim[0]), range(dim[1])
+        return set(itertools.product(xs, ys))
+
+    def at(self, coord):
+        return self._pa[coord]
+
+
+class ChunkImageData(ImageData):
+    pass
+
+
 class TimePeriod(object):
 
     def __init__(self, start, end):
