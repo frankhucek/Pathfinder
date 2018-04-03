@@ -6,6 +6,7 @@
 
 import argparse
 import itertools
+import os
 import json
 
 from datetime import datetime
@@ -43,9 +44,23 @@ class ImageData(object):
         super().__init__()
         self.manifest = manifest
 
-    @classmethod
+    @staticmethod
+    def sub_type(filepaths):
+
+        extensions = [os.path.splitext(fp)[1] for fp in filepaths]
+
+        if any(x != extensions[0] for x in extensions):
+            raise ValueError("Mismatched file types!")
+
+        if extensions[0] == ".jpg":
+            return WholeImageData
+        else:
+            return ChunkImageData
+
+    @staticmethod
     def create(manifest, filepath):
-        raise NotImplementedError("Implement in subclass")
+        sub_type = ImageData.sub_type([filepath])
+        return sub_type.create(manifest, filepath)
 
     def time_taken(self):
         raise NotImplementedError("Implement in subclass")
@@ -72,10 +87,10 @@ class WholeImageData(ImageData):
         self._img = img
         self._pa = img.load()
 
-    @classmethod
-    def create(cls, manifest, filepath):
+    @staticmethod
+    def create(manifest, filepath):
         img = Image.open(filepath)
-        return cls(manifest, img)
+        return WholeImageData(manifest, img)
 
     def time_taken(self):
         dt_str = self._img._getexif()[DATETIME_EXIF]
@@ -203,6 +218,7 @@ def build_heatmap(img_files,
                   window_size=DEFAULT_WINDOW_SIZE,
                   color_thresh=DEFAULT_COLOR_THRESH):
 
+    data_type = ImageData.sub_type(img_files)
     dim = manifest.dimensions()
 
     images = image_obj_sequence(manifest, img_files, period)
@@ -215,7 +231,7 @@ def build_heatmap(img_files,
 
         print("image_set: {}".format(idx))
 
-        all_coordinates = WholeImageData.coordinates(dim)
+        all_coordinates = data_type.coordinates(dim)
         #pixel_chunks = pixel_chunks(coordinates)
         #for pixel_chunk in pixel_chunks
         #   if is_movement(images, pixel_chunk, color_thresh):
@@ -223,7 +239,6 @@ def build_heatmap(img_files,
         for coord in all_coordinates:
 
             if is_movement(image_set, coord, color_thresh):
-                # heatmap.add(coord)
                 image_set[0].register(heatmap, coord)
 
     heatmap.write(output_filepath)
@@ -240,7 +255,7 @@ def time_taken(img):
 
 
 def image_obj_sequence(manifest, img_files, period):
-    images = [WholeImageData.create(manifest, fp)
+    images = [ImageData.create(manifest, fp)
               for fp in img_files]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
