@@ -60,23 +60,33 @@ class Heatmap(object):
 
     @staticmethod
     def new(manifest):
-        points = np.zeros(manifest.dimensions())
+        width, height = manifest.dimensions()
+        points = np.zeros((height, width))
         return Heatmap(manifest, points)
 
     def __init__(self, manifest, points):
         super(Heatmap, self).__init__()
         self.manifest = manifest
-        self.size = manifest.dimensions()
+        self.size = np.flip(manifest.dimensions(), 0)
         self.count = 0
         self._points = points
 
     def add(self, coord):
         self.count += 1
-        self._points[coord] += 1
+        self.set(coord, self.at(coord) + 1)
+
+    def set(self, coord, val):
+        self._points[self._flip(coord)] = val
+
+    def at(self, coord):
+        return self._points[self._flip(coord)]
+
+    def _flip(self, coord):
+        x, y = coord
+        return y, x
 
     def points(self):
         return self._points / np.max(self._points)
-        # return self._points
 
     def project(self):
         pass
@@ -200,10 +210,10 @@ def build_heatmap(image_filepaths,
         print("image_set: {}".format(idx))
 
         all_coordinates = coordinates(dim)
-        pixel_chunks = pixel_chunks(coordinates)
-        for pixel_chunk in pixel_chunks
-           if is_movement_in_chunk(images, pixel_chunk, color_thresh):
-               heatmap.add_chunk(pixel_chunk)
+        for coord in all_coordinates:
+
+            if is_movement(image_set, coord, color_thresh):
+                heatmap.add(coord)
 
     heatmap.write(output_filepath)
 
@@ -222,6 +232,7 @@ def image_obj_sequence(image_filepaths, period):
     images = [Image.open(fp) for fp in image_filepaths]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
+    images = [im.load() for im in images]
     return images
 
 
@@ -258,7 +269,7 @@ def coordinates(dim):
 
 
 def extract_color_set(images, coord):
-    return [img.getpixel(coord) for img in images]
+    return np.array([img[coord] for img in images])
 
 
 def are_different(color1, color2,
@@ -287,9 +298,8 @@ def is_movement(images, coord,
     '''
     color_set = extract_color_set(images, coord)
 
-    avg = np.average(color_set, 0)
-    return any(are_different(avg, c, color_thresh)
-               for c in color_set)
+    spread = np.ptp(color_set)
+    return spread > color_thresh
 
 def is_movement_in_chunk(images, pixel_chunk,
                 color_thresh=DEFAULT_COLOR_THRESH):
