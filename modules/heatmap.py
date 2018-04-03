@@ -8,6 +8,7 @@ import argparse
 import itertools
 import os
 import json
+import pickle
 
 from datetime import datetime
 
@@ -159,13 +160,20 @@ class Heatmap(object):
     def project(self):
         pass
 
+    @staticmethod
+    def load(filepath):
+        with open(filepath, 'rb') as f:
+            return pickle.load(f)
+
+    def save(self, filepath):
+        with open(filepath, 'wb') as f:
+            pickle.dump(self, f)
+
     def write(self, filepath):
-        with open(filepath, 'w') as f:
-            f.write(str(self))
         write_points = self.points() * 255
         uint_points = write_points.astype('uint8')
         im = Image.fromarray(uint_points, 'L')
-        im.save("heatmap.bmp")
+        im.save(filepath)
 
     def __str__(self):
         attrs = [self.size[0],
@@ -241,7 +249,8 @@ def build_heatmap(img_files,
             if is_movement(image_set, coord, color_thresh):
                 image_set[0].register(heatmap, coord)
 
-    heatmap.write(output_filepath)
+    heatmap.save(output_filepath)
+    heatmap.write("heatmap.bmp")
 
 
 ###############################################################################
