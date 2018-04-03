@@ -243,8 +243,7 @@ def is_movement(images, coord,
     '''
     color_set = extract_color_set(images, coord)
 
-    ptp = np.ptp(color_set)
-    spread = np.linalg.norm(ptp)
+    spread = np.ptp(color_set)
     return spread > color_thresh
 
 
