@@ -160,7 +160,7 @@ def build_heatmap(image_filepaths,
         #       heatmap.add_chunk(pixel_chunk)
         for coord in all_coordinates:
 
-            if is_movement(images, coord, color_thresh):
+            if is_movement(image_set, coord, color_thresh):
                 heatmap.add(coord)
 
     heatmap.write(output_filepath)
