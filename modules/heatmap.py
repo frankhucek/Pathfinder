@@ -50,6 +50,7 @@ class ImageData(object):
     def time_taken(self):
         raise NotImplementedError("Implement in subclass")
 
+    @staticmethod
     def register(self, heatmap, coord):
         raise NotImplementedError("Implement in subclass")
 
@@ -59,6 +60,9 @@ class ImageData(object):
 
     def at(self, coord):
         raise NotImplementedError("Implement in subclass")
+
+    def __getitem__(self, key):
+        return self.at(key)
 
 
 class WholeImageData(ImageData):
@@ -192,7 +196,7 @@ class PixelChunk(object):
 # Heatmap Tools                                                               #
 ###############################################################################
 
-def build_heatmap(image_filepaths,
+def build_heatmap(img_files,
                   output_filepath,
                   manifest,
                   period,
@@ -201,7 +205,7 @@ def build_heatmap(image_filepaths,
 
     dim = manifest.dimensions()
 
-    images = image_obj_sequence(image_filepaths, period)
+    images = image_obj_sequence(manifest, img_files, period)
 
     image_sets = windows(images, window_size)
 
@@ -211,7 +215,7 @@ def build_heatmap(image_filepaths,
 
         print("image_set: {}".format(idx))
 
-        all_coordinates = coordinates(dim)
+        all_coordinates = WholeImageData.coordinates(dim)
         #pixel_chunks = pixel_chunks(coordinates)
         #for pixel_chunk in pixel_chunks
         #   if is_movement(images, pixel_chunk, color_thresh):
@@ -219,7 +223,8 @@ def build_heatmap(image_filepaths,
         for coord in all_coordinates:
 
             if is_movement(image_set, coord, color_thresh):
-                heatmap.add(coord)
+                # heatmap.add(coord)
+                image_set[0].register(heatmap, coord)
 
     heatmap.write(output_filepath)
 
@@ -234,21 +239,21 @@ def time_taken(img):
     return dt_obj
 
 
-def image_obj_sequence(image_filepaths, period):
-    images = [Image.open(fp) for fp in image_filepaths]
+def image_obj_sequence(manifest, img_files, period):
+    images = [WholeImageData.create(manifest, fp)
+              for fp in img_files]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
-    images = [im.load() for im in images]
     return images
 
 
 def trim_by_date(images, period):
     return [x for x in images
-            if period.contains(time_taken(x))]
+            if period.contains(x.time_taken())]
 
 
 def sort_by_date(images):
-    return sorted(images, key=time_taken)
+    return sorted(images, key=lambda x: x.time_taken())
 
 
 def windows(images, window_size):
@@ -290,15 +295,8 @@ def variance_difference(variance_one, variance_two):
 
 def is_movement(images, coord,
                 color_thresh=DEFAULT_COLOR_THRESH):
-    '''determine if there is movement at a coordinate
+    '''determine if there is movement at a coordinate'''
 
-    computes the average color among the color set. Then,
-    checks if any individual color in the set exceeds a
-    certain RGB magnitude difference from the average.
-    If so, it returns true, indicating there is a
-    movement at this coordinate. Should run in time
-    linear to the window size.
-    '''
     color_set = extract_color_set(images, coord)
 
     spread = np.ptp(color_set)
