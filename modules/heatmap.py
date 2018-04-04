@@ -23,19 +23,6 @@ import cli
 
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
-DEFAULT_COLOR_VARIANCE_THRESH = 25
-
-#Chosen arbitrarly, can test different chunk sizes and determine which is best
-DEFAULT_CHUNK_WIDTH = 36
-DEFAULT_CHUNK_HEIGHT = 36
-
-#Values for analyzing RGB values
-RED_INDEX = 0
-GREEN_INDEX = 0
-BLUE_INDEX = 0
-LUMINOSITY_RED_VALUE = .299
-LUMINOSITY_GREEN_VALUE = .587
-LUMINOSITY_BLUE_VALUE =  .114
 
 DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
 DATETIME_EXIF = 36867
@@ -113,78 +100,6 @@ class Heatmap(object):
         for coordinate in chunk.points:
             add(cordinate)
 
-class PixelChunk(object):
-
-    def __init__(self, points, width, height):
-        super(PixelChunk, self).__init__()
-        self.points = points
-        self.width = width
-        self.height = height
-
-    #Why use this algorithm over a normal average
-    #https://bit.ly/2E8XGPn
-    def rgb_luminosity_average(self, image):
-        average_red, average_green, average_blue = self.average_rgb_values(image)
-        red_value = average_red * LUMINOSITY_RED_VALUE
-        green_value = average_green * LUMINOSITY_GREEN_VALUE
-        blue_value = average_blue * LUMINOSITY_BLUE_VALUE
-        return red_value + green_value + blue_value
-
-    def average_rgb_values(self, image):
-        average_red = 0
-        average_green = 0
-        average_blue = 0
-        for point in self.points:
-            rgb = image.getpixel(point)
-            average_red = average_red + rgb[RED_INDEX]
-            average_green = average_green + rgb[GREEN_INDEX]
-            average_blue = average_blue + rgb[BLUE_INDEX]
-        average_red = average_red / len(self.points)
-        average_green = average_green / len(self.points)
-        average_blue = average_blue / len(self.points)
-        return average_red, average_green, average_blue
-
-    #why using a classic rgb average instead of luminosity
-    #https://bit.ly/2E8XGPn (same link as rbg lumonisty)
-    def rgb_variance(self, image):
-        #+ (1/3)⋅(VarRed + VarGreen + VarBlue)
-        var_red, var_green, var_blue = self.rgb_variance_values(image)
-        variance = (1.0/3.0) * (var_red + var_green + var_blue)
-        return variance + self.rgb_variance_rough_covariance_term()
-
-    def rgb_variance_values(self, image):
-        average_red, average_green, average_blue = self.average_rgb_values()
-        var_red = 0
-        var_green = 0
-        var_blue =  0
-        for point in self.points:
-            rgb = image.getpixel(point)
-            var_red = (average_red - rgb[RED_INDEX]) ** 2
-            var_green = (average_green - rgb[GREEN_INDEX]) ** 2
-            var_blue = (average_blue - rgb[BLUE_INDEX]) ** 2
-        var_red = var_red / len(self.points)
-        var_green = var_green / len(self.points)
-        var_blue = var_blue / len(self.points)
-        return var_red, var_green, var_blue
-
-    def rgb_variance_rough_covariance_term(self):
-        average_red, average_green, average_blue = self.average_rgb_values()
-        value_one = (2.0/9.0) * ((average_red**2) + (average_green**2) +
-                        (average_blue**2))
-        value_two = ((average_red*average_green) + (average_red*average_blue) +
-                    (average_blue*average_green)) * (2.0/9.0)
-        return value_one - value_two
-
-    def is_different(self, image, other_image):
-        average_rgb_different = rgb_luminosity_difference(
-                                self.rgb_luminosity_average(image),
-                                self.rgb_luminosity_average(other_image))
-        rgb_variance_different = rgb_luminosity_difference(
-                                self.rgb_luminosity_variance(image),
-                                self.rgb_luminosity_variance(other_image),
-                                DEFAULT_COLOR_VARIANCE_THRESH)
-        return average_rgb_different or rgb_variance_different
-
 
 ###############################################################################
 # Heatmap Tools                                                               #
@@ -209,8 +124,7 @@ def build_heatmap(image_filepaths,
 
         print("image_set: {}".format(idx))
 
-        all_coordinates = coordinates(dim)
-        for coord in all_coordinates:
+        for coord in coordinates(dim):
 
             if is_movement(image_set, coord, color_thresh):
                 heatmap.add(coord)
@@ -254,15 +168,6 @@ def windows(images, window_size):
     return chunks
 
 
-def pixel_chunks(all_coordinates, chunk_width=DEFAULT_CHUNK_WIDTH,
-            chunk_height=DEFAULT_CHUNK_HEIGHT):
-    pixel_chunks = []
-    for coord in all_coordinates:
-        pixel_chunk = PixelChunk(coord, chunk_width, chunk_height)
-        pixel_chunks.append(pixel_chunk)
-    return pixel_chunks
-
-
 def coordinates(dim):
     xs, ys = range(dim[0]), range(dim[1])
     return set(itertools.product(xs, ys))
@@ -276,13 +181,6 @@ def are_different(color1, color2,
                   color_thresh=DEFAULT_COLOR_THRESH):
     difference = np.array(color2) - np.array(color1)
     return np.linalg.norm(difference) > color_thresh
-
-
-def rgb_luminosity_difference(variance_one, variance_two,
-                    color_thresh=DEFAULT_COLOR_THRESH):
-    difference = variance_two - variance_two
-    abs_difference = abs(difference)
-    return difference > color_thresh
 
 
 def is_movement(images, coord,
