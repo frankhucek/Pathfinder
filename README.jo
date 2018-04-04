@@ -31,6 +31,12 @@ Researching PIL/pillow python library
 Researchign whether or not graphQL is actually going to be the good choice
 designing website via sketch
 
+4/6
+Refactor out chunk into (chunk.py) file from (heatmap.py) after discussion with group to chunk on picture
+Chunk.py: chunking each individual image allowing for immediate analysis, rgb averaging, variance
+Refactor heatmap.py unnecessary info
+
+
 TODO:
 CSS/Web Design
 Finish GraphQL connections
