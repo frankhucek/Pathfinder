@@ -1,0 +1,24 @@
+{
+    "JobID": 2345,
+    "geometry": {
+        "height": 3036,
+        "width": 4048,
+        "fov": [4.0, 3.0, 3.0],
+        "upperleft": {
+            "position": [1086, 2214],
+            "distance": 84
+        },
+        "upperright": {
+            "position": [2710, 2224],
+            "distance": 81.8
+        },
+        "lowerleft": {
+            "position": [661, 2495],
+            "distance": 62.5
+        },
+        "lowerright": {
+            "position": [2998, 2514],
+            "distance": 59.5
+        }
+    }
+}
