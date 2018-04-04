@@ -406,27 +406,39 @@ class MakeTimePeriodAction(argparse.Action):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("op",
-                        choices=["build_heatmap"])
-    parser.add_argument("output",
-                        help="name of output file")
-    parser.add_argument("manifest",
-                        help="manifest filepath",
-                        type=cli.is_manifest_filepath)
-    parser.add_argument("period",
-                        help="time period to trim images",
-                        nargs=2,
-                        type=parse_time,
-                        action=MakeTimePeriodAction)
-    parser.add_argument("window_size",
-                        help="size of sliding window",
-                        type=int)
-    parser.add_argument("color_thresh",
-                        help="RGB magnitude of color difference",
-                        type=int)
-    parser.add_argument("images",
-                        nargs="+",
-                        help="Image files")
+    subparsers = parser.add_subparsers(dest="op")
+    build_parser = subparsers.add_parser("build_heatmap",
+                                         help="heatmap building")
+    build_parser.add_argument("output",
+                              help="name of output file")
+    build_parser.add_argument("manifest",
+                              help="manifest filepath",
+                              type=cli.is_manifest_filepath)
+    build_parser.add_argument("period",
+                              help="time period to trim images",
+                              nargs=2,
+                              type=parse_time,
+                              action=MakeTimePeriodAction)
+    build_parser.add_argument("window_size",
+                              help="size of sliding window",
+                              type=int)
+    build_parser.add_argument("color_thresh",
+                              help="RGB magnitude of color difference",
+                              type=int)
+    build_parser.add_argument("images",
+                              nargs="+",
+                              help="Image files")
+
+    project_parser = subparsers.add_parser("project_heatmap",
+                                           help="project heatmap")
+    project_parser.add_argument("heatmap_filename",
+                                help="filename of heatmap")
+    project_parser.add_argument("project_filename",
+                                help="filename to project")
+    project_parser.add_argument("desired_width",
+                                type=int,
+                                help="intended projection pixed width")
+
     return parser.parse_args()
 
 
@@ -438,15 +450,17 @@ def main():
 
     args = get_args()
 
-    manifest = Manifest.from_filepath(args.manifest)
-
     if args.op == "build_heatmap":
         build_heatmap(args.images,
                       args.output,
-                      manifest,
+                      Manifest.from_filepath(args.manifest),
                       args.period,
                       args.window_size,
                       args.color_thresh)
+    elif args.op == "project_heatmap":
+        heatmap = Heatmap.load(args.heatmap_filename)
+        heatmap.project(args.project_filename,
+                        args.desired_width)
 
 
 if __name__ == '__main__':
