@@ -6,7 +6,10 @@
 
 import argparse
 import itertools
+import os
 import json
+import pickle
+import math
 
 from datetime import datetime
 
@@ -14,6 +17,8 @@ import numpy as np
 from PIL import Image
 
 from manifest import Manifest
+from mapping import Geometry
+import mapping
 import cli
 
 
@@ -32,6 +37,82 @@ DATETIME_EXIF = 36867
 # Classes                                                                     #
 ###############################################################################
 
+class ImageData(object):
+    """obj that provides data about an image"""
+
+    def __init__(self, manifest):
+        super().__init__()
+        self.manifest = manifest
+
+    @staticmethod
+    def sub_type(filepaths):
+
+        extensions = [os.path.splitext(fp)[1] for fp in filepaths]
+
+        if any(x != extensions[0] for x in extensions):
+            raise ValueError("Mismatched file types!")
+
+        if extensions[0] == ".jpg":
+            return WholeImageData
+        else:
+            return ChunkImageData
+
+    @staticmethod
+    def create(manifest, filepath):
+        sub_type = ImageData.sub_type([filepath])
+        return sub_type.create(manifest, filepath)
+
+    def time_taken(self):
+        raise NotImplementedError("Implement in subclass")
+
+    @staticmethod
+    def register(self, heatmap, coord):
+        raise NotImplementedError("Implement in subclass")
+
+    @staticmethod
+    def coordinates(self, dim):
+        raise NotImplementedError("Implement in subclass")
+
+    def at(self, coord):
+        raise NotImplementedError("Implement in subclass")
+
+    def __getitem__(self, key):
+        return self.at(key)
+
+
+class WholeImageData(ImageData):
+
+    def __init__(self, manifest, img):
+        super().__init__(manifest)
+        self._img = img
+        self._pa = img.load()
+
+    @staticmethod
+    def create(manifest, filepath):
+        img = Image.open(filepath)
+        return WholeImageData(manifest, img)
+
+    def time_taken(self):
+        dt_str = self._img._getexif()[DATETIME_EXIF]
+        dt_obj = datetime.strptime(dt_str, DATETIME_FMT)
+        return dt_obj
+
+    def register(self, heatmap, coord):
+        heatmap.add(coord)
+
+    @staticmethod
+    def coordinates(dim):
+        xs, ys = range(dim[0]), range(dim[1])
+        return set(itertools.product(xs, ys))
+
+    def at(self, coord):
+        return self._pa[coord]
+
+
+class ChunkImageData(ImageData):
+    pass
+
+
 class TimePeriod(object):
 
     def __init__(self, start, end):
@@ -41,6 +122,25 @@ class TimePeriod(object):
 
     def contains(self, dt):
         return self.start <= dt and dt <= self.end
+
+
+class CoordRange(object):
+
+    def __init__(self, image_corners):
+        self._min_x = min(x for x, y in image_corners)
+        self._max_x = max(x for x, y in image_corners)
+        self._min_y = min(x for x, y in image_corners)
+        self._max_y = max(x for x, y in image_corners)
+
+    def contains(self, coord):
+        x, y = coord
+        return self._min_x < x and x < self._max_x and \
+            self._min_y < y and y < self._max_y
+
+    def coordinates(self):
+        for x in range(self._min_x, self._max_x + 1):
+            for y in range(self._min_y, self._max_y + 1):
+                yield (x, y)
 
 
 class Heatmap(object):
@@ -54,7 +154,9 @@ class Heatmap(object):
     def __init__(self, manifest, points):
         super(Heatmap, self).__init__()
         self.manifest = manifest
-        self.size = np.flip(manifest.dimensions(), 0)
+        self.size = manifest.dimensions()
+        self.geom = Geometry.from_manifest(manifest)
+        self.field = CoordRange(manifest.image_corners())
         self.count = 0
         self._points = points
 
@@ -75,16 +177,58 @@ class Heatmap(object):
     def points(self):
         return self._points / np.max(self._points)
 
-    def project(self):
-        pass
+    def project_point(self, coord, scale):
+        raw = mapping.image_to_blueprint(coord,
+                                         self.geom,
+                                         self.size)
+
+        projected = tuple(int(round(x * scale)) for x in raw)
+        return projected
+
+    def project(self, filepath, desired_width):
+
+        image_corners = self.manifest.image_corners()
+        lower_right = image_corners[3]
+        b_x, b_y = self.project_point(lower_right, 1)
+
+        scale = desired_width / b_x
+        new_size = (int(b_y * scale), int(b_x * scale))
+        blueprint_values = np.zeros(new_size)
+
+        def valid_coord(coord, shape):
+            return all(c >= 0 and c < s
+                       for c, s in zip(coord, shape))
+
+        for x, y in self.field.coordinates():
+
+            val = self.at((x, y))
+
+            p_x, p_y = self.project_point((x, y), scale)
+
+            if valid_coord((p_y, p_x), blueprint_values.shape):
+                blueprint_values[p_y, p_x] += val
+
+        normalized = blueprint_values / np.max(blueprint_values)
+        self.write_bw_binary(normalized, filepath)
+
+    @staticmethod
+    def load(filepath):
+        with open(filepath, 'rb') as f:
+            return pickle.load(f)
+
+    def save(self, filepath):
+        with open(filepath, 'wb') as f:
+            pickle.dump(self, f)
 
     def write(self, filepath):
-        with open(filepath, 'w') as f:
-            f.write(str(self))
-        write_points = self.points() * 255
+        self.write_bw_binary(self.points(), filepath)
+
+    @staticmethod
+    def write_bw_binary(arr, filepath):
+        write_points = arr * 255
         uint_points = write_points.astype('uint8')
         im = Image.fromarray(uint_points, 'L')
-        im.save("heatmap.bmp")
+        im.save(filepath)
 
     def __str__(self):
         attrs = [self.size[0],
@@ -96,25 +240,22 @@ class Heatmap(object):
         string = "{}\n{}".format(attr_str, points)
         return string
 
-    def add_chunk(self, chunk):
-        for coordinate in chunk.points:
-            add(cordinate)
-
 
 ###############################################################################
 # Heatmap Tools                                                               #
 ###############################################################################
 
-def build_heatmap(image_filepaths,
+def build_heatmap(img_files,
                   output_filepath,
                   manifest,
                   period,
                   window_size=DEFAULT_WINDOW_SIZE,
                   color_thresh=DEFAULT_COLOR_THRESH):
 
+    data_type = ImageData.sub_type(img_files)
     dim = manifest.dimensions()
 
-    images = image_obj_sequence(image_filepaths, period)
+    images = image_obj_sequence(manifest, img_files, period)
 
     image_sets = windows(images, window_size)
 
@@ -124,12 +265,14 @@ def build_heatmap(image_filepaths,
 
         print("image_set: {}".format(idx))
 
-        for coord in coordinates(dim):
+        all_coordinates = data_type.coordinates(dim)
+        for coord in all_coordinates:
 
             if is_movement(image_set, coord, color_thresh):
-                heatmap.add(coord)
+                image_set[0].register(heatmap, coord)
 
-    heatmap.write(output_filepath)
+    heatmap.save(output_filepath)
+    heatmap.write("heatmap.bmp")
 
 
 ###############################################################################
@@ -142,21 +285,21 @@ def time_taken(img):
     return dt_obj
 
 
-def image_obj_sequence(image_filepaths, period):
-    images = [Image.open(fp) for fp in image_filepaths]
+def image_obj_sequence(manifest, img_files, period):
+    images = [ImageData.create(manifest, fp)
+              for fp in img_files]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
-    images = [im.load() for im in images]
     return images
 
 
 def trim_by_date(images, period):
     return [x for x in images
-            if period.contains(time_taken(x))]
+            if period.contains(x.time_taken())]
 
 
 def sort_by_date(images):
-    return sorted(images, key=time_taken)
+    return sorted(images, key=lambda x: x.time_taken())
 
 
 def windows(images, window_size):
@@ -185,27 +328,12 @@ def are_different(color1, color2,
 
 def is_movement(images, coord,
                 color_thresh=DEFAULT_COLOR_THRESH):
-    '''determine if there is movement at a coordinate
+    '''determine if there is movement at a coordinate'''
 
-    computes the average color among the color set. Then,
-    checks if any individual color in the set exceeds a
-    certain RGB magnitude difference from the average.
-    If so, it returns true, indicating there is a
-    movement at this coordinate. Should run in time
-    linear to the window size.
-    '''
     color_set = extract_color_set(images, coord)
 
     spread = np.ptp(color_set)
     return spread > color_thresh
-
-def is_movement_in_chunk(images, pixel_chunk,
-                color_thresh=DEFAULT_COLOR_THRESH):
-    color_set = extract_color_set(images, pixel_chunk)
-
-    avg = np.average(color_set, 0)
-    return any(are_different(avg, c, color_thresh)
-               for c in color_set)
 
 def extract_color_set_chunks(images, coord):
     return [img.getpixel(coord) for img in images]
@@ -230,27 +358,39 @@ class MakeTimePeriodAction(argparse.Action):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("op",
-                        choices=["build_heatmap"])
-    parser.add_argument("output",
-                        help="name of output file")
-    parser.add_argument("manifest",
-                        help="manifest filepath",
-                        type=cli.is_manifest_filepath)
-    parser.add_argument("period",
-                        help="time period to trim images",
-                        nargs=2,
-                        type=parse_time,
-                        action=MakeTimePeriodAction)
-    parser.add_argument("window_size",
-                        help="size of sliding window",
-                        type=int)
-    parser.add_argument("color_thresh",
-                        help="RGB magnitude of color difference",
-                        type=int)
-    parser.add_argument("images",
-                        nargs="+",
-                        help="Image files")
+    subparsers = parser.add_subparsers(dest="op")
+    build_parser = subparsers.add_parser("build_heatmap",
+                                         help="heatmap building")
+    build_parser.add_argument("output",
+                              help="name of output file")
+    build_parser.add_argument("manifest",
+                              help="manifest filepath",
+                              type=cli.is_manifest_filepath)
+    build_parser.add_argument("period",
+                              help="time period to trim images",
+                              nargs=2,
+                              type=parse_time,
+                              action=MakeTimePeriodAction)
+    build_parser.add_argument("window_size",
+                              help="size of sliding window",
+                              type=int)
+    build_parser.add_argument("color_thresh",
+                              help="RGB magnitude of color difference",
+                              type=int)
+    build_parser.add_argument("images",
+                              nargs="+",
+                              help="Image files")
+
+    project_parser = subparsers.add_parser("project_heatmap",
+                                           help="project heatmap")
+    project_parser.add_argument("heatmap_filename",
+                                help="filename of heatmap")
+    project_parser.add_argument("project_filename",
+                                help="filename to project")
+    project_parser.add_argument("desired_width",
+                                type=int,
+                                help="intended projection pixed width")
+
     return parser.parse_args()
 
 
@@ -262,15 +402,17 @@ def main():
 
     args = get_args()
 
-    manifest = Manifest.from_filepath(args.manifest)
-
     if args.op == "build_heatmap":
         build_heatmap(args.images,
                       args.output,
-                      manifest,
+                      Manifest.from_filepath(args.manifest),
                       args.period,
                       args.window_size,
                       args.color_thresh)
+    elif args.op == "project_heatmap":
+        heatmap = Heatmap.load(args.heatmap_filename)
+        heatmap.project(args.project_filename,
+                        args.desired_width)
 
 
 if __name__ == '__main__':
