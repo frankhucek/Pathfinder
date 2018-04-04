@@ -9,6 +9,7 @@ import itertools
 import os
 import json
 import pickle
+import math
 
 from datetime import datetime
 
@@ -16,6 +17,8 @@ import numpy as np
 from PIL import Image
 
 from manifest import Manifest
+from mapping import Geometry
+import mapping
 import cli
 
 
@@ -123,6 +126,25 @@ class TimePeriod(object):
 
     def contains(self, dt):
         return self.start <= dt and dt <= self.end
+
+
+class CoordRange(object):
+
+    def __init__(self, image_corners):
+        self._min_x = min(x for x, y in image_corners)
+        self._max_x = max(x for x, y in image_corners)
+        self._min_y = min(x for x, y in image_corners)
+        self._max_y = max(x for x, y in image_corners)
+
+    def contains(self, coord):
+        x, y = coord
+        return self._min_x < x and x < self._max_x and \
+            self._min_y < y and y < self._max_y
+
+    def coordinates(self):
+        for x in range(self._min_x, self._max_x + 1):
+            for y in range(self._min_y, self._max_y + 1):
+                yield (x, y)
 
 
 class Heatmap(object):
