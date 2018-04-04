@@ -158,7 +158,9 @@ class Heatmap(object):
     def __init__(self, manifest, points):
         super(Heatmap, self).__init__()
         self.manifest = manifest
-        self.size = np.flip(manifest.dimensions(), 0)
+        self.size = manifest.dimensions()
+        self.geom = Geometry.from_manifest(manifest)
+        self.field = CoordRange(manifest.image_corners())
         self.count = 0
         self._points = points
 
@@ -179,8 +181,39 @@ class Heatmap(object):
     def points(self):
         return self._points / np.max(self._points)
 
-    def project(self):
-        pass
+    def project_point(self, coord, scale):
+        raw = mapping.image_to_blueprint(coord,
+                                         self.geom,
+                                         self.size)
+
+        projected = tuple(int(round(x * scale)) for x in raw)
+        return projected
+
+    def project(self, filepath, desired_width):
+
+        image_corners = self.manifest.image_corners()
+        lower_right = image_corners[3]
+        b_x, b_y = self.project_point(lower_right, 1)
+
+        scale = desired_width / b_x
+        new_size = (int(b_y * scale), int(b_x * scale))
+        blueprint_values = np.zeros(new_size)
+
+        def valid_coord(coord, shape):
+            return all(c >= 0 and c < s
+                       for c, s in zip(coord, shape))
+
+        for x, y in self.field.coordinates():
+
+            val = self.at((x, y))
+
+            p_x, p_y = self.project_point((x, y), scale)
+
+            if valid_coord((p_y, p_x), blueprint_values.shape):
+                blueprint_values[p_y, p_x] += val
+
+        normalized = blueprint_values / np.max(blueprint_values)
+        self.write_bw_binary(normalized, filepath)
 
     @staticmethod
     def load(filepath):
@@ -192,7 +225,11 @@ class Heatmap(object):
             pickle.dump(self, f)
 
     def write(self, filepath):
-        write_points = self.points() * 255
+        self.write_bw_binary(self.points(), filepath)
+
+    @staticmethod
+    def write_bw_binary(arr, filepath):
+        write_points = arr * 255
         uint_points = write_points.astype('uint8')
         im = Image.fromarray(uint_points, 'L')
         im.save(filepath)
