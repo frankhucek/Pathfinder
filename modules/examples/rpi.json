@@ -1,5 +1,9 @@
 {
     "JobID": 0,
+    "chunk": {
+        "chunk_height": 36,
+        "chunk_width": 36
+    },
     "geometry": {
         "height": 1944,
         "width": 2592,
