@@ -19,12 +19,17 @@ Brian Clark (bpc30)
  * This method takes a Heatmap object, projects the portion of it that is in bounds into blueprint space, then prints a black and white blueprint image to the filesystem
  * Implement CoordRange class to help with this
 * Add subparsers to heatmap CLI to allow for both the build_heatmap and project_heatmap commands
-
+* Implement chunking from the heatmap side
+ * Add PixelChunk.of method to chunk.py module
+ * Add chunk dimensions to manifest.py
+ * Implement ChunkImageData class in heatmap.py
 
 ## Files 4/6
 
 modules/heatmap.py
 modules/mapping.py
+modules/manifest.py
+modules/chunk.py
 modules/test/test_heatmap.py
 modules/test/test_mapping.py
 modules/test/test_paper_mapping.py
@@ -34,8 +39,9 @@ modules/test/test_paper_mapping.py
 Saturday: 1:00-2:15                 1:15
 Monday: 5:30-6:45, 8:00-8:45        2:00
 Tuesday: 3:00-4:15, 10:00-1:00      4:15
+Thursday: 12:15-12:30, 2:30-4:00    1:45
 ----------------------------------------
-Total                               7:15
+Total                               9:15
 
 
 
