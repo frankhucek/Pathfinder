@@ -25,6 +25,11 @@ WIDTH = "width"
 
 FOV = "fov"
 
+CHUNK = "chunk"
+
+CHUNK_HEIGHT = "chunk_height"
+CHUNK_WIDTH = "chunk_width"
+
 CORNERS = [
     "upperleft",
     "upperright",
@@ -98,11 +103,23 @@ class Manifest(object):
     def _width(self):
         return self._geometry()[WIDTH]
 
+    def _chunk(self):
+        return self.json[CHUNK]
+
+    def _chunk_height(self):
+        return self._chunk()[CHUNK_HEIGHT]
+
+    def _chunk_width(self):
+        return self._chunk()[CHUNK_WIDTH]
+
     def dimensions(self):
         return self._width(), self._height()
 
     def fov(self):
         return self._geometry()[FOV]
+
+    def chunk_dimensions(self):
+        return self._chunk_width(), self._chunk_height()
 
 ###############################################################################
 # Helper functions                                                            #
