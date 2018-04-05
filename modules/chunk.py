@@ -48,7 +48,24 @@ class PixelChunk(object):
         file_date = exif_date[DATETIME_EXIF]
         return PixelChunk(image.load(), output_json, width, height, file_date)
 
-    def __init__(self, image, output_json, width, height, file_date):
+    @staticmethod
+    def of(filepath):
+        with open(filepath) as f:
+            chunk_json = json.load(f)
+        file_date = chunk_json[FILE_DATETIME]
+        width = chunk_json[WIDTH]
+        height = chunk_json[HEIGHT]
+        image = filepath
+        output_json = filepath
+        chunks = chunk_json[CHUNK]
+        return PixelChunk(image, output_json,
+                          width, height,
+                          file_date,
+                          chunks)
+
+    def __init__(self, image, output_json,
+                 width, height, file_date,
+                 chunks=None):
         super(PixelChunk, self).__init__()
         self.image = image
         self.output_json = output_json
@@ -58,7 +75,7 @@ class PixelChunk(object):
         self.json_data[FILE_DATETIME] = file_date
         self.json_data[WIDTH] = width
         self.json_data[HEIGHT] = height
-        self.json_data[CHUNK] = []
+        self.json_data[CHUNK] = chunks if chunks else []
 
     def add_chunk(self, coordinate):
         total_coordinates = total_chunk_coordinates(coordinate)
@@ -68,6 +85,16 @@ class PixelChunk(object):
             RGB_AVERAGE: color_average,
             RGB_VARIANCE: color_variance
         })
+
+    def file_datetime(self):
+        return self.json_data[FILE_DATETIME]
+
+    def rgb_chunks(self):
+        chunks = {}
+        for chunk in self.json_data[CHUNK]:
+            coord = tuple(chunk[COORDINATES])
+            chunks[coord] = chunk[RGB_AVERAGE]
+        return chunks
 
     def write(self):
         with open(self.output_json, 'w') as outfile:
