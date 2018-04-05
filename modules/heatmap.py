@@ -16,6 +16,7 @@ from datetime import datetime
 import numpy as np
 from PIL import Image
 
+from chunk import PixelChunk
 from manifest import Manifest
 from mapping import Geometry
 import mapping
@@ -70,7 +71,7 @@ class ImageData(object):
         raise NotImplementedError("Implement in subclass")
 
     @staticmethod
-    def coordinates(self, dim):
+    def coordinates(manifest, dim):
         raise NotImplementedError("Implement in subclass")
 
     def at(self, coord):
@@ -101,7 +102,7 @@ class WholeImageData(ImageData):
         heatmap.add(coord)
 
     @staticmethod
-    def coordinates(dim):
+    def coordinates(manifest, dim):
         xs, ys = range(dim[0]), range(dim[1])
         return set(itertools.product(xs, ys))
 
@@ -110,7 +111,42 @@ class WholeImageData(ImageData):
 
 
 class ChunkImageData(ImageData):
-    pass
+
+    @staticmethod
+    def create(manifest, filepath):
+        chunk_obj = PixelChunk.of(filepath)
+        return ChunkImageData(manifest, chunk_obj)
+
+    def __init__(self, manifest, chunk_obj):
+        super().__init__(manifest)
+        self._chunk_obj = chunk_obj
+        self._chunks = chunk_obj.rgb_chunks()
+
+    def _chunk_dim(self):
+        return self.manifest.chunk_dimensions()
+
+    def time_taken(self):
+        dt_str = self._chunk_obj.file_datetime()
+        dt = datetime.strptime(dt_str, DATETIME_FMT)
+        return dt
+
+    def register(self, heatmap, coord):
+        chunk_width, chunk_height = self._chunk_dim()
+        x, y = coord
+        for deltax in range(chunk_width):
+            for deltay in range(chunk_height):
+                pos = x + deltax, y + deltay
+                heatmap.add(pos)
+
+    @staticmethod
+    def coordinates(manifest, dim):
+        chunk_width, chunk_height = manifest.chunk_dimensions()
+        xs = range(0, dim[0], chunk_width)
+        ys = range(0, dim[1], chunk_height)
+        return set(itertools.product(xs, ys))
+
+    def at(self, coord):
+        return self._chunks[coord]
 
 
 class TimePeriod(object):
@@ -265,7 +301,7 @@ def build_heatmap(img_files,
 
         print("image_set: {}".format(idx))
 
-        all_coordinates = data_type.coordinates(dim)
+        all_coordinates = data_type.coordinates(manifest, dim)
         for coord in all_coordinates:
 
             if is_movement(image_set, coord, color_thresh):
@@ -335,8 +371,6 @@ def is_movement(images, coord,
     spread = np.ptp(color_set)
     return spread > color_thresh
 
-def extract_color_set_chunks(images, coord):
-    return [img.getpixel(coord) for img in images]
 
 ###############################################################################
 # Command line                                                                #
