@@ -7,7 +7,8 @@ class JobPage extends Component {
         return (
             <div className="job-info-page">
                 <NavBar/>
-                <JobInfoCard />
+                <JobInfoCard cardType="images" header="your images" />
+                <JobInfoCard cardType="heatmap" header="analyzed heatmap" />
             </div>
         )
     }

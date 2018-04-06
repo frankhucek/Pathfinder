@@ -11,8 +11,8 @@ class Images extends Component {
 
         this.state = {
             images: null,
-            height: 324,
-            width: 432
+            height: props.height,
+            width: props.width
         }
     }
 
@@ -26,7 +26,7 @@ class Images extends Component {
       };
 
       return(
-          <div className="slider">
+          <div className="image-display">
             {/*Add images from GoPro or submitted images from .zip*/}
             <Slider {... sliderSettings}>
                 <div><Image

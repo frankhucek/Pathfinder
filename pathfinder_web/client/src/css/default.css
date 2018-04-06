@@ -2,6 +2,7 @@ body {
     background-color: #FFC177;
     font-family: 'Kameron', serif;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .main {
@@ -59,10 +60,6 @@ body {
     overflow: hidden;
 }
 
-.enter-button {
-
-}
-
 .job-info-page {
     margin: auto;
 }
@@ -71,10 +68,11 @@ body {
     background-color: #ECE2D0;
     width: 100%;
     height: 50px;
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
+    z-index: 100;
 }
 
 .navbar-job-id {
@@ -93,12 +91,13 @@ body {
 
 .job-info-card {
     background-color: #6ab5eb;
-    position: absolute;
+    position: relative;
     width: 78%;
     height: 400px;
     margin-top: 70px;
     margin-left: 11%;
     margin-right: 11%;
+    margin-bottom: 20px;
     right: 0;
     left: 0;
     border-radius: 6px;
@@ -106,7 +105,7 @@ body {
     box-shadow: 7px 10px 10px rgb(87, 86, 83);
 }
 
-.slider {
+.image-display {
     margin-left: 49%;
     margin-top: 30px;
     width: 432px;

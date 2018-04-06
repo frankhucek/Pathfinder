@@ -1,33 +1,25 @@
 import React, { Component } from 'react';
-import Whitespace from './Whitespace.js';
-import heatmap from '../data/heatmap.png';
-import blueprint from '../data/3.jpg'
+import Image from 'react-image-resizer';
+import job_image_0 from '../data/heatmap.png';
 
-class AnalyzedMap extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        mapType: this.props.mapType
+class AnalyzedMap extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            height: props.height,
+            width: props.width
+        }
     }
-  }
 
   render() {
-      let content = null;
-      if (this.props.mapType == "heatmap") {
-          content = <img src={heatmap} />;
-          content += <Whitespace />;
-      }
-      else {
-          content = <Whitespace />;
-          content += <img src={blueprint} />;
-      }
-
       return (
-          <div>
-              <div className={this.props.mapType}>
-                { content }
-              </div>
-
+          <div className="image-display">
+              <div><Image
+                    src={job_image_0}
+                    height={ this.state.height }
+                    width={ this.state.width }
+              /></div>
           </div>
       )
   }
