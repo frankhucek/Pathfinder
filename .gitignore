@@ -1,6 +1,6 @@
 # virtualenv
 */venv/
-
+*/env/
 
 # Python cache
 __pycache__/
@@ -16,3 +16,6 @@ rpi_camera_modules/pathfinder_gpg_passphrase.txt
 rpi_camera_modules/~/
 rpi_camera_modules/~
 rpi_camera_modules/~/**
+
+#misc
+.DS_STORE
