@@ -7,6 +7,7 @@ import picamera
 import os
 import pathlib
 import capture
+import client
 
 JOB_ID = 0 # Different for each RPI unit
 JOB_ROOT_DIR = "jobs"
@@ -29,5 +30,8 @@ def capture_series(resX, resY, num_photos, job_dir):
 def main():
     job_dir = initialize_job_directory(JOB_ROOT_DIR, JOB_ID)
     capture_series(resX, resY, 4, job_dir)
+
+    for f in os.listdir(job_dir):
+        client.send_photo(job_dir+"/" +f)
 
 main()

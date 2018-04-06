@@ -1,5 +1,19 @@
 # Weekly updates for Frank Hucek
 
+# Week of 3/25 - 4/06
+### Finished RPI Pathfinder camera system service
+    - Finished python main scripts for deployment, capturing, and sending of photos to remote server
+    - Pictures are first captured, and then the contents of the captured directory is sent using my send file protocol.
+    - Maybe we should send a photo right after taking it?
+      - will require thinking about consistent network connection, etc.
+### Set up RPI system for remote deployment
+    - Set up scripts for easy wifi configuration before being deployed in the field.
+    - Placed service scripts in proper locations for system.
+
+### Met up with team for Heatmap module brainstorming
+    - Spent much of the week discussing implemented changes by other group members for the Heatmap modules.
+    - Researched concepts like chunking.
+
 # Week of 3/24 - 3/30
 ### Set up RPI camera module for test photos
     - This involved mounting the RPI camera setup on my wall and aiming it at a control grid I made with duct tape.
