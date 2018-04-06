@@ -33,8 +33,13 @@ designing website via sketch
 
 4/6
 Refactor out chunk into (chunk.py) file from (heatmap.py) after discussion with group to chunk on picture
-Chunk.py: chunking each individual image allowing for immediate analysis, rgb averaging, variance
-Refactor heatmap.py unnecessary info
+Chunk.py: chunking each individual image allowing for:
+    immediate analysis (by iterating through chunked values)
+    rgb averaging, variance
+    output json file representing said image, allowing for easy readability later on
+Refactor out heatmap.py unnecessary methods
+Corrected Whitepage.js bug not being imported
+Small naming change from JobInfo -> JobPage
 
 
 TODO:

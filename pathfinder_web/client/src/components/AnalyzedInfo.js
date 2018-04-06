@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Whitespace from './Whitespace.js';
 import retailmap from '../data/heatmap.png';
 
 class AnalyzedInfo extends React.Component {
@@ -6,7 +7,7 @@ class AnalyzedInfo extends React.Component {
       super(props);
 
       this.state = {
-          traffic: 0
+          traffic: 0,
           retailmap: null
       };
   }

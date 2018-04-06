@@ -4,7 +4,7 @@ import Images from './Images.js';
 import AnalyzedMap from './AnalyzedMap.js';
 import AnalyzedInfo from './AnalyzedInfo.js';
 
-class JobInfo extends Component {
+class JobPage extends Component {
     render() {
         return (
             <div className="job-info-page">
@@ -20,4 +20,4 @@ class JobInfo extends Component {
     }
 }
 
-export default JobInfo;
+export default JobPage;

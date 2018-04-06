@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Whitespace from './Whitespace.js';
 import heatmap from '../data/heatmap.png';
 import blueprint from '../data/3.jpg'
 
