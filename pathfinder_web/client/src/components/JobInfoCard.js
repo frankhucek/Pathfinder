@@ -10,9 +10,7 @@ class JobInfoCard extends Component {
         return(
             <div className="job-info-card">
                 <Whitespace header="your images"/>
-                <div>
-                    <Images />
-                </div>
+                <Images />
             </div>
         )
     }

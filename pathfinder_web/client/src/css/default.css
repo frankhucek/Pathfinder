@@ -119,13 +119,13 @@ body {
 .whitespace {
   width: 40%;
   height: 100%;
-  background-color: #fbf6ec;
-  border-radius: 6px 0px 6px 0px;
+  background-color: #ECE2D0;
+  border-radius: 6px 0px 0px 6px;
 }
 
 .whitespace-header {
     margin: 0;
     text-align: center;
     color: #FF8D33;
-    padding-top: 10px;
+    padding-top: 15%;
 }
