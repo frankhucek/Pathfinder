@@ -1,6 +1,7 @@
 body {
     background-color: #FFC177;
     font-family: 'Kameron', serif;
+    overflow-x: hidden;
 }
 
 .main {
@@ -91,31 +92,34 @@ body {
 }
 
 .job-info-card {
-    background-color: #FF8D33;
+    background-color: #6ab5eb;
     position: absolute;
-    width: 96%;
+    width: 78%;
     height: 400px;
     margin-top: 70px;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 11%;
+    margin-right: 11%;
     right: 0;
     left: 0;
     border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 7px 10px 10px rgb(87, 86, 83);
 }
 
 .slider {
-}
-
-.image-slide {
-    height: auto;
-    width: auto;
+    margin-left: 49%;
+    margin-top: 30px;
+    width: 432px;
+    height: 100%;
+    float: left;
 }
 
 .whitespace {
   width: 40%;
   height: 100%;
   background-color: #ECE2D0;
-  border-radius: 6px 0px 0px 6px;
+  position: absolute;
+  float: left;
 }
 
 .whitespace-header {

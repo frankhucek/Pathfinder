@@ -10,7 +10,9 @@ class Images extends Component {
         super(props);
 
         this.state = {
-            images: null
+            images: null,
+            height: 324,
+            width: 432
         }
     }
 
@@ -21,16 +23,27 @@ class Images extends Component {
           speed: 500,
           slidesToShow: 1,
           slidesToScroll: 1,
-          className: 'image-slide'
       };
 
       return(
           <div className="slider">
             {/*Add images from GoPro or submitted images from .zip*/}
             <Slider {... sliderSettings}>
-                <div><img src={job_image_0}/></div>
-                <div><img src={job_image_1}/></div>
-                <div><img src={job_image_2}/></div>
+                <div><Image
+                  src={job_image_0}
+                  height={ this.state.height }
+                  width={ this.state.width }
+                /></div>
+                <div><Image
+                  src={job_image_1}
+                  height={ this.state.height }
+                  width={ this.state.width }
+                /></div>
+                <div><Image
+                  src={job_image_2}
+                  height={ this.state.height }
+                  width={ this.state.width }
+                /></div>
             </Slider>
           </div>
       );
