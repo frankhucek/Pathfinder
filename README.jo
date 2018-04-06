@@ -1,26 +1,18 @@
-For 2/23
-Installed React within the Express directory (client)
-Hooked up React and Express
-Started making React components
-
-3/2
-Editing CSS for the frontend as a whole
-Working on form of the Login page and the Job Info presentation for the images
-Attempting to connect React,Express, Node.js with GraphQL for allowing easy access to the database (TODO: finish setup)
-Installed react slider for slideshow of images
-Added a dummy data/job_1 folder for holding images prior to actual data collection for use in presentation/manual testing
-
-3/9
-Finishing schemas for GraphQL
-Continue GraphQL connections
-Work on the React components for the analyzed maps presented (heatmap, coordinates) using hardcoded dummy images
-Working on CSS
-
-3/16
-Spring Break
-
-3/23
-Fixed a React component bug
+4/6
+Refactor out chunk into (chunk.py) file from (heatmap.py) after discussion with group to chunk on picture
+Chunk.py: chunking each individual image allowing for:
+    immediate analysis (by iterating through chunked values)
+    rgb averaging, variance
+    output json file representing said image, allowing for easy readability later on
+Refactor out (heatmap.py) unnecessary methods
+Corrected (Whitepage.js) bug not being imported
+Small naming change from JobInfo -> JobPage (JobPage.py)
+Adjusted CSS for navbar to cover entire top (default.css)
+Installed classnames npm package for passing classnames as props for components
+Installed Image npm package for easy resize
+Working on MVP within (JobInfoCard.py) by making slider in (Images.py) present analyzed images
+Working on MVP for showing heatmap (JobInfoCard.py) and (AnalyzedMap.py)
+    Above 2 work but only hardcoded images and directory import
 
 3/30
 Worked on creating "pixel chunks" to prevent examining at each pixel individually (heatmap.py)
@@ -31,18 +23,46 @@ Researching PIL/pillow python library
 Researchign whether or not graphQL is actually going to be the good choice
 designing website via sketch
 
-4/6
-Refactor out chunk into (chunk.py) file from (heatmap.py) after discussion with group to chunk on picture
-Chunk.py: chunking each individual image allowing for:
-    immediate analysis (by iterating through chunked values)
-    rgb averaging, variance
-    output json file representing said image, allowing for easy readability later on
-Refactor out heatmap.py unnecessary methods
-Corrected Whitepage.js bug not being imported
-Small naming change from JobInfo -> JobPage
+3/23
+Fixed a React component bug
+
+3/16
+Spring Break
+
+3/9
+Finishing schemas for GraphQL
+Continue GraphQL connections
+Work on the React components for the analyzed maps presented (heatmap, coordinates) using hardcoded dummy images
+Working on CSS
+
+3/2
+Editing CSS for the frontend as a whole
+Working on form of the Login page and the Job Info presentation for the images
+Attempting to connect React,Express, Node.js with GraphQL for allowing easy access to the database (TODO: finish setup)
+Installed react slider for slideshow of images
+Added a dummy data/job_1 folder for holding images prior to actual data collection for use in presentation/manual testing
+
+2/23
+Installed React within the Express directory (client)
+Hooked up React and Express
+Started making React components
 
 
 TODO:
 CSS/Web Design
 Finish GraphQL connections
 Figure out connections with data/ folder where Job images may be held/ server setup
+React  MVP:
+    allow for flexible image/directory import (using express?)
+    Navbar 'SwitchJob button' changes props.loggedin to false and refresh to go back to login page
+    Login page providing job id should change props to login and go to logged in page
+Nice To do:
+    have whitespace have a classname for if its on the right or left of the jobinfocard
+Aesthetically should do:
+    Dynamically readjust via smaller screens
+        left/right whitespace changes to simple above headers
+        images slideshow carousel changes shape
+    page load slowly transitions to show cards instead of immediate display
+stretch goals:
+    Login page providing .zip file should run scripts for going through whole process and also present a waiting page
+    button for easy download
