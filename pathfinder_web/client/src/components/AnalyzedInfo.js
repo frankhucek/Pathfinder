@@ -18,7 +18,7 @@ class AnalyzedInfo extends React.Component {
       content += <Whitespace />;
 
       return(
-          <div class="analyzed-info">
+          <div className="analyzed-info">
               { content }
           </div>
       )

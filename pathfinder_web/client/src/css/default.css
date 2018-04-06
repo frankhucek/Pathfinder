@@ -1,6 +1,7 @@
 body {
     background-color: #FFC177;
     font-family: 'Kameron', serif;
+    overflow: hidden;
 }
 
 .main {
@@ -8,7 +9,6 @@ body {
 }
 
 /** generic classes **/
-
 .general-button {
     background-color: #69B4EA;
     border: none;
@@ -27,7 +27,7 @@ body {
 
 /** attributes for form **/
 /* kindly from https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/ */
-.centered {
+#centered {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -64,17 +64,17 @@ body {
 }
 
 .job-info-page {
-    width: auto;
+    margin: auto;
 }
 
 .navbar {
-    background-color: #FF8D33;
-    position: fixed;
-    width: 95%;
+    background-color: #ECE2D0;
+    width: 100%;
     height: 50px;
-    margin-left: 2%;
-    margin-right: 2%;
-    border-radius: 7px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
 }
 
 .navbar-job-id {
@@ -91,18 +91,41 @@ body {
     padding-top: 7px;
 }
 
-.job-info-data {
+.job-info-card {
     background-color: #FF8D33;
-    position: fixed;
-    width: 95%;
-    height: 100%;
+    position: absolute;
+    width: 96%;
+    height: 400px;
     margin-top: 70px;
     margin-left: 2%;
     margin-right: 2%;
-    border-radius: 7px 7px 0 0;
+    right: 0;
+    left: 0;
+    border-radius: 6px;
+}
+
+.slider {
+    float: right;
+    margin-right: 1%;
+}
+
+.image-slide {
+    height: auto;
+    width: auto;
+    max-width: 50px;
+    max-height: 50px;
 }
 
 .whitespace {
-  width: 50%;
-  background-color: white;
+  width: 40%;
+  height: 100%;
+  background-color: #fbf6ec;
+  border-radius: 6px 0px 6px 0px;
+}
+
+.whitespace-header {
+    margin: 0;
+    text-align: center;
+    color: #FF8D33;
+    padding-top: 10px;
 }
