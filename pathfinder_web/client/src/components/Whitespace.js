@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Whitespace extends React.Component {
+class Whitespace extends Component {
     constructor(props) {
         super(props);
         this.state = {

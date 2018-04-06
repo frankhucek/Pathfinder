@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Whitespace from './Whitespace.js';
 import retailmap from '../data/heatmap.png';
 
-class AnalyzedInfo extends React.Component {
+class AnalyzedInfo extends Component {
   constructor(props) {
       super(props);
 

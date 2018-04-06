@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
+import Image from 'react-image-resizer';
 import job_image_0 from '../data/0.jpg';
 import job_image_1 from '../data/1.jpg';
 import job_image_2 from '../data/2.jpg';
 
-class Images extends React.Component {
+class Images extends Component {
     constructor(props) {
         super(props);
 

@@ -1,7 +1,6 @@
 body {
     background-color: #FFC177;
     font-family: 'Kameron', serif;
-    overflow: hidden;
 }
 
 .main {
@@ -105,15 +104,11 @@ body {
 }
 
 .slider {
-    float: right;
-    margin-right: 1%;
 }
 
 .image-slide {
     height: auto;
     width: auto;
-    max-width: 50px;
-    max-height: 50px;
 }
 
 .whitespace {
