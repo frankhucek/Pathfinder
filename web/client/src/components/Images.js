@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import Slider from 'react-slick';
 import Image from 'react-image-resizer';
-import job_image_0 from '../data/0.jpg';
-import job_image_1 from '../data/1.jpg';
-import job_image_2 from '../data/2.jpg';
 
 class Images extends Component {
   constructor(props) {
@@ -11,12 +8,29 @@ class Images extends Component {
 
     this.state = {
         images: null,
+        jobID: 0,
         height: props.height,
-        width: props.width
+        width: props.width,
+        dir: '../data'
     }
   }
 
+  //https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack/42118728
+  //should be doing this https://reactjs.org/docs/lists-and-keys.html
+  //but unable to figure out function+require so go with this for now
+  importAllImages() {
+    const imgFiles = require.context("../data", false, /\.(jpg)$/);
+    this.state.images = imgFiles.keys().map((item) =>
+      <div><Image
+        src={imgFiles(item)}
+        height={ this.state.height }
+        width={ this.state.width }
+      /></div>
+    );
+  }
+
   render() {
+    this.importAllImages();
     const sliderSettings = {
         dots: true,
         infinite: true,
@@ -27,23 +41,8 @@ class Images extends Component {
 
     return(
         <div className="image-display">
-          {/*Add images from GoPro or submitted images from .zip*/}
           <Slider {... sliderSettings}>
-              <div><Image
-                src={job_image_0}
-                height={ this.state.height }
-                width={ this.state.width }
-              /></div>
-              <div><Image
-                src={job_image_1}
-                height={ this.state.height }
-                width={ this.state.width }
-              /></div>
-              <div><Image
-                src={job_image_2}
-                height={ this.state.height }
-                width={ this.state.width }
-              /></div>
+              { this.state.images }
           </Slider>
         </div>
     );
