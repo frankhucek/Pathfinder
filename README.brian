@@ -3,50 +3,21 @@ Brian Clark (bpc30)
 ## Progress 4/13
 
 * Refactor heatmap module so that Heatmap object holds more of what used to be in build_heatmap. Simplify heatmap module's interface to be [new_heatmap, record_heatmap, view_heatmap, and project_heatmap]. According changes to CLI.
+* First pass at jobmanager.py implementation
+ * Create access.py module, to control filesystem access
+ * Create Processing class to control incremental processing for job data
+ * Update manifest.py to include processing information in the manifest (to be used by the jobmanager)
+ * Add CLI to jobmanager.py
 
 ## Files 4/13
 
 modules/heatmap.py
+modules/jobmanager.py
+modules/access.py
+modules/manifest.py
 
 
-## Time 4/6
-Saturday: 11:00-12:00               1:00
+## Time 4/13
+Saturday: 11:00-12:00, 2:00-4:15    3:15
 ----------------------------------------
-Total                               1:00
-
-
-
-
-
-
-
-
-
-
-## TODO 3/30
-
-# This week:
-write helper functions
-test helper functions
-fill out Heatmap class
-better algorithm for is_movement
-write tests for example images
-test Heatmap class
-create access.py
-
-
-# Stretch:
-test bti
-real life bti example
-error handling for heatmap
-
-
-# Later:
-make sure we won't be surprised by inverting normals
-documentation (for mapping especially)
-
-
-# Maybe:
-Add unit tests to manifest.py
-Allow nonquadrilateral fields
-/9
+Total                               3:15
