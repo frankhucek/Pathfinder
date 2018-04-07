@@ -6,47 +6,47 @@ import job_image_1 from '../data/1.jpg';
 import job_image_2 from '../data/2.jpg';
 
 class Images extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            images: null,
-            height: props.height,
-            width: props.width
-        }
+    this.state = {
+        images: null,
+        height: props.height,
+        width: props.width
     }
+  }
 
   render() {
-      const sliderSettings = {
-          dots: true,
-          infinite: true,
-          speed: 500,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-      };
+    const sliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+    };
 
-      return(
-          <div className="image-display">
-            {/*Add images from GoPro or submitted images from .zip*/}
-            <Slider {... sliderSettings}>
-                <div><Image
-                  src={job_image_0}
-                  height={ this.state.height }
-                  width={ this.state.width }
-                /></div>
-                <div><Image
-                  src={job_image_1}
-                  height={ this.state.height }
-                  width={ this.state.width }
-                /></div>
-                <div><Image
-                  src={job_image_2}
-                  height={ this.state.height }
-                  width={ this.state.width }
-                /></div>
-            </Slider>
-          </div>
-      );
+    return(
+        <div className="image-display">
+          {/*Add images from GoPro or submitted images from .zip*/}
+          <Slider {... sliderSettings}>
+              <div><Image
+                src={job_image_0}
+                height={ this.state.height }
+                width={ this.state.width }
+              /></div>
+              <div><Image
+                src={job_image_1}
+                height={ this.state.height }
+                width={ this.state.width }
+              /></div>
+              <div><Image
+                src={job_image_2}
+                height={ this.state.height }
+                width={ this.state.width }
+              /></div>
+          </Slider>
+        </div>
+    );
   }
 }
 
