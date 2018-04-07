@@ -11,7 +11,6 @@ class Images extends Component {
         jobID: 0,
         height: props.height,
         width: props.width,
-        dir: '../data'
     }
   }
 
