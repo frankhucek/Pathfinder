@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link
-} from 'react-router-dom'
+} from 'react-router-dom';
 import Login from './components/Login.js';
 import JobPage from './components/JobPage.js';
 import './css/default.css';

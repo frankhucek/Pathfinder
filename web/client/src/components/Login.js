@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import Dropzone from 'react-dropzone'
 
 class Login extends Component {
@@ -17,7 +18,8 @@ class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            jobID: ''
+            jobID: '',
+            fireRedirect: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,7 +33,10 @@ class LoginForm extends Component {
 
     handleSubmit(event) {
       event.preventDefault();
-      alert("your job id is " + this.state.jobID)
+      //check if job ID is valid
+      //  or check if submitted .zip
+      //if existeed but no heatmap then
+      this.setState({ fireRedirect: true })
     }
 
     render() {
@@ -40,10 +45,13 @@ class LoginForm extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         Job ID:
-                        <input type="text" value={this.state.jobID} onChange={this.handleChange} />
+                        <input type="number" value={this.state.jobID} onChange={this.handleChange} />
                     </label>
                     <input type="submit" value="Enter" />
                 </form>
+                {this.state.fireRedirect && (
+                  <Redirect to={'/job-page'}/>
+                )}
             </div>
         )
     }
