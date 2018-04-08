@@ -1,7 +1,9 @@
 4/13
 Small name change of directory pathfinder_web/ -> web/
 Researched ability to and then changed images from being imported statically to dynamic imported via require for access to all images (Images.js)
-
+Working on login via jobid
+Added React Router for changing between pages
+Adding router imports to allow for routing (Main.js)
 
 4/6
 Refactor out chunk into (chunk.py) file from (heatmap.py) after discussion with group to chunk on picture
