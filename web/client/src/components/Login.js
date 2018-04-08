@@ -24,13 +24,18 @@ class LoginForm extends Component {
     }
 
     handleChange(event) {
-        this.setState(
-            {jobID: event.target.value}
-        );
+        //check if ID is valid jobid (has images)
+        //  if so then go to page or show a waiting page to analyze heatmap if nonexistent
+        //or check for zip
+        var validId = true;
+        if (true) {
+
+        }
     }
 
     handleSubmit(event) {
-
+      event.preventDefault();
+      alert("your job id is " + this.state.jobID)
     }
 
     render() {

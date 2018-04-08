@@ -7,7 +7,7 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: true
+            loggedIn: props.loggedIn
         };
     }
 
