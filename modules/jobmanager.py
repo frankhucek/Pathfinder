@@ -6,6 +6,7 @@
 
 import argparse
 import datetime
+from datetime import timedelta
 
 # star import required for unpickling
 # need to have all heatmap helper classes imported to
@@ -62,7 +63,7 @@ class ProcessEveryImage(Processing):
         self.time_window = json[ProcessEveryImage.TIME_WINDOW]
 
     def _delta(self):
-        return datetime.timedelta(seconds=self.time_window)
+        return timedelta(seconds=self.time_window)
 
     def _period(self, filename):
         img_data = ImageData.create(self.manifest, filename)
@@ -79,6 +80,47 @@ class ProcessEveryImage(Processing):
                                period,
                                self.window_size,
                                self.color_thresh)
+
+
+class IntervalProcessing(Processing):
+
+    processing_type = "interval_processing"
+
+    WINDOW_SIZE = "window_size"
+    COLOR_THRESH = "color_thresh"
+    INTERVAL = "interval"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+        self.window_size = json[IntervalProcessing.WINDOW_SIZE]
+        self.color_thresh = json[IntervalProcessing.COLOR_THRESH]
+        interval_sec = json[IntervalProcessing.INTERVAL]
+        self.interval = timedelta(seconds=interval_sec)
+
+    def _period(self, hm, img_data):
+        return heatmap.TimePeriod(hm.last_update(),
+                                  img_data.time_taken())
+
+    def _should_update(self, hm, img_data):
+        period = self._period(hm, img_data)
+        return period.duration() > self.interval
+
+    def process(self, jobid, filename):
+        heatmap_filepath = access.heatmap_filepath(jobid)
+        hm = Heatmap.load(heatmap_filepath)
+        img_data = ImageData.create(self.manifest, filename)
+
+        if self._should_update(hm, img_data):
+            print("Updating for img: {}".format(img_data.time_taken()))
+            period = self._period(hm, img_data)
+            img_files = access.image_filepaths(jobid)
+            heatmap.record_heatmap(heatmap_filepath,
+                                   img_files,
+                                   period,
+                                   self.window_size,
+                                   self.color_thresh)
+        else:
+            print("Not updating for img: {}".format(img_data.time_taken()))
 
 
 ###############################################################################

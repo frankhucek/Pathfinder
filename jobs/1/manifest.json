@@ -1,10 +1,10 @@
 {
     "JobID": 0,
     "processing": {
-        "type": "update_on_every_image",
+        "type": "interval_processing",
         "window_size": 2,
         "color_thresh": 11,
-        "time_window": 100
+        "interval": 100
     },
     "chunk": {
         "chunk_height": 36,

@@ -166,8 +166,15 @@ class TimePeriod(object):
         else:
             return self
 
+    def duration(self):
+        return self.end - self.start
+
 
 class NullTimePeriod(object):
+
+    def __init__(self):
+        self.start = datetime(1, 1, 1, 0, 0, 0)
+        self.end = datetime(1, 1, 1, 0, 0, 0)
 
     def contains(self, dt):
         return False
@@ -262,6 +269,9 @@ class Heatmap(object):
         last_dt = image_set[-1].time_taken()
         self.period = self.period.expand_to_include(first_dt)
         self.period = self.period.expand_to_include(last_dt)
+
+    def last_update(self):
+        return self.period.end
 
     def points(self):
         m = np.max(self._points)
