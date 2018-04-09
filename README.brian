@@ -12,6 +12,8 @@ Brian Clark (bpc30)
 * Fix off-by-one error in heatmap.windows function
 * Update existing heatmap unit tests
 * Add new unit tests for CoordRange and TimePeriod classes
+* Add additional Processing Type that only updates a job if a certain amount of time has elapsed since the last update. Also add last_update method to Heatmap object, to help with that
+
 
 ## Files 4/13
 
@@ -20,6 +22,7 @@ modules/jobmanager.py
 modules/access.py
 modules/manifest.py
 modules/test/test_heatmap.py
+jobs/1/*
 
 
 ## Time 4/13
