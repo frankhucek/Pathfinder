@@ -19,6 +19,8 @@ from PIL import Image
 
 from common import assert_close
 
+from manifest import Manifest
+
 from datetime import datetime
 from pytest import fixture
 import pytest
@@ -31,8 +33,9 @@ from unittest.mock import MagicMock
 ###############################################################################
 
 import heatmap
-from heatmap import TimePeriod, Heatmap
+from heatmap import TimePeriod, NullTimePeriod, Heatmap
 from heatmap import ImageData, WholeImageData
+from heatmap import CoordRange
 
 
 ###############################################################################
@@ -58,6 +61,13 @@ def images():
     return [ImageData.create(None, x) for x in filepaths()]
 
 
+@fixture(scope='module')
+def filtered_images():
+    f_images = heatmap.trim_by_date(images(), period())
+    f_images = heatmap.sort_by_date(f_images)
+    return f_images
+
+
 @fixture
 def period():
     return TimePeriod(datetime(2018, 3, 23, 21, 15, 25),
@@ -79,6 +89,11 @@ def point():
     return (2000, 1000)
 
 
+@fixture()
+def manifest():
+    return Manifest.from_filepath("examples/manifest.json")
+
+
 points = [
     ((2000, 1000), True),
     ((3000, 1000), True),
@@ -86,6 +101,16 @@ points = [
     ((1500, 2000), False),
     ((2500, 250), False)
 ]
+
+
+@fixture
+def img_corners():
+    return [[0, 0], [10, 0], [0, 10], [10, 10]]
+
+
+@fixture
+def coord_range():
+    return CoordRange(img_corners())
 
 
 ###############################################################################
@@ -135,6 +160,7 @@ def test_extract_color_set(images, point):
     assert 7 == len(color_set)
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize("point,res",
                          points, ids=lambda x: str(x))
 def test_is_movement_all(point, res, images):
@@ -143,12 +169,40 @@ def test_is_movement_all(point, res, images):
                                       color_thresh=50)
 
 
-# def test_empty_heatmap_print():
-#     manifest_mock = MagicMock()
-#     manifest_mock.dimensions.return_value = (3, 4)
-#     heatmap = Heatmap.new(manifest_mock)
-#     print(heatmap)
-#     assert False
+def test_include_in_period(manifest, filtered_images):
+    hm = Heatmap.new(manifest)
+    hm.include_in_period(filtered_images)
+    assert hm.period.start == datetime(2018, 3, 23, 21, 15, 26)
+    assert hm.period.end == datetime(2018, 3, 23, 21, 15, 40)
+
+
+def test_null_time_period(filtered_images):
+    null_tp = NullTimePeriod()
+    img = filtered_images[0]
+    assert not null_tp.contains(img)
+    tp = null_tp.expand_to_include(img.time_taken())
+    assert tp.contains(img.time_taken())
+    assert tp.start == img.time_taken()
+    assert tp.end == img.time_taken()
+
+
+def test_coord_range_corners(img_corners, coord_range):
+    for corner in img_corners:
+        assert coord_range.contains(corner)
+
+
+def test_coord_range_inner(coord_range):
+    assert coord_range.contains((5, 5))
+    assert coord_range.contains((0, 5))
+    assert coord_range.contains((5, 0))
+    assert coord_range.contains((10, 5))
+    assert coord_range.contains((5, 10))
+
+
+def test_coord_range_outside(coord_range):
+    assert not coord_range.contains((-10, -10))
+    assert not coord_range.contains((20, 20))
+    assert not coord_range.contains((11, 0))
 
 
 ###############################################################################
