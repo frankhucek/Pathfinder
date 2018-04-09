@@ -186,8 +186,8 @@ class CoordRange(object):
 
     def contains(self, coord):
         x, y = coord
-        return self._min_x < x and x < self._max_x and \
-            self._min_y < y and y < self._max_y
+        return self._min_x <= x and x <= self._max_x and \
+            self._min_y <= y and y <= self._max_y
 
     def coordinates(self):
         for x in range(self._min_x, self._max_x + 1):
