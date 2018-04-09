@@ -386,7 +386,9 @@ def sort_by_date(images):
 
 def windows(images, window_size):
     chunks = []
-    for start in range(len(images) - window_size):
+    window_idx_range = window_size - 1
+    num_starting = len(images) - window_idx_range
+    for start in range(num_starting):
         end = start + window_size
         chunk = images[start:end]
         chunks.append(chunk)
