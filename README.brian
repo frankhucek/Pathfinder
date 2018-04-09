@@ -10,6 +10,8 @@ Brian Clark (bpc30)
  * Add CLI to jobmanager.py
 * Make Heatmap object time aware (that is, it knows the time period between the first image recorded on it and the last image recorded on it)
 * Fix off-by-one error in heatmap.windows function
+* Update existing heatmap unit tests
+* Add new unit tests for CoordRange and TimePeriod classes
 
 ## Files 4/13
 
@@ -17,10 +19,12 @@ modules/heatmap.py
 modules/jobmanager.py
 modules/access.py
 modules/manifest.py
+modules/test/test_heatmap.py
 
 
 ## Time 4/13
 Saturday: 11:00-12:00, 2:00-4:15    3:15
-Sunday: 8:00-9:00                   1:00
+Sunday: 8:00-9:00, 10:00-11:00      2:00
+Monday}: 9:30-10:00                 0:30
 ----------------------------------------
-Total                               4:15
+Total                               5:45
