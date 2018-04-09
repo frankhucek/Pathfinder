@@ -4,9 +4,9 @@ from pathlib import Path
 cur_dir = Path(__file__).parents[0]
 parent_dir = Path(__file__).parents[1]
 if parent_dir not in sys.path:
-    sys.path.append(str(parent_dir))
+    sys.path.insert(0, str(parent_dir))
 if cur_dir not in sys.path:
-    sys.path.append(str(cur_dir))
+    sys.path.insert(0, str(cur_dir))
 
 
 ###############################################################################
@@ -32,6 +32,7 @@ from unittest.mock import MagicMock
 
 import heatmap
 from heatmap import TimePeriod, Heatmap
+from heatmap import ImageData, WholeImageData
 
 
 ###############################################################################
@@ -52,9 +53,9 @@ def filepaths():
             if x.endswith(".jpg")]
 
 
-@fixture
+@fixture(scope='module')
 def images():
-    return [Image.open(x) for x in filepaths()]
+    return [ImageData.create(None, x) for x in filepaths()]
 
 
 @fixture
@@ -111,12 +112,12 @@ def test_trim_by_date_none(images, first_time, last_time):
 def test_sort_by_date(images):
     std = heatmap.sort_by_date(images)
     for v, w in pairwise(std):
-        assert heatmap.time_taken(v) <= heatmap.time_taken(w)
+        assert v.time_taken() <= w.time_taken()
 
 
 def test_windows(images):
     windows = heatmap.windows(images, 3)
-    assert 4 == len(windows)
+    assert 5 == len(windows)
     assert all(3 == len(x) for x in windows)
 
 
@@ -126,7 +127,7 @@ def test_coordinates():
               (0, 1), (1, 1), (2, 1),
               (0, 2), (1, 2), (2, 2),
               (0, 3), (1, 3), (2, 3)}
-    assert coords == heatmap.coordinates(dim)
+    assert coords == WholeImageData.coordinates(None, dim)
 
 
 def test_extract_color_set(images, point):
@@ -134,9 +135,11 @@ def test_extract_color_set(images, point):
     assert 7 == len(color_set)
 
 
-@pytest.mark.parametrize("point,res", points, ids=lambda x: str(x))
-def test_is_movement_all(point, res):
-    assert res == heatmap.is_movement(images(), point,
+@pytest.mark.parametrize("point,res",
+                         points, ids=lambda x: str(x))
+def test_is_movement_all(point, res, images):
+    images = heatmap.trim_by_date(images, period())
+    assert res == heatmap.is_movement(images, point,
                                       color_thresh=50)
 
 
