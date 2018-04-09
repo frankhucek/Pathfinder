@@ -7,7 +7,11 @@
 import argparse
 import datetime
 
-from heatmap import ImageData, Heatmap, CoordRange
+# star import required for unpickling
+# need to have all heatmap helper classes imported to
+# __main__ in this script in order for unpickling to work
+# TODO: work around this by refactoring
+from heatmap import *
 import heatmap
 import access
 
