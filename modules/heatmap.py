@@ -158,6 +158,23 @@ class TimePeriod(object):
     def contains(self, dt):
         return self.start <= dt and dt <= self.end
 
+    def expand_to_include(self, dt):
+        if dt < self.start:
+            return TimePeriod(dt, self.end)
+        elif dt > self.end:
+            return TimePeriod(self.start, dt)
+        else:
+            return self
+
+
+class NullTimePeriod(object):
+
+    def contains(self, dt):
+        return False
+
+    def expand_to_include(self, dt):
+        return TimePeriod(dt, dt)
+
 
 class CoordRange(object):
 
@@ -199,6 +216,7 @@ class Heatmap(object):
         self.field = CoordRange(manifest.image_corners())
         self.count = 0
         self._points = points
+        self.period = NullTimePeriod()
 
     def add(self, coord):
         self.count += 1
@@ -237,6 +255,13 @@ class Heatmap(object):
 
                 if is_movement(image_set, coord, color_thresh):
                     image_set[0].register(self, coord)
+                    self.include_in_period(image_set)
+
+    def include_in_period(self, image_set):
+        first_dt = image_set[0].time_taken()
+        last_dt = image_set[-1].time_taken()
+        self.period = self.period.expand_to_include(first_dt)
+        self.period = self.period.expand_to_include(last_dt)
 
     def points(self):
         m = np.max(self._points)
