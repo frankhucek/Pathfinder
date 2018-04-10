@@ -5,7 +5,6 @@
 ###############################################################################
 
 import argparse
-import datetime
 from datetime import timedelta
 
 # star import required for unpickling
@@ -13,6 +12,7 @@ from datetime import timedelta
 # __main__ in this script in order for unpickling to work
 # TODO: work around this by refactoring
 from heatmap import *
+from image import ImageData
 import heatmap
 import access
 

@@ -20,6 +20,7 @@ from PIL import Image
 from common import assert_close
 
 from manifest import Manifest
+from image import ImageData, WholeImageData
 
 from datetime import datetime
 from pytest import fixture
@@ -34,7 +35,6 @@ from unittest.mock import MagicMock
 
 import heatmap
 from heatmap import TimePeriod, NullTimePeriod, Heatmap
-from heatmap import ImageData, WholeImageData
 from heatmap import CoordRange
 
 
