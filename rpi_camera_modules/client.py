@@ -7,10 +7,10 @@ import struct
 import time
 import picamera
 import gnupg
-
+import os
 remote_host = "localhost" # "frankhucek.com"
 remote_host_port = 3001 # port forwarded and ready to go
-passphrase_file = "pathfinder_gpg_passphrase.txt"
+passphrase_file = "/home/frank/Code/srproj/2018_spring_395_pathfinder/rpi_camera_modules/pathfinder_gpg_passphrase.txt"
 
 """
 Sends the specified 'filename' to the remote host
@@ -39,7 +39,10 @@ def send_sig(filename, pass_file, conn_socket):
 
 def send_photo_data(filename, conn_socket):
     print("sending filename")
-    conn_socket.send(filename.encode())
+
+    path, file_name = os.path.split(filename)
+    
+    conn_socket.send(file_name.encode())
     ack = conn_socket.recv(1024)
     if ack == b"SEND_FILE":
         send_photo_file(filename, conn_socket)
