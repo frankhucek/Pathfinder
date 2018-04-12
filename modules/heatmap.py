@@ -12,6 +12,7 @@ from datetime import datetime
 
 import numpy as np
 from PIL import Image
+from PIL import ImageFilter
 
 from manifest import Manifest
 from mapping import Geometry
@@ -107,6 +108,7 @@ class Heatmap(object):
         self.field = CoordRange(manifest.image_corners())
         self.count = 0
         self._points = points
+        self._rgb = np.zeros((points.shape[0], points.shape[1], 3))
         self.period = NullTimePeriod()
 
     def add(self, coord):
@@ -114,7 +116,9 @@ class Heatmap(object):
         self.set(coord, self.at(coord) + 1)
 
     def set(self, coord, val):
-        self._points[self._flip(coord)] = val
+        x, y = coord
+        self._points[y, x] = val
+        self._rgb[y, x, 0] = val
 
     def at(self, coord):
         return self._points[self._flip(coord)]
@@ -198,6 +202,34 @@ class Heatmap(object):
         normalized = blueprint_values / np.max(blueprint_values)
         self.write_bw_binary(normalized, filepath)
 
+    def overlay(self, img, filepath, scale, blur):
+
+        points = self._rgb / np.max(self._rgb)
+
+        # scale redshift by specified degree
+        scaled_points = points * scale
+
+        # convert to Image for blurring
+        red_points_8bit = scaled_points.astype('uint8')
+        red_img = Image.fromarray(red_points_8bit)
+        filtered_red_img = red_img.filter(ImageFilter.GaussianBlur(blur))
+
+        # convert backto float64 numpy arrays
+        # numpy arrays: so we can add
+        # float64: to avoid 8bit overflow
+        red_points = np.asarray(filtered_red_img, dtype='float64')
+        img_points = np.asarray(img, dtype='float64')
+
+        combined_points = img_points + red_points
+
+        # must clip red values outside of range
+        # these might occur because of the redshifting
+        clipped_points = np.clip(combined_points, 0, 255)
+        clipped_points_8bit = clipped_points.astype('uint8')
+
+        overlaid = Image.fromarray(clipped_points_8bit)
+        overlaid.save(filepath)
+
     def save(self, filepath):
         with open(filepath, 'wb') as f:
             pickle.dump(self, f)
@@ -255,6 +287,16 @@ def project_heatmap(heatmap_filepath,
                     project_filepath):
     hm = Heatmap.load(heatmap_filepath)
     hm.project(project_filepath)
+
+
+def overlay_heatmap(heatmap_filepath,
+                    image_filepath,
+                    output_filepath,
+                    scale,
+                    blur):
+    hm = Heatmap.load(heatmap_filepath)
+    img = Image.open(image_filepath)
+    hm.overlay(img, output_filepath, scale, blur)
 
 
 ###############################################################################
@@ -370,6 +412,21 @@ def get_args():
                                 type=int,
                                 help="intended projection pixed width")
 
+    overlay_parser = subparsers.add_parser("overlay_heatmap",
+                                           help="overlay heatmap")
+    overlay_parser.add_argument("heatmap_filepath",
+                                help="filename of heatmap")
+    overlay_parser.add_argument("image_filepath",
+                                help="base image")
+    overlay_parser.add_argument("output_filepath",
+                                help="filepath of output")
+    overlay_parser.add_argument("scale",
+                                type=int,
+                                help="scale of redshift")
+    overlay_parser.add_argument("blur",
+                                type=int,
+                                help="radius of GaussianBlur")
+
     return parser.parse_args()
 
 
@@ -400,6 +457,13 @@ def main():
         heatmap = Heatmap.load(args.heatmap_filename)
         heatmap.project(args.project_filename,
                         args.desired_width)
+
+    elif args.op == "overlay_heatmap":
+        overlay_heatmap(args.heatmap_filepath,
+                        args.image_filepath,
+                        args.output_filepath,
+                        args.scale,
+                        args.blur)
 
 
 if __name__ == '__main__':
