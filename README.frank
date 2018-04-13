@@ -1,5 +1,24 @@
 # Weekly updates for Frank Hucek
 
+# Week of 4/07 - 4/13
+### Integrated job manager into server script
+    - Jobs are now invoked automatically when the server receives data
+    - The job is called on the new photo to generate a modified heatmap
+    - Cleaned up the server directory structure, so it shouldn't matter where the script is called.
+    - The job manager currently needs the directory to be set up a certain way with access to very certain files - this needs to be cleaned up
+    - TODO : cleanup job manager directory structure
+    ~ 2 hrs of work
+### Setup Script to auto connect to case wireless
+    - Headless rpi needs to connect to case wireless on startup
+    - wrote wpa_supplicant config which works to automatically connect rpi on boot to detected network CaseWireless.
+    - Involved learning case's complex WPA2-Enterprise security and writing 50 lines of configuration for wpa_supplicant.
+    - NOTE: could not supply the file in plain text on git because it has my Case ID and Password in it.
+    ~ 1.5 hour of work
+### Designed plans for website
+    - Met with group to discuss further integration
+    - Helped to layout backend design of website - I have a lot of experience with web frameworks
+    ~ 1 hr of work
+
 # Week of 3/25 - 4/06
 ### Finished RPI Pathfinder camera system service
     - Finished python main scripts for deployment, capturing, and sending of photos to remote server
