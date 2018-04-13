@@ -19,3 +19,6 @@ rpi_camera_modules/~/**
 
 #misc
 .DS_STORE
+
+# heatmap binaries
+*.heatmap

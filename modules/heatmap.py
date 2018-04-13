@@ -5,8 +5,6 @@
 ###############################################################################
 
 import argparse
-import itertools
-import os
 import json
 import pickle
 
@@ -14,12 +12,13 @@ from datetime import datetime
 
 import numpy as np
 from PIL import Image
+from PIL import ImageFilter
 
-from chunk import PixelChunk
 from manifest import Manifest
 from mapping import Geometry
 import mapping
 import cli
+import image
 
 
 ###############################################################################
@@ -29,124 +28,10 @@ import cli
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
 
-DATETIME_FMT = "%Y:%m:%d %H:%M:%S"
-DATETIME_EXIF = 36867
-
 
 ###############################################################################
 # Classes                                                                     #
 ###############################################################################
-
-class ImageData(object):
-    """obj that provides data about an image"""
-
-    def __init__(self, manifest):
-        super().__init__()
-        self.manifest = manifest
-
-    @staticmethod
-    def sub_type(filepaths):
-
-        extensions = [os.path.splitext(fp)[1] for fp in filepaths]
-
-        if any(x != extensions[0] for x in extensions):
-            raise ValueError("Mismatched file types!")
-
-        if extensions[0] == ".jpg":
-            return WholeImageData
-        else:
-            return ChunkImageData
-
-    @staticmethod
-    def create(manifest, filepath):
-        sub_type = ImageData.sub_type([filepath])
-        return sub_type.create(manifest, filepath)
-
-    def time_taken(self):
-        raise NotImplementedError("Implement in subclass")
-
-    @staticmethod
-    def register(self, heatmap, coord):
-        raise NotImplementedError("Implement in subclass")
-
-    @staticmethod
-    def coordinates(manifest, dim):
-        raise NotImplementedError("Implement in subclass")
-
-    def at(self, coord):
-        raise NotImplementedError("Implement in subclass")
-
-    def __getitem__(self, key):
-        return self.at(key)
-
-
-class WholeImageData(ImageData):
-
-    def __init__(self, manifest, img):
-        super().__init__(manifest)
-        self._img = img
-        self._pa = img.load()
-
-    @staticmethod
-    def create(manifest, filepath):
-        img = Image.open(filepath)
-        return WholeImageData(manifest, img)
-
-    def time_taken(self):
-        dt_str = self._img._getexif()[DATETIME_EXIF]
-        dt_obj = datetime.strptime(dt_str, DATETIME_FMT)
-        return dt_obj
-
-    def register(self, heatmap, coord):
-        heatmap.add(coord)
-
-    @staticmethod
-    def coordinates(manifest, dim):
-        xs, ys = range(dim[0]), range(dim[1])
-        return set(itertools.product(xs, ys))
-
-    def at(self, coord):
-        return self._pa[coord]
-
-
-class ChunkImageData(ImageData):
-
-    @staticmethod
-    def create(manifest, filepath):
-        chunk_obj = PixelChunk.of(filepath)
-        return ChunkImageData(manifest, chunk_obj)
-
-    def __init__(self, manifest, chunk_obj):
-        super().__init__(manifest)
-        self._chunk_obj = chunk_obj
-        self._chunks = chunk_obj.rgb_chunks()
-
-    def _chunk_dim(self):
-        return self.manifest.chunk_dimensions()
-
-    def time_taken(self):
-        dt_str = self._chunk_obj.file_datetime()
-        dt = datetime.strptime(dt_str, DATETIME_FMT)
-        return dt
-
-    def register(self, heatmap, coord):
-        chunk_width, chunk_height = self._chunk_dim()
-        x, y = coord
-        for deltax in range(chunk_width):
-            for deltay in range(chunk_height):
-                pos = x + deltax, y + deltay
-                heatmap.add(pos)
-
-    @staticmethod
-    def coordinates(manifest, dim):
-        chunk_width, chunk_height = manifest.chunk_dimensions()
-        xs = range(0, dim[0], chunk_width)
-        ys = range(0, dim[1], chunk_height)
-        return set(itertools.product(xs, ys))
-
-    def at(self, coord):
-        return self._chunks[coord]
-
 
 class TimePeriod(object):
 
@@ -157,6 +42,30 @@ class TimePeriod(object):
 
     def contains(self, dt):
         return self.start <= dt and dt <= self.end
+
+    def expand_to_include(self, dt):
+        if dt < self.start:
+            return TimePeriod(dt, self.end)
+        elif dt > self.end:
+            return TimePeriod(self.start, dt)
+        else:
+            return self
+
+    def duration(self):
+        return self.end - self.start
+
+
+class NullTimePeriod(object):
+
+    def __init__(self):
+        self.start = datetime(1, 1, 1, 0, 0, 0)
+        self.end = datetime(1, 1, 1, 0, 0, 0)
+
+    def contains(self, dt):
+        return False
+
+    def expand_to_include(self, dt):
+        return TimePeriod(dt, dt)
 
 
 class CoordRange(object):
@@ -169,8 +78,8 @@ class CoordRange(object):
 
     def contains(self, coord):
         x, y = coord
-        return self._min_x < x and x < self._max_x and \
-            self._min_y < y and y < self._max_y
+        return self._min_x <= x and x <= self._max_x and \
+            self._min_y <= y and y <= self._max_y
 
     def coordinates(self):
         for x in range(self._min_x, self._max_x + 1):
@@ -199,13 +108,17 @@ class Heatmap(object):
         self.field = CoordRange(manifest.image_corners())
         self.count = 0
         self._points = points
+        self._rgb = np.zeros((points.shape[0], points.shape[1], 3))
+        self.period = NullTimePeriod()
 
     def add(self, coord):
         self.count += 1
         self.set(coord, self.at(coord) + 1)
 
     def set(self, coord, val):
-        self._points[self._flip(coord)] = val
+        x, y = coord
+        self._points[y, x] = val
+        self._rgb[y, x, 0] = val
 
     def at(self, coord):
         return self._points[self._flip(coord)]
@@ -219,7 +132,7 @@ class Heatmap(object):
                period,
                window_size=DEFAULT_WINDOW_SIZE,
                color_thresh=DEFAULT_COLOR_THRESH):
-        data_type = ImageData.sub_type(img_files)
+        data_type = image.ImageData.sub_type(img_files)
 
         images = image_obj_sequence(self.manifest,
                                     img_files,
@@ -237,9 +150,23 @@ class Heatmap(object):
 
                 if is_movement(image_set, coord, color_thresh):
                     image_set[0].register(self, coord)
+                    self.include_in_period(image_set)
+
+    def include_in_period(self, image_set):
+        first_dt = image_set[0].time_taken()
+        last_dt = image_set[-1].time_taken()
+        self.period = self.period.expand_to_include(first_dt)
+        self.period = self.period.expand_to_include(last_dt)
+
+    def last_update(self):
+        return self.period.end
 
     def points(self):
-        return self._points / np.max(self._points)
+        m = np.max(self._points)
+        if m == 0:
+            return self._points
+        else:
+            return self._points / np.max(self._points)
 
     def project_point(self, coord, scale):
         raw = mapping.image_to_blueprint(coord,
@@ -274,6 +201,34 @@ class Heatmap(object):
 
         normalized = blueprint_values / np.max(blueprint_values)
         self.write_bw_binary(normalized, filepath)
+
+    def overlay(self, img, filepath, scale, blur):
+
+        points = self._rgb / np.max(self._rgb)
+
+        # scale redshift by specified degree
+        scaled_points = points * scale
+
+        # convert to Image for blurring
+        red_points_8bit = scaled_points.astype('uint8')
+        red_img = Image.fromarray(red_points_8bit)
+        filtered_red_img = red_img.filter(ImageFilter.GaussianBlur(blur))
+
+        # convert backto float64 numpy arrays
+        # numpy arrays: so we can add
+        # float64: to avoid 8bit overflow
+        red_points = np.asarray(filtered_red_img, dtype='float64')
+        img_points = np.asarray(img, dtype='float64')
+
+        combined_points = img_points + red_points
+
+        # must clip red values outside of range
+        # these might occur because of the redshifting
+        clipped_points = np.clip(combined_points, 0, 255)
+        clipped_points_8bit = clipped_points.astype('uint8')
+
+        overlaid = Image.fromarray(clipped_points_8bit)
+        overlaid.save(filepath)
 
     def save(self, filepath):
         with open(filepath, 'wb') as f:
@@ -334,12 +289,22 @@ def project_heatmap(heatmap_filepath,
     hm.project(project_filepath)
 
 
+def overlay_heatmap(heatmap_filepath,
+                    image_filepath,
+                    output_filepath,
+                    scale,
+                    blur):
+    hm = Heatmap.load(heatmap_filepath)
+    img = Image.open(image_filepath)
+    hm.overlay(img, output_filepath, scale, blur)
+
+
 ###############################################################################
 # Helpers                                                                     #
 ###############################################################################
 
 def image_obj_sequence(manifest, img_files, period):
-    images = [ImageData.create(manifest, fp)
+    images = [image.ImageData.create(manifest, fp)
               for fp in img_files]
     images = trim_by_date(images, period)
     images = sort_by_date(images)
@@ -357,7 +322,9 @@ def sort_by_date(images):
 
 def windows(images, window_size):
     chunks = []
-    for start in range(len(images) - window_size):
+    window_idx_range = window_size - 1
+    num_starting = len(images) - window_idx_range
+    for start in range(num_starting):
         end = start + window_size
         chunk = images[start:end]
         chunks.append(chunk)
@@ -384,9 +351,10 @@ def is_movement(images, coord,
 
 def parse_time(s):
     try:
-        return datetime.strptime(s, DATETIME_FMT)
+        return image.parse_datetime(s)
     except ValueError:
-        msg = "Illegal time format -- use {}".format(DATETIME_FMT)
+        msg = "Illegal time format -- use {}"\
+            .format(image.DATETIME_FMT)
         raise argparse.ArgumentTypeError(msg)
 
 
@@ -444,6 +412,21 @@ def get_args():
                                 type=int,
                                 help="intended projection pixed width")
 
+    overlay_parser = subparsers.add_parser("overlay_heatmap",
+                                           help="overlay heatmap")
+    overlay_parser.add_argument("heatmap_filepath",
+                                help="filename of heatmap")
+    overlay_parser.add_argument("image_filepath",
+                                help="base image")
+    overlay_parser.add_argument("output_filepath",
+                                help="filepath of output")
+    overlay_parser.add_argument("scale",
+                                type=int,
+                                help="scale of redshift")
+    overlay_parser.add_argument("blur",
+                                type=int,
+                                help="radius of GaussianBlur")
+
     return parser.parse_args()
 
 
@@ -474,6 +457,13 @@ def main():
         heatmap = Heatmap.load(args.heatmap_filename)
         heatmap.project(args.project_filename,
                         args.desired_width)
+
+    elif args.op == "overlay_heatmap":
+        overlay_heatmap(args.heatmap_filepath,
+                        args.image_filepath,
+                        args.output_filepath,
+                        args.scale,
+                        args.blur)
 
 
 if __name__ == '__main__':

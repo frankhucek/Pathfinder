@@ -30,6 +30,9 @@ CHUNK = "chunk"
 CHUNK_HEIGHT = "chunk_height"
 CHUNK_WIDTH = "chunk_width"
 
+PROCESSING = "processing"
+PROCESSING_TYPE = "type"
+
 CORNERS = [
     "upperleft",
     "upperright",
@@ -74,6 +77,8 @@ class Manifest(object):
             self.corner_distances()
             self.dimensions()
             self.fov()
+            self.processing()
+            self.processing_type()
         except KeyError:
             raise ManifestError("Invalid manifest structure")
 
@@ -120,6 +125,13 @@ class Manifest(object):
 
     def chunk_dimensions(self):
         return self._chunk_width(), self._chunk_height()
+
+    def processing(self):
+        return self.json[PROCESSING]
+
+    def processing_type(self):
+        return self.processing()[PROCESSING_TYPE]
+
 
 ###############################################################################
 # Helper functions                                                            #
