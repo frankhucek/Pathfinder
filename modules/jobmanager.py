@@ -42,12 +42,17 @@ import access
 # Classes                                                                     #
 ###############################################################################
 
+def all_subclasses(cls):
+    return cls.__subclasses__() + [g for s in cls.__subclasses__()
+                                   for g in all_subclasses(s)]
+
+
 class Processing(object):
 
     @classmethod
     def _types(cls):
         return {x.processing_type: x
-                for x in cls.__subclasses__()}
+                for x in all_subclasses(cls)}
 
     @staticmethod
     def of(manifest):
@@ -142,6 +147,37 @@ class IntervalProcessing(Processing):
                                    self.color_thresh)
         else:
             print("Not updating for img: {}".format(img_data.time_taken()))
+
+
+class DoItAllIntervalProcessing(IntervalProcessing):
+    """Does all processing
+
+    Really basic processing class that just generates every type
+    of output when new data is received. Would theoretically
+    be replaced by on-demand output image generation.
+    """
+
+    processing_type = "do_it_all_interval_processing"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+
+    def process(self, jobid, filename):
+        super().process(jobid, filename)
+
+        heatmap_filepath = access.heatmap_filepath(jobid)
+
+        view_heatmap_fp = access.out_filepath(jobid, "heatmap.bmp")
+        heatmap.view_heatmap(heatmap_filepath,
+                             view_heatmap_fp)
+
+        overlay_fp = access.out_filepath(jobid, "overlay.bmp")
+        control_fp = access.pathfinder_filepath(self.manifest.control_img())
+        heatmap.overlay_heatmap(heatmap_filepath,
+                                control_fp,
+                                overlay_fp,
+                                self.manifest.scale(),
+                                self.manifest.blur())
 
 
 ###############################################################################

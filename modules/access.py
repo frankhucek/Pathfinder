@@ -36,6 +36,7 @@ PATHFINDER_DIR = os.environ.get("PATHFINDER_DIR",
 JOBS_DIR = "jobs"
 DATA_DIR = "data"
 HEATMAPS_DIR = "heatmaps"
+OUT_DIR = "out"
 
 MANIFEST_FILENAME = "manifest.json"
 
@@ -56,6 +57,15 @@ def save_new_data(jobid, old_data_filepath):
 def manifest_filepath(jobid):
     root = job_root(jobid)
     return join(root, MANIFEST_FILENAME)
+
+
+def out_filepath(jobid, filename):
+    out_dir = sub_dir(jobid, OUT_DIR)
+    return join(out_dir, filename)
+
+
+def pathfinder_filepath(fp):
+    return join(PATHFINDER_DIR, fp)
 
 
 def manifest(jobid):

@@ -1,10 +1,15 @@
 {
     "JobID": 0,
     "processing": {
-        "type": "interval_processing",
+        "type": "do_it_all_interval_processing",
         "window_size": 2,
         "color_thresh": 11,
         "interval": 100
+    },
+    "overlay": {
+        "control_img": "jobs/0/0.jpg",
+        "scale": 100,
+        "blur": 15
     },
     "chunk": {
         "chunk_height": 36,

@@ -30,6 +30,11 @@ CHUNK = "chunk"
 CHUNK_HEIGHT = "chunk_height"
 CHUNK_WIDTH = "chunk_width"
 
+OVERLAY = "overlay"
+CONTROL_IMG = "control_img"
+SCALE = "scale"
+BLUR = "blur"
+
 PROCESSING = "processing"
 PROCESSING_TYPE = "type"
 
@@ -131,6 +136,18 @@ class Manifest(object):
 
     def processing_type(self):
         return self.processing()[PROCESSING_TYPE]
+
+    def _overlay(self):
+        return self.json[OVERLAY]
+
+    def control_img(self):
+        return self._overlay()[CONTROL_IMG]
+
+    def scale(self):
+        return self._overlay()[SCALE]
+
+    def blur(self):
+        return self._overlay()[BLUR]
 
 
 ###############################################################################
