@@ -1,3 +1,16 @@
+'''image module
+
+The image module provides a level of abstraction between actual
+image files and the level of detail required to produce a heatmap
+from them.
+
+Mainly, this lets the heatmap module use either image files (.jpg)
+or prechunked image files (.txt) without having to know which one
+it is using.
+
+Also defines the datetime conventions for checking the dates of
+images.
+'''
 
 ###############################################################################
 # Imports                                                                     #

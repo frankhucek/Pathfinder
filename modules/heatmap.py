@@ -1,5 +1,37 @@
 #! /usr/bin/env python3
 
+'''Pathfinder heatmap module
+
+This module holds all tools used for manipulating heatmaps.
+
+The heatmap module is independent from the project file structure.
+That is, all inputs and outputs to heatmap.py are in the form of
+filepaths.
+
+heatmap.py provides an API in the Heatmap Tools section of this file.
+These functions are programmatic ways to perform operations such as
+generating a new heatmap object, recording images onto a heatmap,
+projecting the heatmap into the blueprint space described by a
+certain manifest, and so on. Examples:
+new_heatmap(...)
+record_heatmap(...)
+view_heatmap(...)
+project_heatmap(...)
+overlay_heatmap(...)
+
+The heatmap API can also be access by the command line interface
+defined in this file.
+
+The module makes use of a Python Heatmap object for most of these
+operations. The Heatmap object can be saved and loaded as a binary
+file using pickle. Users of the heatmap API should consider the
+Heatmap object to be an implementation detail.
+
+Further descriptions of the heatmapping algorithms used can be
+found in the Pathfinder design document.
+'''
+
+
 ###############################################################################
 # Imports                                                                     #
 ###############################################################################

@@ -1,4 +1,19 @@
+'''access module
 
+The access module encapsulates all knowledge of the project's
+file structure.
+
+In general, given the jobid of a job and the type of information
+you require, the access module will return the filesystem location
+of the information you are looking for.
+
+Primary consumer: jobmanager.py
+
+Note: the access module will look for a PATHFINDER_DIR environment
+variable to set the project root directory. If such an environment
+variable does not exist, it will assume the project's root directory
+is this file's parent directory.
+'''
 
 ###############################################################################
 # Imports                                                                     #

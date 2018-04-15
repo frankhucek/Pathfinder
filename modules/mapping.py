@@ -2,8 +2,28 @@
 
 '''Mapping module
 
+The mapping module provides a 1-1 mapping between coordinates in
+a job's image coordinate frame and coordinates in a job's blueprint
+coordinate frame. Image space coordinates are in the form (x,y),
+where x and y are the number of pixels between a given point and the
+upper left corner of the images. Blueprint space coordinates are
+in the form (u,v), where the point u,v is a real world position
+measured from the upper left of the job's field of interest.
+
+NOTE: currently, the only allowed field of interest geometry is
+a rectangle. Fundamentally, the field of interest could be any
+convex polygon. However, the implementation can't yet support it.
+
 The mapping.py module provides several functions for transforming
-between image and blueprint coordinates.
+between image and blueprint coordinates. This mapping API can be
+found in the Mapping Functions section of this file.
+
+Most of the mapping API operations are implemented using a
+Geometry object, though users of the API should consider this class
+an implementation detail.
+
+The mapping API can also be accessed using the command line interface
+defined in this file.
 
 Example usage:
 python3 mapping.py itb 350 450 examples/manifest.json

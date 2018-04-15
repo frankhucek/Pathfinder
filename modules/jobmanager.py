@@ -1,5 +1,26 @@
 #! /usr/bin/env python3
 
+'''Job manager module
+
+The job manager module is responsible for handling incoming data
+for a job. It handles any incremental processing that must be done
+to keep a job up to date once it receives new data.
+
+This keeps lots of processing information isolated from the server
+code.
+
+The job manager uses the Processing class/subclasses to determine
+what behavior to follow for each job when it receives new data.
+The job manifest will specificy a processing_type that corresponds
+to a Processing subclass. Then, that subclass will implement the
+Processing.process(jobid, filename) method, which is called on
+the incoming data.
+
+The jobmanager can be called programmatically with the update_job
+function. It also provides a CLI in this file.
+'''
+
+
 ###############################################################################
 # Imports                                                                     #
 ###############################################################################

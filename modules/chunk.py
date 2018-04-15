@@ -1,3 +1,12 @@
+'''chunk module
+
+Provides tools with which to convert a raw image to a text file
+containing chunked data.
+
+Each chunk holds the position, average RGB value, and variance
+of that chunk of the image.
+'''
+
 # Imports
 import json
 import cli
