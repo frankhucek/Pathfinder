@@ -9,6 +9,7 @@ Brian Clark (bpc30)
 * Implement skeleton of crowd module (function names, framework)
 * Add FrequencyUnit functionality to crowd module + unit tests
 * Add CLI to crowd module
+* First pass of crowd module estimate_total, function for guessing how many objects were imaged in a single heatmap
 
 ## Files 4/20
 
@@ -23,6 +24,6 @@ jobs/1/manifest.json
 ## Time 4/20
 
 Sunday: 11:30-12:30                 1:00
-Tuesday: 10:30-11:00                1:30
+Tuesday: 10:30-11:00, 5:30-6:00     2:00
 ----------------------------------------
-Total                               2:30
+Total                               3:00
