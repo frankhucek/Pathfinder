@@ -198,7 +198,7 @@ class Heatmap(object):
         if m == 0:
             return self._points
         else:
-            return self._points / np.max(self._points)
+            return self._points / m
 
     def project_point(self, coord, scale):
         raw = mapping.image_to_blueprint(coord,
