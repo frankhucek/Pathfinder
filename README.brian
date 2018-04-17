@@ -6,13 +6,23 @@ Brian Clark (bpc30)
 * Add a new processing type that generates every type of output
  whenever new data is received for a job. (This should be replaced
  with on-demand output generation triggered from the website)
+* Implement skeleton of crowd module (function names, framework)
+* Add FrequencyUnit functionality to crowd module + unit tests
+* Add CLI to crowd module
 
 ## Files 4/20
 
-
+modules/access.py
+modules/crowd.py
+modules/heatmap.py
+modules/jobmanager.py
+modules/manifest.py
+modules/test/test_crowd.py
+jobs/1/manifest.json
 
 ## Time 4/20
 
 Sunday: 11:30-12:30                 1:00
+Tuesday: 10:30-11:00                1:30
 ----------------------------------------
-Total                               1:00
+Total                               2:30
