@@ -14,6 +14,9 @@ from enum import Enum
 # Constants                                                                   #
 ###############################################################################
 
+CROWD_FACTOR = 0.00000940981
+
+
 class FrequencyUnits(Enum):
     SECONDS = 1
     MINUTES = 60
@@ -47,22 +50,35 @@ def estimate_total(heatmap_filepath):
 
 
 def estimate_total_hm(hm):
-    pass
+    rate = estimate_obj_per_sec(hm)
+    seconds = hm.period.duration().seconds
+    total = rate * seconds
+    return total
+
+
+def estimate_obj_per_sec(hm):
+    count = hm.count
+    seconds = hm.period.duration().seconds
+    count_per_sec = count / seconds
+
+    obj_per_sec = count_per_sec * CROWD_FACTOR
+
+    return obj_per_sec
 
 
 def estimate_frequency(heatmap_filepaths, units, aggregate):
     heatmaps = [Heatmap.load(x) for x in heatmap_filepaths]
 
-    totals = {}
+    obj_per_sec = {}
 
     for heatmap in heatmaps:
-        totals[heatmap] = estimate_total_hm(heatmap)
+        obj_per_sec[heatmap] = estimate_obj_per_sec(heatmap)
 
     # generate list of (time_period, total) tuples
     if aggregate:
-        intervals = average_frequency(totals)
+        intervals = average_frequency(obj_per_sec)
     else:
-        intervals = tabled_frequencies(totals)
+        intervals = tabled_frequencies(obj_per_sec)
 
     converted_intervals = convert(intervals, units)
 
