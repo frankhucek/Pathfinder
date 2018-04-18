@@ -26,6 +26,7 @@ function. It also provides a CLI in this file.
 ###############################################################################
 
 import argparse
+import shutil
 from datetime import timedelta
 
 # star import required for unpickling
@@ -36,6 +37,18 @@ from heatmap import *
 from image import ImageData
 import heatmap
 import access
+
+
+###############################################################################
+# Constants                                                                   #
+###############################################################################
+
+NEW_JOB_DIRS = [
+    access.DATA_DIR,
+    access.IMAGES_DIR,
+    access.HEATMAPS_DIR,
+    access.OUT_DIR
+]
 
 
 ###############################################################################
@@ -191,6 +204,28 @@ def update_job(jobid, incoming_data_filepath):
     processing.process(jobid, incoming_data_filepath)
 
 
+def new_job(incoming_manifest):
+
+    # create job dir
+    jobid = access.new_job_root()
+
+    # ensure all required subdirs exist
+    for subdir in NEW_JOB_DIRS:
+        access.ensure_subdir(jobid, subdir)
+
+    # copy in manifest
+    manifest_filepath = access.manifest_filepath(jobid)
+    shutil.copy(incoming_manifest, manifest_filepath)
+
+    # create heatmap
+    heatmap_filepath = access.heatmap_filepath(jobid)
+    manifest = access.manifest(jobid)
+    heatmap.new_heatmap(heatmap_filepath, manifest)
+
+    # report new jobid
+    return jobid
+
+
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
@@ -207,6 +242,12 @@ def get_args():
     update_job.add_argument("data_filepath",
                             help="location of incoming data")
 
+    new_job = subparsers.add_parser("new_job",
+                                    help="add a new job")
+
+    new_job.add_argument("manifest_filepath",
+                         help="file containing a manifest")
+
     return parser.parse_args()
 
 
@@ -221,6 +262,10 @@ def main():
     if args.op == "update_job":
         update_job(args.jobid,
                    args.data_filepath)
+
+    elif args.op == "new_job":
+        jobid = new_job(args.manifest_filepath)
+        print("Created new job: {}".format(jobid))
 
 
 if __name__ == '__main__':

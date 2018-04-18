@@ -35,10 +35,19 @@ PATHFINDER_DIR = os.environ.get("PATHFINDER_DIR",
                                 DEF_PATHFINDER_DIR)
 JOBS_DIR = "jobs"
 DATA_DIR = "data"
+IMAGES_DIR = "images"
 HEATMAPS_DIR = "heatmaps"
 OUT_DIR = "out"
 
 MANIFEST_FILENAME = "manifest.json"
+
+
+###############################################################################
+# Exceptions                                                                          #
+###############################################################################
+
+class DuplicateJobError(Exception):
+    pass
 
 
 ###############################################################################
@@ -52,6 +61,21 @@ def save_new_data(jobid, old_data_filepath):
     new_data_filepath = join(new_dir, basename)
 
     shutil.move(old_data_filepath, new_data_filepath)
+
+
+def new_job_root():
+    jobid = available_jobid()
+    job_dir = job_root(jobid)
+    try:
+        os.mkdir(job_dir)
+        return jobid
+    except FileExistsError:
+        raise DuplicateJobError("Duplicate job!")
+
+
+def ensure_subdir(jobid, subdir):
+    subdir_dir = sub_dir(jobid, subdir)
+    os.makedirs(subdir_dir, exist_ok=True)
 
 
 def manifest_filepath(jobid):
@@ -106,3 +130,16 @@ def job_root(jobid):
 def sub_dir(jobid, subdir):
     root = job_root(jobid)
     return join(root, subdir)
+
+
+def available_jobid():
+
+    _, job_dirs, _ = next(os.walk(jobs_dir()))
+    jobids = sorted([int(x) for x in job_dirs])
+
+    for idx, existing_jobid in enumerate(jobids):
+        if existing_jobid != idx:
+            return idx
+
+    next_jobid = len(jobids)
+    return next_jobid
