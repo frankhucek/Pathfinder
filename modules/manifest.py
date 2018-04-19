@@ -83,7 +83,6 @@ class Manifest(object):
             self.dimensions()
             self.fov()
             self.processing()
-            self.processing_type()
         except KeyError:
             raise ManifestError("Invalid manifest structure")
 
@@ -134,8 +133,8 @@ class Manifest(object):
     def processing(self):
         return self.json[PROCESSING]
 
-    def processing_type(self):
-        return self.processing()[PROCESSING_TYPE]
+    def processing_type(self, processing_json):
+        return processing_json[PROCESSING_TYPE]
 
     def _overlay(self):
         return self.json[OVERLAY]

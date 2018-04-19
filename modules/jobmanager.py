@@ -68,13 +68,12 @@ class Processing(object):
                 for x in all_subclasses(cls)}
 
     @staticmethod
-    def of(manifest):
-        json = manifest.processing()
-        processing_type = manifest.processing_type()
+    def of(manifest, processing_json):
+        processing_type = manifest.processing_type(processing_json)
         types = Processing._types()
         subclass = types.get(processing_type, None)
         if subclass:
-            return subclass(manifest, json)
+            return subclass(manifest, processing_json)
         else:
             raise ValueError("Unrecognized processing type")
 
@@ -83,7 +82,7 @@ class Processing(object):
         self.manifest = manifest
         self.json = json
 
-    def process(self, filename):
+    def process(self, jobid, filename):
         raise NotImplementedError("implement is subclass")
 
 
@@ -162,21 +161,11 @@ class IntervalProcessing(Processing):
             print("Not updating for img: {}".format(img_data.time_taken()))
 
 
-class DoItAllIntervalProcessing(IntervalProcessing):
-    """Does all processing
+class AllResultsProcessing(Processing):
 
-    Really basic processing class that just generates every type
-    of output when new data is received. Would theoretically
-    be replaced by on-demand output image generation.
-    """
-
-    processing_type = "do_it_all_interval_processing"
-
-    def __init__(self, manifest, json):
-        super().__init__(manifest, json)
+    processing_type = "all_results_processing"
 
     def process(self, jobid, filename):
-        super().process(jobid, filename)
 
         heatmap_filepath = access.heatmap_filepath(jobid)
 
@@ -200,8 +189,12 @@ class DoItAllIntervalProcessing(IntervalProcessing):
 def update_job(jobid, incoming_data_filepath):
     access.save_new_data(jobid, incoming_data_filepath)
     manifest = access.manifest(jobid)
-    processing = Processing.of(manifest)
-    processing.process(jobid, incoming_data_filepath)
+    instructions = manifest.processing()
+
+    # execute each of the processing instructions found in job's manifest
+    for instruction in instructions:
+        processing = Processing.of(manifest, instruction)
+        processing.process(jobid, incoming_data_filepath)
 
 
 def new_job(incoming_manifest):
