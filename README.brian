@@ -12,7 +12,7 @@ Brian Clark (bpc30)
 * First pass of crowd module estimate_total, function for guessing how many objects were imaged in a single heatmap
 * Implement jobmanager new_job command
 * Make manifest's "processing" section a list of processing directives rather than a single object, allowing for mixing and matching
-* Implement first component of new HeatmapSeries class, which allows for a job to have a series of temporally sequential heatmaps (eg, one per hour)
+* Implement first component of new HeatmapSeries class, which allows for a job to have a series of temporally sequential heatmaps (eg, one per hour) [These changes on heatmap-series branch]
 
 
 ## Files 4/20
