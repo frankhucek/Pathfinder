@@ -33,7 +33,7 @@ def recv_photo(filename, sigfile, client_socket):
     print("username of sign: " + str(verified.username))
     if verified.valid and verified.username in ":".join(verified_usernames):
         job_num = re.search(r'\d+', verified.username).group()
-        job_dir = base_job_dir + job_num + "/data/"
+        job_dir = base_job_dir + job_num + "/images/"
         if not job_num:
             job_num = '0'
         if not os.path.exists(job_dir):
