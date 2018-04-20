@@ -47,6 +47,7 @@ NEW_JOB_DIRS = [
     access.DATA_DIR,
     access.IMAGES_DIR,
     access.HEATMAPS_DIR,
+    access.SERIES_DIR,
     access.OUT_DIR
 ]
 
@@ -181,6 +182,18 @@ class AllResultsProcessing(Processing):
                                 overlay_fp,
                                 self.manifest.scale(),
                                 self.manifest.blur())
+
+
+class SeriesProcessing(Processing):
+    """docstring for SeriesProcessing"""
+
+    def __init__(self, manifest, json, interval, start):
+        super().__init__()
+        self.interval = interval
+        self.start = start
+
+    def process(self, jobid, filename):
+        pass
 
 
 ###############################################################################

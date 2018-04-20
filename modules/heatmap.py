@@ -39,6 +39,7 @@ found in the Pathfinder design document.
 import argparse
 import json
 import pickle
+import os
 
 from datetime import datetime
 
@@ -290,6 +291,71 @@ class Heatmap(object):
                             default=lambda x: list(x))
         string = "{}\n{}".format(attr_str, points)
         return string
+
+
+class HeatmapSeries(object):
+
+    @staticmethod
+    def new(manifest, interval, start):
+        return HeatmapSeries(manifest, interval, start)
+
+    @staticmethod
+    def load(filepath):
+        pass
+
+    def save(self, filepath):
+        with open(filepath, 'wb') as f:
+            pickle.dump(self, f)
+
+    def __init__(self, manifest, interval, start):
+        super().__init__()
+        self.manifest = manifest
+        self.interval = interval
+        self.start = start
+
+        self.heatmaps = {}
+
+    def sequence_start(self, images):
+        incoming = images[0].replace(microsecond=0,
+                                     second=0,
+                                     minute=0)
+
+        diff = incoming - self.start
+        num_cycles = int(diff / self.interval)
+        record_start = self.start + (num_cycles * self.interval)
+        return record_start
+
+    def subheatmap(self, record_start, series_dir):
+        heatmap = Heatmap.new(self.manifest)
+        datetimestamp = image.unparse_datetime(record_start)
+        heatmap_filename = "{}.heatmap".format(datetimestamp)
+        fp = os.path.join(series_dir, heatmap_filename)
+        heatmap.save(fp)
+        self.heatmaps[record_start] = fp
+
+    def record(self,
+               series_dir,
+               img_files,
+               period,
+               window_size=DEFAULT_WINDOW_SIZE,
+               color_thresh=DEFAULT_COLOR_THRESH):
+
+        images = image_obj_sequence(self.manifest,
+                                    img_files,
+                                    period)
+
+        # find out what interval this sequence of images
+        # belongs in
+        record_start = self.sequence_start(images)
+
+        # make sure this interval has a heatmap
+        if record_start not in self.heatmaps:
+            self.subheatmap(record_start, series_dir)
+
+        # delegate recording to correct heatmap
+        heatmap_fp = self.heatmaps[record_start]
+        heatmap = Heatmap.load(heatmap_fp)
+        heatmap.record(img_files, period, window_size, color_thresh)
 
 
 ###############################################################################

@@ -38,6 +38,7 @@ JOBS_DIR = "jobs"
 DATA_DIR = "data"
 IMAGES_DIR = "images"
 HEATMAPS_DIR = "heatmaps"
+SERIES_DIR = "heatmaps/series"
 OUT_DIR = "out"
 
 MANIFEST_FILENAME = "manifest.json"
@@ -86,6 +87,17 @@ def new_job_root():
 def ensure_subdir(jobid, subdir):
     subdir_dir = sub_dir(jobid, subdir)
     os.makedirs(subdir_dir, exist_ok=True)
+
+
+def series_heatmap_filepath(jobid, timestamp):
+    series_dir = sub_dir(jobid, SERIES_DIR)
+    return join(series_dir, timestamp, ".heatmap")
+
+
+def series_filepath(jobid):
+    heatmap_dir = sub_dir(jobid, HEATMAPS_DIR)
+    series_filename = "{}.series".format(jobid)
+    return join(heatmap_dir, series_filename)
 
 
 def manifest_filepath(jobid):
