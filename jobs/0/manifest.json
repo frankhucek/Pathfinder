@@ -1,0 +1,44 @@
+{
+    "JobID": 0,
+    "processing": [
+        {
+            "type": "interval_processing",
+            "window_size": 2,
+            "color_thresh": 11,
+            "interval": 100
+        },
+        {
+            "type": "all_results_processing"
+        }
+    ],
+    "overlay": {
+        "control_img": "jobs/0/0.jpg",
+        "scale": 100,
+        "blur": 15
+    },
+    "chunk": {
+        "chunk_height": 36,
+        "chunk_width": 36
+    },
+    "geometry": {
+        "height": 1944,
+        "width": 2592,
+        "fov": [1.0, 1.0, 1.0],
+        "upperleft": {
+            "position": [250, 250],
+            "distance": 21.21320344
+        },
+        "upperright": {
+            "position": [750, 250],
+            "distance": 21.21320344
+        },
+        "lowerleft": {
+            "position": [250, 750],
+            "distance": 21.21320344
+        },
+        "lowerright": {
+            "position": [750, 750],
+            "distance": 21.21320344
+        }
+    }
+}
