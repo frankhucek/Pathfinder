@@ -79,9 +79,10 @@ def listen_for_photos():
             client_socket.close()
 
             #### INVOKE JOB MANAGER HERE ####
-            print("invoking job manager in directory " + job_dir)
-            jobmanager.update_job(0,job_dir+filename)
-            
+            jobmanager_job_dir = base_job_dir + "0/data/" + filename
+            print("invoking job manager in directory " + jobmanager_job_dir)
+            #jobmanager.update_job(0,job_dir+filename)
+            jobmanager.update_job(0,jobmanager_job_dir)
             #################################
             
             
