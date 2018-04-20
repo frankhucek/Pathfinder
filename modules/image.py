@@ -153,3 +153,7 @@ class ChunkImageData(ImageData):
 
 def parse_datetime(s):
     return datetime.strptime(s, DATETIME_FMT)
+
+
+def unparse_datetime(dt):
+    return dt.strftime(DATETIME_FMT)
