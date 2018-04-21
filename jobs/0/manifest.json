@@ -12,7 +12,7 @@
         }
     ],
     "overlay": {
-        "control_img": "jobs/0/0.jpg",
+        "control_img": "jobs/0/control.jpg",
         "scale": 100,
         "blur": 15
     },
