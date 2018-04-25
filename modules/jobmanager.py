@@ -76,7 +76,8 @@ class Processing(object):
         if subclass:
             return subclass(manifest, processing_json)
         else:
-            raise ValueError("Unrecognized processing type")
+            msg = "Unrecognized processing type: {}".format(processing_type)
+            raise ValueError(msg)
 
     def __init__(self, manifest, json):
         super().__init__()
@@ -145,8 +146,12 @@ class IntervalProcessing(Processing):
         period = self._period(hm, img_data)
         return period.duration() > self.interval
 
-    def process(self, jobid, filename):
-        heatmap_filepath = access.heatmap_filepath(jobid)
+    def process(self, jobid, filename, heatmap_filepath=None):
+
+        import pdb; pdb.set_trace()
+
+        if not heatmap_filepath:
+            heatmap_filepath = access.heatmap_filepath(jobid)
         hm = Heatmap.load(heatmap_filepath)
         img_data = ImageData.create(self.manifest, filename)
 
@@ -185,15 +190,28 @@ class AllResultsProcessing(Processing):
 
 
 class SeriesProcessing(Processing):
-    """docstring for SeriesProcessing"""
 
-    def __init__(self, manifest, json, interval, start):
-        super().__init__()
-        self.interval = interval
-        self.start = start
+    processing_type = "series_processing"
+
+    SERIES_INTERVAL = "series_interval"
+    SERIES_START = "series_start"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+        series_interval_sec = json[SeriesProcessing.SERIES_INTERVAL]
+        self.series_interval = timedelta(seconds=series_interval_sec)
+        series_start_str = json[SeriesProcessing.SERIES_START]
+        self.series_start = image.parse_datetime(series_start_str)
 
     def process(self, jobid, filename):
-        pass
+
+        series_filepath = access.series_filepath(jobid)
+        series_dir = access.series_dir(jobid)
+        subheatmap_fp = heatmap.series_subheatmap(series_filepath,
+                                                  filename,
+                                                  series_dir)
+        interval_proc = IntervalProcessing(self.manifest, self.json)
+        interval_proc.process(jobid, filename, subheatmap_fp)
 
 
 ###############################################################################

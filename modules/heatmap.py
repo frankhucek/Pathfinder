@@ -41,7 +41,7 @@ import json
 import pickle
 import os
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import numpy as np
 from PIL import Image
@@ -301,7 +301,8 @@ class HeatmapSeries(object):
 
     @staticmethod
     def load(filepath):
-        pass
+        with open(filepath, 'rb') as f:
+            return pickle.load(f)
 
     def save(self, filepath):
         with open(filepath, 'wb') as f:
@@ -315,47 +316,45 @@ class HeatmapSeries(object):
 
         self.heatmaps = {}
 
-    def sequence_start(self, images):
-        incoming = images[0].replace(microsecond=0,
-                                     second=0,
-                                     minute=0)
+    def sequence_start(self, dt):
+        incoming = dt.replace(microsecond=0,
+                              second=0)
 
         diff = incoming - self.start
         num_cycles = int(diff / self.interval)
         record_start = self.start + (num_cycles * self.interval)
         return record_start
 
-    def subheatmap(self, record_start, series_dir):
+    def _make_subheatmap(self, record_start, series_dir):
         heatmap = Heatmap.new(self.manifest)
+        heatmap.period = heatmap.period.expand_to_include(record_start)
         datetimestamp = image.unparse_datetime(record_start)
-        heatmap_filename = "{}.heatmap".format(datetimestamp)
+        fmted_dtstamp = datetimestamp.replace(":", "-")
+        fmted_dtstamp = fmted_dtstamp.replace(" ", "_")
+        heatmap_filename = "{}.heatmap".format(fmted_dtstamp)
         fp = os.path.join(series_dir, heatmap_filename)
         heatmap.save(fp)
         self.heatmaps[record_start] = fp
 
-    def record(self,
-               series_dir,
-               img_files,
-               period,
-               window_size=DEFAULT_WINDOW_SIZE,
-               color_thresh=DEFAULT_COLOR_THRESH):
+    def select_subheatmap(self,
+                          series_dir,
+                          image_filepath):
 
-        images = image_obj_sequence(self.manifest,
-                                    img_files,
-                                    period)
+        import pdb; pdb.set_trace()
+
+        img = image.ImageData.create(self.manifest, image_filepath)
+        dt = img.time_taken()
 
         # find out what interval this sequence of images
         # belongs in
-        record_start = self.sequence_start(images)
+        record_start = self.sequence_start(dt)
 
         # make sure this interval has a heatmap
         if record_start not in self.heatmaps:
-            self.subheatmap(record_start, series_dir)
+            self._make_subheatmap(record_start, series_dir)
 
-        # delegate recording to correct heatmap
         heatmap_fp = self.heatmaps[record_start]
-        heatmap = Heatmap.load(heatmap_fp)
-        heatmap.record(img_files, period, window_size, color_thresh)
+        return heatmap_fp
 
 
 ###############################################################################
@@ -400,6 +399,23 @@ def overlay_heatmap(heatmap_filepath,
     hm = Heatmap.load(heatmap_filepath)
     img = Image.open(image_filepath)
     hm.overlay(img, output_filepath, scale, blur)
+
+
+def new_series_heatmap(series_heatmap_filepath,
+                       manifest,
+                       interval,
+                       start):
+    series = HeatmapSeries.new(manifest, interval, start)
+    series.save(series_heatmap_filepath)
+
+
+def series_subheatmap(series_filepath,
+                      image_filepath,
+                      series_dir):
+    series = HeatmapSeries.load(series_filepath)
+    subheatmap_fp = series.select_subheatmap(series_dir, image_filepath)
+    series.save(series_filepath)
+    return subheatmap_fp
 
 
 ###############################################################################
@@ -451,6 +467,14 @@ def is_movement(images, coord,
 ###############################################################################
 # Command line                                                                #
 ###############################################################################
+
+def parse_interval(sec):
+    try:
+        return timedelta(seconds=int(sec))
+    except ValueError:
+        msg = "interval must be a number of seconds"
+        raise argparse.ArgumentTypeError(msg)
+
 
 def parse_time(s):
     try:
@@ -530,6 +554,19 @@ def get_args():
                                 type=int,
                                 help="radius of GaussianBlur")
 
+    new_series_heatmap_parser = subparsers.add_parser("new_series_heatmap",
+                                                      help="new series")
+    new_series_heatmap_parser.add_argument("series_heatmap_filepath",
+                                           help="file to contain series")
+    new_series_heatmap_parser.add_argument("manifest",
+                                           help="file containing manifest")
+    new_series_heatmap_parser.add_argument("interval",
+                                           type=parse_interval,
+                                           help="seconds between heatmaps")
+    new_series_heatmap_parser.add_argument("start",
+                                           type=parse_time,
+                                           help="starting point")
+
     return parser.parse_args()
 
 
@@ -567,6 +604,12 @@ def main():
                         args.output_filepath,
                         args.scale,
                         args.blur)
+
+    elif args.op == "new_series_heatmap":
+        new_series_heatmap(args.series_heatmap_filepath,
+                           Manifest.from_filepath(args.manifest),
+                           args.interval,
+                           args.start)
 
 
 if __name__ == '__main__':
