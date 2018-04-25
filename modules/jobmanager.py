@@ -147,9 +147,6 @@ class IntervalProcessing(Processing):
         return period.duration() > self.interval
 
     def process(self, jobid, filename, heatmap_filepath=None):
-
-        import pdb; pdb.set_trace()
-
         if not heatmap_filepath:
             heatmap_filepath = access.heatmap_filepath(jobid)
         hm = Heatmap.load(heatmap_filepath)

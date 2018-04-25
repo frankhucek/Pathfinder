@@ -340,8 +340,6 @@ class HeatmapSeries(object):
                           series_dir,
                           image_filepath):
 
-        import pdb; pdb.set_trace()
-
         img = image.ImageData.create(self.manifest, image_filepath)
         dt = img.time_taken()
 
