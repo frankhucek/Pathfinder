@@ -1,11 +1,19 @@
 {
-    "JobID": 0,
+"JobID": 0,
     "processing": [
         {
             "type": "interval_processing",
             "window_size": 2,
             "color_thresh": 11,
             "interval": 100
+        },
+        {
+            "type": "series_processing",
+            "window_size": 2,
+            "color_thresh": 11,
+            "interval": 100,
+            "series_interval": 210,
+            "series_start": "2018:03:30 14:12:00"
         },
         {
             "type": "all_results_processing"

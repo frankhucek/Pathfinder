@@ -84,6 +84,10 @@ def series_heatmap_filepath(jobid, timestamp):
     return join(series_dir, timestamp, ".heatmap")
 
 
+def series_dir(jobid):
+    return sub_dir(jobid, SERIES_DIR)
+
+
 def series_filepath(jobid):
     heatmap_dir = sub_dir(jobid, HEATMAPS_DIR)
     series_filename = "{}.series".format(jobid)
