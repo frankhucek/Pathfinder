@@ -33,7 +33,7 @@ def recv_photo(filename, sigfile, client_socket):
     print("username of sign: " + str(verified.username))
     if verified.valid and verified.username in ":".join(verified_usernames):
         job_num = re.search(r'\d+', verified.username).group()
-        job_dir = base_job_dir + job_num + "/"
+        job_dir = base_job_dir + job_num + "/images/"
         if not job_num:
             job_num = '0'
         if not os.path.exists(job_dir):
@@ -79,9 +79,10 @@ def listen_for_photos():
             client_socket.close()
 
             #### INVOKE JOB MANAGER HERE ####
-            print("invoking job manager in directory " + job_dir)
-            jobmanager.update_job(0,job_dir+filename)
-            
+            jobmanager_job_dir = base_job_dir + "0/data/" + filename
+            print("invoking job manager in directory " + jobmanager_job_dir)
+            #jobmanager.update_job(0,job_dir+filename)
+            jobmanager.update_job(0,jobmanager_job_dir)
             #################################
             
             
