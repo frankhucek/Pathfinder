@@ -118,7 +118,11 @@ def format_frequencies(intervals):
 
 
 def convert(intervals, units):
-    pass
+    converted = []
+    for period, rate in intervals:
+        conv_rate = FrequencyUnits.convert(rate, units)
+        converted.add((period, conv_rate))
+    return converted
 
 
 ###############################################################################
