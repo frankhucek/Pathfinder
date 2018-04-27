@@ -48,14 +48,15 @@ DIM_HEIGHT = 257
 class PixelChunk(object):
 
     @staticmethod
-    def new(image_filepath):
+    def new(image_filepath, chunk_width, chunk_height):
         image = Image.open(image_filepath)
         output_json = image_filepath.replace('.jpg', '.txt')
         exif_date = image._getexif()
         width = exif_date[DIM_WIDTH]
         height = exif_date[DIM_HEIGHT]
         file_date = exif_date[DATETIME_EXIF]
-        return PixelChunk(image.load(), output_json, width, height, file_date)
+        return PixelChunk(image.load(), output_json, width, height,
+                            chunk_width, chunk_height, file_date)
 
     @staticmethod
     def of(filepath):
@@ -73,13 +74,15 @@ class PixelChunk(object):
                           chunks)
 
     def __init__(self, image, output_json,
-                 width, height, file_date,
-                 chunks=None):
+                 width, height, chunk_width, chunk_height,
+                 file_date, chunks=None):
         super(PixelChunk, self).__init__()
         self.image = image
         self.output_json = output_json
         self.width = width
         self.height = height
+        self.chunk_width = chunk_width
+        self.chunk_height = chunk_height
         self.json_data = {}
         self.json_data[FILE_DATETIME] = file_date
         self.json_data[WIDTH] = width
@@ -87,7 +90,9 @@ class PixelChunk(object):
         self.json_data[CHUNK] = chunks if chunks else []
 
     def add_chunk(self, coordinate):
-        total_coordinates = total_chunk_coordinates(coordinate)
+        total_coordinates = total_chunk_coordinates(coordinate,
+                                                    self.chunk_width,
+                                                    self.chunk_height)
         color_average, color_variance = color_values(self.image, total_coordinates)
         self.json_data[CHUNK].append({
             COORDINATES: coordinate,
@@ -171,11 +176,12 @@ def rgb_variance_rough_covariance_term(average_red, average_green, average_blue)
                 (average_blue*average_green)) * (2.0/9.0)
     return value_one - value_two
 
-def total_chunk_coordinates(coordinate):
+def total_chunk_coordinates(coordinate, chunk_width=DEFAULT_CHUNK_WIDTH,
+        chunk_height=DEFAULT_CHUNK_HEIGHT):
     x = coordinate[0]
-    x_end = x + DEFAULT_CHUNK_WIDTH
+    x_end = x + chunk_width
     y = coordinate[1]
-    y_end = y + DEFAULT_CHUNK_HEIGHT
+    y_end = y + chunk_height
     xs, ys = range(x, x_end), range(y, y_end)
     return set(itertools.product(xs, ys))
 
@@ -183,7 +189,7 @@ def total_chunk_coordinates(coordinate):
 def main():
     args = get_args()
     if args.op == "create_chunks":
-        create_chunks(args.image_filepath)
+        create_chunks(args.image_filepath, DEFAULT_CHUNK_WIDTH, DEFAULT_CHUNK_HEIGHT)
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -193,8 +199,8 @@ def get_args():
                         help="Image files")
     return parser.parse_args()
 
-def create_chunks(image_filepath, new_filepath):
-    chunk_json = PixelChunk.new(image_filepath)
+def create_chunks(image_filepath, new_filepath, chunk_width, chunk_height):
+    chunk_json = PixelChunk.new(image_filepath, chunk_width, chunk_height)
 
     dimensions = chunk_json.dimensions()
     all_coordinates = coordinates(dimensions)

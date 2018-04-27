@@ -188,8 +188,8 @@ class AllResultsProcessing(Processing):
 ###############################################################################
 
 def update_job(jobid, incoming_data_filepath):
-    access.save_new_data(jobid, incoming_data_filepath)
     manifest = access.manifest(jobid)
+    access.save_new_data(jobid, incoming_data_filepath, manifest)
     instructions = manifest.processing()
 
     # execute each of the processing instructions found in job's manifest

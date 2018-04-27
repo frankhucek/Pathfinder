@@ -55,7 +55,7 @@ class DuplicateJobError(Exception):
 # Access Tools                                                                #
 ###############################################################################
 
-def save_new_data(jobid, old_data_filepath):
+def save_new_data(jobid, old_data_filepath, manifest):
     print("saving new data!")
     basename = os.path.basename(old_data_filepath)
 
@@ -69,7 +69,9 @@ def save_new_data(jobid, old_data_filepath):
 
     print("new_filepath: {}".format(new_data_filepath))
     #shutil.copy(old_data_filepath, new_data_filepath)
-    chunk_new_image(old_data_filepath, new_data_filepath)
+    #Create chunks
+    chunk_width, chunk_height = manifest.chunk_dimensions()
+    chunk_new_image(old_data_filepath, new_data_filepath, chunk_width, chunk_height)
 
 def new_job_root():
     jobid = available_jobid()
@@ -155,5 +157,5 @@ def available_jobid():
 ###############################################################################
 # Chunk                                                                       #
 ###############################################################################
-def chunk_new_image(filepath, new_filepath):
-    create_chunks(filepath, new_filepath)
+def chunk_new_image(filepath, new_filepath, chunk_width, chunk_height):
+    create_chunks(filepath, new_filepath, chunk_width, chunk_height)
