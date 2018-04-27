@@ -3,8 +3,8 @@ Description=Pathfinder's Camera Service
 After=network.target
 
 [Serevice]
-ExecStart=/usr/bin/python3 /home/frank/Code/srproj/rpi_camera_modules/pathfinder_camera_service.py
-WorkingDirectory=/home/frank/Code/srproj/rpi_camera_modules
+ExecStart=/usr/bin/python3 /home/frank/Code/srproj/2018_spring_395_pathfinder/camera/capture.py
+WorkingDirectory=/home/frank/Code/srproj/2018_spring_395_pathfinder/camera
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
