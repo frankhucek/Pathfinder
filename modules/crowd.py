@@ -94,7 +94,7 @@ def average_frequency(obj_per_sec):
     total_period = None
     total_seconds = 0
     total_obj = 0
-    for heatmap, rate in obj_per_sec:
+    for heatmap, rate in obj_per_sec.items():
         total_period = TimePeriod.union(heatmap.period, total_period)
         duration = heatmap.period.duration().seconds
         obj = duration * rate
@@ -108,8 +108,8 @@ def average_frequency(obj_per_sec):
 
 def tabled_frequencies(obj_per_sec):
     table = []
-    for heatmap, rate in obj_per_sec:
-        table.add((heatmap.period, rate))
+    for heatmap, rate in obj_per_sec.items():
+        table.append((heatmap.period, rate))
     return table
 
 
@@ -122,7 +122,7 @@ def convert(intervals, units):
     converted = []
     for period, rate in intervals:
         conv_rate = FrequencyUnits.convert(rate, units)
-        converted.add((period, conv_rate))
+        converted.append((period, conv_rate))
     return converted
 
 
