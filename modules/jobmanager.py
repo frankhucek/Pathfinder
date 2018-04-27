@@ -136,6 +136,7 @@ class IntervalProcessing(Processing):
         self.interval = timedelta(seconds=interval_sec)
 
     def _period(self, hm, img_data):
+        print("last update: {}".format(hm.last_update()))
         return heatmap.TimePeriod(hm.last_update(),
                                   img_data.time_taken())
 
