@@ -8,10 +8,17 @@ Brian Clark (bpc30)
  * Add series CLI to heatmap.py
 * Second pass at SeriesProcessing class
 * Flesh out access.py to work with heatmap series
+* Implement helper methods in crowd module
+ * average_frequency: take the average frequency over multiple series
+ * table_frequencies: produce a table of the frequency for each entry in a heatmap series
+ * convert: convert a frequency series into per-day, per-hour, etc
+ * format_frequencies: format a frequency series into a printable string
+* Conduct significant system testing
 
 ## Files 4/27
 
 modules/access.py
+modules/crowd.py
 modules/heatmap.py
 modules/jobmanager.py
 jobs/1/manifest.json
@@ -21,5 +28,6 @@ jobs/1/manifest.json
 
 Tuesday: 4:45-5:30                  0:45
 Wednesday: 10:00-12:00              2:00
+Friday: 10:00-1:00, 4:30-5:15       3:45
 ----------------------------------------
-Total                               2:45
+Total                               6:30
