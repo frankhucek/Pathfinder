@@ -8,7 +8,7 @@ import time
 import picamera
 import gnupg
 import os
-remote_host = "localhost" # "frankhucek.com"
+remote_host = "frankhucek.com" # "frankhucek.com"
 remote_host_port = 3001 # port forwarded and ready to go
 passphrase_file = "/home/frank/Code/srproj/2018_spring_395_pathfinder/camera/pathfinder_gpg_passphrase.txt"
 
