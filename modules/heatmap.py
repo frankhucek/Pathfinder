@@ -180,9 +180,9 @@ class Heatmap(object):
                                                     self.size)
             for coord in all_coordinates:
 
+                self.include_in_period(image_set)
                 if is_movement(image_set, coord, color_thresh):
                     image_set[0].register(self, coord)
-                    self.include_in_period(image_set)
 
     def include_in_period(self, image_set):
         first_dt = image_set[0].time_taken()
