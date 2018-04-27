@@ -6,7 +6,7 @@
 
 import argparse
 
-from heatmap import Heatmap
+from heatmap import Heatmap, HeatmapSeries, TimePeriod
 from enum import Enum
 
 
@@ -66,8 +66,9 @@ def estimate_obj_per_sec(hm):
     return obj_per_sec
 
 
-def estimate_frequency(heatmap_filepaths, units, aggregate):
-    heatmaps = [Heatmap.load(x) for x in heatmap_filepaths]
+def estimate_frequency(series_heatmap, units, aggregate):
+    series = HeatmapSeries.load(series_heatmap)
+    heatmaps = series.subheatmaps()
 
     obj_per_sec = {}
 
@@ -89,11 +90,23 @@ def estimate_frequency(heatmap_filepaths, units, aggregate):
 # Helper functions                                                            #
 ###############################################################################
 
-def average_frequency(totals):
-    pass
+def average_frequency(obj_per_sec):
+    total_period = None
+    total_seconds = 0
+    total_obj = 0
+    for heatmap, rate in obj_per_sec:
+        total_period = TimePeriod.union(heatmap.period, total_period)
+        duration = heatmap.period.duration().seconds
+        obj = duration * rate
+
+        total_seconds += duration
+        total_obj += obj
+
+    frequency = total_obj / total_seconds
+    return [(total_period, frequency)]
 
 
-def tabled_frequencies(totals):
+def tabled_frequencies(obj_per_sec):
     pass
 
 
@@ -137,6 +150,8 @@ def get_args():
                               help="file containing heatmap")
 
     frequency_parser = subparsers.add_parser("estimate_frequency")
+    frequency_parser.add_argument("series_filepath",
+                                  help="heatmap series")
     frequency_parser.add_argument("units",
                                   type=valid_units,
                                   choices=FrequencyUnits.choices(),
@@ -144,9 +159,6 @@ def get_args():
     frequency_parser.add_argument("aggregate",
                                   type=valid_aggregate,
                                   help="flag of whether to aggregate results")
-    frequency_parser.add_argument("heatmap_filepaths",
-                                  nargs="+",
-                                  help="heatmap series")
 
     return parser.parse_args()
 
@@ -163,7 +175,7 @@ def main():
         print(total)
 
     elif args.op == "estimate_frequency":
-        intervals = estimate_frequency(args.heatmap_filepaths,
+        intervals = estimate_frequency(args.series_filepath,
                                        args.units,
                                        args.aggregate)
         report = format_frequencies(intervals)
