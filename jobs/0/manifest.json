@@ -9,6 +9,14 @@
         },
         {
             "type": "all_results_processing"
+        },
+        {
+            "type": "series_processing",
+            "series_interval": 45,
+            "series_start": "2018:04:27 13:04:00",
+            "window_size": 2,
+            "color_thresh": 11,
+            "interval": 10
         }
     ],
     "overlay": {
