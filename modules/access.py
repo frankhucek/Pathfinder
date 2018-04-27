@@ -65,7 +65,7 @@ def save_new_data(jobid, old_data_filepath):
     new_data_filepath = join(new_dir, basename)
 
     print("new_filepath: {}".format(new_data_filepath))
-    shutil.move(old_data_filepath, new_data_filepath)
+    shutil.copy(old_data_filepath, new_data_filepath)
 
 
 def new_job_root():
