@@ -87,9 +87,9 @@ class TimePeriod(object):
     @staticmethod
     def union(tp1, tp2):
         if not tp1:
-            tp2
+            return tp2
         elif not tp2:
-            tp1
+            return tp1
         return TimePeriod(min(tp1.start, tp2.start),
                           max(tp1.end, tp2.end))
 
