@@ -326,7 +326,7 @@ class HeatmapSeries(object):
         self.heatmaps = {}
 
     def subheatmaps(self):
-        return [Heatmap.load(x) for x in self.heatmaps.keys()]
+        return [Heatmap.load(x) for x in self.heatmaps.values()]
 
     def sequence_start(self, dt):
         incoming = dt.replace(microsecond=0,
