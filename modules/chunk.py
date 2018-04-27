@@ -70,6 +70,7 @@ class PixelChunk(object):
         chunks = chunk_json[CHUNK]
         return PixelChunk(image, output_json,
                           width, height,
+                          chunk_width, chunk_height,
                           file_date,
                           chunks)
 
