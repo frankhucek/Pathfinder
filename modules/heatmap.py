@@ -236,7 +236,9 @@ class Heatmap(object):
 
     def overlay(self, img, filepath, scale, blur):
 
-        points = self._rgb / np.max(self._rgb)
+        maximum = np.max(self._rgb)
+        div = maximum if maximum else 1
+        points = self._rgb / div
 
         # scale redshift by specified degree
         scaled_points = points * scale
