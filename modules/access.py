@@ -24,6 +24,7 @@ import shutil
 from pathlib import Path
 
 from manifest import Manifest
+from chunk import create_chunks
 
 
 ###############################################################################
@@ -62,11 +63,13 @@ def save_new_data(jobid, old_data_filepath):
     new_dir = sub_dir(jobid, DATA_DIR)
 
     print("new_dir: {}".format(new_dir))
-    new_data_filepath = join(new_dir, basename)
+    filename, ext = os.path.splitext(basename)
+    new_basename = filename + '.txt'
+    new_data_filepath = join(new_dir, new_basename)
 
     print("new_filepath: {}".format(new_data_filepath))
-    shutil.copy(old_data_filepath, new_data_filepath)
-
+    #shutil.copy(old_data_filepath, new_data_filepath)
+    chunk_new_image(old_data_filepath, new_data_filepath)
 
 def new_job_root():
     jobid = available_jobid()
@@ -148,3 +151,9 @@ def available_jobid():
 
     next_jobid = len(jobids)
     return next_jobid
+
+###############################################################################
+# Chunk                                                                       #
+###############################################################################
+def chunk_new_image(filepath, new_filepath):
+    create_chunks(filepath, new_filepath)

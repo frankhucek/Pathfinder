@@ -183,7 +183,7 @@ class AllResultsProcessing(Processing):
 
 
 ###############################################################################
-# Utilities                                                                          #
+# Utilities                                                                   #
 ###############################################################################
 
 def update_job(jobid, incoming_data_filepath):

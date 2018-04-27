@@ -105,8 +105,8 @@ class PixelChunk(object):
             chunks[coord] = chunk[RGB_AVERAGE]
         return chunks
 
-    def write(self):
-        with open(self.output_json, 'w') as outfile:
+    def write(self, new_filepath):
+        with open(new_filepath, 'w') as outfile:
             json.dump(self.json_data, outfile)
 
     def dimensions(self):
@@ -193,14 +193,14 @@ def get_args():
                         help="Image files")
     return parser.parse_args()
 
-def create_chunks(image_filepath):
+def create_chunks(image_filepath, new_filepath):
     chunk_json = PixelChunk.new(image_filepath)
 
     dimensions = chunk_json.dimensions()
     all_coordinates = coordinates(dimensions)
     for coordinate in all_coordinates:
         chunk_json.add_chunk(coordinate)
-    chunk_json.write()
+    chunk_json.write(new_filepath)
 
 def coordinates(dim, chunk_width=DEFAULT_CHUNK_WIDTH,
         chunk_height=DEFAULT_CHUNK_HEIGHT):
