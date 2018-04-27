@@ -5,7 +5,7 @@
             "type": "interval_processing",
             "window_size": 2,
             "color_thresh": 11,
-            "interval": 100
+            "interval": 10
         },
         {
             "type": "all_results_processing"

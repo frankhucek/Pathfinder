@@ -7,7 +7,7 @@ import struct
 import gnupg # python-gnupg package NOT gnupg package
 import os
 import re
-
+from heatmap import *
 import jobmanager
 
 local_host = ""
@@ -52,7 +52,7 @@ def listen_for_photos():
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
     s.bind((local_host, local_host_port))
-    s.listen(5) # only queue 5 connections right now
+    s.listen(20) # only queue 5 connections right now
 
     while True:
         (client_socket, addr) = s.accept()
@@ -82,7 +82,7 @@ def listen_for_photos():
             client_socket.close()
 
             #### INVOKE JOB MANAGER HERE ####
-            jobmanager_job_dir = base_job_dir + "0/data/" + filename
+            jobmanager_job_dir = base_job_dir + "0/images/" + filename
             print("invoking job manager in directory " + jobmanager_job_dir)
             #jobmanager.update_job(0,job_dir+filename)
             jobmanager.update_job(0,jobmanager_job_dir)
@@ -97,8 +97,8 @@ def listen_for_photos():
             print("socket error")
             client_socket.close()
             continue;
-        except:
-            print("weird error")
+        except Exception as e:
+            print(e)
             continue;
 
     s.close()
