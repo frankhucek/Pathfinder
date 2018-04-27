@@ -114,7 +114,8 @@ def tabled_frequencies(obj_per_sec):
 
 
 def format_frequencies(intervals):
-    pass
+    strs = ["{}: {}".format(p, r) for p, r in intervals]
+    return "\n".join(strs)
 
 
 def convert(intervals, units):
