@@ -186,13 +186,9 @@ class Heatmap(object):
 
     def include_in_period(self, image_set):
         first_dt = image_set[0].time_taken()
-        print("first_dt: {}".format(first_dt))
         last_dt = image_set[-1].time_taken()
-        print("last dt: {}".format(last_dt))
-        print("old period: {}".format(self.period))
         self.period = self.period.expand_to_include(first_dt)
         self.period = self.period.expand_to_include(last_dt)
-        print("new period: {}".format(self.period))
 
     def last_update(self):
         return self.period.end
