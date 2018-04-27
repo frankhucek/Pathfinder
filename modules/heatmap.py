@@ -86,6 +86,9 @@ class TimePeriod(object):
     def duration(self):
         return self.end - self.start
 
+    def __str__(self):
+        return "[{}, {}]".format(self.start, self.end)
+
 
 class NullTimePeriod(object):
 
