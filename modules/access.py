@@ -55,11 +55,16 @@ class DuplicateJobError(Exception):
 ###############################################################################
 
 def save_new_data(jobid, old_data_filepath):
+    print("saving new data!")
     basename = os.path.basename(old_data_filepath)
 
+    print("basename: {}".format(basename))
     new_dir = sub_dir(jobid, DATA_DIR)
+
+    print("new_dir: {}".format(new_dir))
     new_data_filepath = join(new_dir, basename)
 
+    print("new_filepath: {}".format(new_data_filepath))
     shutil.move(old_data_filepath, new_data_filepath)
 
 
