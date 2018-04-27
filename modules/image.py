@@ -112,7 +112,7 @@ class ChunkImageData(ImageData):
 
     @staticmethod
     def create(manifest, filepath):
-        chunk_width, chunk_height = manifest.chunk_dimensions
+        chunk_width, chunk_height = manifest.chunk_dimensions()
         chunk_obj = PixelChunk.of(filepath, chunk_width, chunk_height)
         return ChunkImageData(manifest, chunk_obj)
 
