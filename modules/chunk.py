@@ -59,7 +59,7 @@ class PixelChunk(object):
                             chunk_width, chunk_height, file_date)
 
     @staticmethod
-    def of(filepath):
+    def of(filepath, chunk_width, chunk_height):
         with open(filepath) as f:
             chunk_json = json.load(f)
         file_date = chunk_json[FILE_DATETIME]
