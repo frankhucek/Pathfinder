@@ -107,7 +107,10 @@ def average_frequency(obj_per_sec):
 
 
 def tabled_frequencies(obj_per_sec):
-    pass
+    table = []
+    for heatmap, rate in obj_per_sec:
+        table.add((heatmap.period, rate))
+    return table
 
 
 def format_frequencies(intervals):
