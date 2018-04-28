@@ -28,25 +28,14 @@ class RetailSuggestion():
             create_suggestion(heatmapped_spot.left)
 
     def create_suggestion(self, top_left_coord):
-        top_left = top_left_coord
-        #TODO: Duplicate code to clean up & sy
-        if in_space(top_left.x + RETAIL_SPACE, top_left.y, HEIGHT, WIDTH):
-            coordinates = top_left.x + RETAIL_SPACE, top_left.y
-            self.json_data[RETAIL_SPOTS].append({
-                COORDINATES: coordinates
-            })
-        if in_space(top_left.x - RETAIL_SPACE, top_left.y, HEIGHT, WIDTH):
-            coordinates = top_left.x - RETAIL_SPACE, top_left.y
-            self.json_data[RETAIL_SPOTS].append({
-                COORDINATES: coordinates
-            })
-        if in_space(top_left.x, top_left.y + RETAIL_SPACE, HEIGHT, WIDTH):
-            coordinates = top_left.x, top_left.y + RETAIL_SPACE
-            self.json_data[RETAIL_SPOTS].append({
-                COORDINATES: coordinates
-            })
-        if in_space(top_left.x, top_left.y - RETAIL_SPACE, HEIGHT, WIDTH):
-            coordinates = top_left.x, top_left.y - RETAIL_SPACE
+        create_single_spot(top_left_coord.x + RETAIL_SPACE, top_left_coord.y)
+        create_single_spot(top_left_coord.x - RETAIL_SPACE, top_left_coord.y)
+        create_single_spot(top_left_coord.x, top_left_coord.y + RETAIL_SPACE)
+        create_single_spot(top_left_coord.x, top_left_coord.y - RETAIL_SPACE)
+
+    def create_single_spot(self, left_val, right_val):
+        if in_space(left_val, right_val, HEIGHT, WIDTH):
+            coordinates = left_val, right_val
             self.json_data[RETAIL_SPOTS].append({
                 COORDINATES: coordinates
             })
