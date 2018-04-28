@@ -20,11 +20,10 @@ class RetailSuggestion():
         self.heatmap_data = heatmap_data
         self.json_data = {}
         self.json_data[RETAIL_SPOTS] = []
+        self.output_json = output_json
 
     def suggestions(self):
-        # get heatmapped areas
-        for heatmapped_spot in mapped:
-            #TODO:
+        for heatmapped_spot in heatmap_data:
             create_suggestion(heatmapped_spot.left)
 
     def create_suggestion(self, top_left_coord):
