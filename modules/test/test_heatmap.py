@@ -146,6 +146,12 @@ def test_windows(images):
     assert all(3 == len(x) for x in windows)
 
 
+def test_windows_single(images):
+    single_image_lst = [images[0]]
+    windows = heatmap.windows(single_image_lst, 2)
+    assert 0 == len(windows)
+
+
 def test_coordinates():
     dim = (3, 4)
     coords = {(0, 0), (1, 0), (2, 0),
