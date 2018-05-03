@@ -58,22 +58,17 @@ class DuplicateJobError(Exception):
 ###############################################################################
 
 def save_new_data(jobid, old_data_filepath, manifest):
-    print("saving new data!")
     basename = os.path.basename(old_data_filepath)
 
-    print("basename: {}".format(basename))
     new_dir = sub_dir(jobid, DATA_DIR)
 
-    print("new_dir: {}".format(new_dir))
     filename, ext = os.path.splitext(basename)
     new_basename = filename + '.txt'
     new_data_filepath = join(new_dir, new_basename)
 
-    print("new_filepath: {}".format(new_data_filepath))
-
     # Create chunks
     chunk_width, chunk_height = manifest.chunk_dimensions()
-    chunk_new_image(old_data_filepath, new_data_filepath, chunk_width, chunk_height)
+    create_chunks(old_data_filepath, new_data_filepath, chunk_width, chunk_height)
 
 
 def new_job_root():
@@ -138,17 +133,22 @@ def image_filepaths(jobid):
     filepaths = [join(data_dir, f) for f in filenames]
     return filepaths
 
+
 def out_dir_filepath(jobid):
     return sub_dir(jobid, OUT_DIR)
+
 
 def web_filepath(jobid):
     return pathfinder_filepath(WEB_DIR)
 
+
 def web_data_images_filepath(jobid):
     return join(web_filepath(jobid), "images")
 
+
 def web_data_out_filepath(jobid):
     return join(web_filepath(jobid), "out")
+
 
 ###############################################################################
 # Helpers                                                                     #
@@ -182,9 +182,3 @@ def available_jobid():
 
     next_jobid = len(jobids)
     return next_jobid
-
-###############################################################################
-# Chunk                                                                       #
-###############################################################################
-def chunk_new_image(filepath, new_filepath, chunk_width, chunk_height):
-    create_chunks(filepath, new_filepath, chunk_width, chunk_height)

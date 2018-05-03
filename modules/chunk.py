@@ -9,27 +9,24 @@ of that chunk of the image.
 
 # Imports
 import json
-import cli
 import argparse
 import itertools
-import json
-from datetime import datetime
 from PIL import Image
 
 # Constants
-#Chosen arbitrarly, can test different chunk sizes and determine which is best
+# Chosen arbitrarly, can test different chunk sizes and determine which is best
 DEFAULT_CHUNK_WIDTH = 36
 DEFAULT_CHUNK_HEIGHT = 36
 
-#Values for analyzing RGB values
+# Values for analyzing RGB values
 RED_INDEX = 0
 GREEN_INDEX = 1
 BLUE_INDEX = 2
 LUMINOSITY_RED_VALUE = .299
 LUMINOSITY_GREEN_VALUE = .587
-LUMINOSITY_BLUE_VALUE =  .114
+LUMINOSITY_BLUE_VALUE = .114
 
-#JSON dict
+# JSON dict
 FILE_DATETIME = 'file-datetime'
 HEIGHT = 'height'
 WIDTH = 'width'
@@ -38,13 +35,13 @@ COORDINATES = 'coordinates'
 RGB_AVERAGE = 'rgb'
 RGB_VARIANCE = 'variance'
 
-#pillow
+# pillow
 DATETIME_EXIF = 36867
 DIM_WIDTH = 256
 DIM_HEIGHT = 257
 
 
-#Class
+# Class
 class PixelChunk(object):
 
     @staticmethod
@@ -56,7 +53,7 @@ class PixelChunk(object):
         height = exif_date[DIM_HEIGHT]
         file_date = exif_date[DATETIME_EXIF]
         return PixelChunk(image.load(), output_json, width, height,
-                            chunk_width, chunk_height, file_date)
+                          chunk_width, chunk_height, file_date)
 
     @staticmethod
     def of(filepath, chunk_width, chunk_height):
@@ -119,12 +116,13 @@ class PixelChunk(object):
         return self.width, self.height
 
 
-#Helpers
+# Helpers
 def color_values(image, coordinates):
     average_red, average_green, average_blue = average_rgb_values(image, coordinates)
     average_rgb = rgb_luminosity_average(image, average_red, average_green, average_blue)
     average_variance = rgb_variance(image, coordinates, average_red, average_green, average_blue)
     return average_rgb, average_variance
+
 
 def average_rgb_values(image, coordinates):
     average_red = 0
@@ -140,26 +138,34 @@ def average_rgb_values(image, coordinates):
     average_blue = average_blue / len(coordinates)
     return average_red, average_green, average_blue
 
-#Why use this algorithm over a normal average
-#https://bit.ly/2E8XGPn
+
+# Why use this algorithm over a normal average
+# https://bit.ly/2E8XGPn
 def rgb_luminosity_average(image, average_red, average_green, average_blue):
     red_value = average_red * LUMINOSITY_RED_VALUE
     green_value = average_green * LUMINOSITY_GREEN_VALUE
     blue_value = average_blue * LUMINOSITY_BLUE_VALUE
     return red_value + green_value + blue_value
 
-#why using a classic rgb average instead of luminosity
-#https://bit.ly/2E8XGPn (same link as rbg lumonisty)
+
+# why using a classic rgb average instead of luminosity
+# https://bit.ly/2E8XGPn (same link as rbg lumonisty)
 def rgb_variance(image, coordinates, average_red, average_green, average_blue):
-    var_red, var_green, var_blue = rgb_variance_values(image, coordinates,
-                                average_red, average_green, average_blue)
-    variance = (1.0/3.0) * (var_red + var_green + var_blue)
-    return variance + rgb_variance_rough_covariance_term(average_red, average_green, average_blue)
+    var_red, var_green, var_blue = rgb_variance_values(image,
+                                                       coordinates,
+                                                       average_red,
+                                                       average_green,
+                                                       average_blue)
+    variance = (1.0 / 3.0) * (var_red + var_green + var_blue)
+    return variance + rgb_variance_rough_covariance_term(average_red,
+                                                         average_green,
+                                                         average_blue)
+
 
 def rgb_variance_values(image, coordinates, average_red, average_green, average_blue):
     var_red = 0
     var_green = 0
-    var_blue =  0
+    var_blue = 0
     for point in coordinates:
         rgb = image[point]
         var_red = (average_red - rgb[RED_INDEX]) ** 2
@@ -170,15 +176,18 @@ def rgb_variance_values(image, coordinates, average_red, average_green, average_
     var_blue = var_blue / len(coordinates)
     return var_red, var_green, var_blue
 
+
 def rgb_variance_rough_covariance_term(average_red, average_green, average_blue):
-    value_one = (2.0/9.0) * ((average_red**2) + (average_green**2) +
-                    (average_blue**2))
-    value_two = ((average_red*average_green) + (average_red*average_blue) +
-                (average_blue*average_green)) * (2.0/9.0)
+    value_one = (2.0 / 9.0) * ((average_red**2) + (average_green**2) +
+                               (average_blue**2))
+    value_two = ((average_red * average_green) + (average_red * average_blue) +
+                 (average_blue * average_green)) * (2.0 / 9.0)
     return value_one - value_two
 
-def total_chunk_coordinates(coordinate, chunk_width=DEFAULT_CHUNK_WIDTH,
-        chunk_height=DEFAULT_CHUNK_HEIGHT):
+
+def total_chunk_coordinates(coordinate,
+                            chunk_width=DEFAULT_CHUNK_WIDTH,
+                            chunk_height=DEFAULT_CHUNK_HEIGHT):
     x = coordinate[0]
     x_end = x + chunk_width
     y = coordinate[1]
@@ -186,11 +195,13 @@ def total_chunk_coordinates(coordinate, chunk_width=DEFAULT_CHUNK_WIDTH,
     xs, ys = range(x, x_end), range(y, y_end)
     return set(itertools.product(xs, ys))
 
-#Main functions
+
+# Main functions
 def main():
     args = get_args()
     if args.op == "create_chunks":
         create_chunks(args.image_filepath, DEFAULT_CHUNK_WIDTH, DEFAULT_CHUNK_HEIGHT)
+
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -199,6 +210,7 @@ def get_args():
     parser.add_argument("image_filepath",
                         help="Image files")
     return parser.parse_args()
+
 
 def create_chunks(image_filepath, new_filepath, chunk_width, chunk_height):
     chunk_json = PixelChunk.new(image_filepath, chunk_width, chunk_height)
@@ -209,10 +221,13 @@ def create_chunks(image_filepath, new_filepath, chunk_width, chunk_height):
         chunk_json.add_chunk(coordinate)
     chunk_json.write(new_filepath)
 
-def coordinates(dim, chunk_width=DEFAULT_CHUNK_WIDTH,
-        chunk_height=DEFAULT_CHUNK_HEIGHT):
+
+def coordinates(dim,
+                chunk_width=DEFAULT_CHUNK_WIDTH,
+                chunk_height=DEFAULT_CHUNK_HEIGHT):
     xs, ys = range(0, dim[0], chunk_width), range(0, dim[1], chunk_height)
     return set(itertools.product(xs, ys))
+
 
 if __name__ == '__main__':
     main()
