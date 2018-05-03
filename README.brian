@@ -4,16 +4,22 @@ Brian Clark (bpc30)
 
 * Fix bug where heatmap doesn't know how to handle the very first image of a job
 * Remove >100mB file from Git history so that we can continue using GitHub.
+* Create a setup function for each processing step that is run when a new job is created.
+* Worked with Jo on getting outputs to refresh on the website
+* Reorganized the way that the access module calls the chunk module
 
 
 ## Files 5/4
 
 modules/heatmap.py
+modules/access.py
+modules/chunk.py
 modules/test/test_heatmpap.py
 
 
 ## Time 5/4
 
 Wednesday: 4:45-5:45                1:00
+Thursday: 11:00-2:00                3:00
 ----------------------------------------
 Total                               1:00
