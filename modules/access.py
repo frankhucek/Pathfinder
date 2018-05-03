@@ -138,6 +138,9 @@ def image_filepaths(jobid):
     filepaths = [join(data_dir, f) for f in filenames]
     return filepaths
 
+def out_dir_filepath(jobid):
+    return sub_dir(jobid, OUT_DIR)
+
 def web_filepath(jobid):
     return pathfinder_filepath(WEB_DIR)
 

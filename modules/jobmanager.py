@@ -267,6 +267,14 @@ class ImageCopyProcessing(Processing):
         new_data_filepath = os.path.join(web_filepath, basename)
 
         shutil.copy(filename, new_data_filepath)
+        self.process_out_dir(jobid, filename)
+
+    def process_out_dir(self, jobid, filepath):
+        web_out_filepath = access.web_data_out_filepath(jobid)
+        out_filepath = access.out_dir_filepath(jobid)
+        if (os.path.exists(access.web_data_out_filepath(jobid))):
+            shutil.rmtree(web_out_filepath)
+        shutil.copytree(out_filepath, web_out_filepath)
 
 
 ###############################################################################
