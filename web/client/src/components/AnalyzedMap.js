@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Image from 'react-image-resizer';
-import job_image_0 from '../data/heatmap.png';
+import job_image_0 from '../data/out/heatmap.bmp';
 
 class AnalyzedMap extends Component {
     constructor(props) {

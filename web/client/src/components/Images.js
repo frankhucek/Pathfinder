@@ -18,7 +18,7 @@ class Images extends Component {
   //should be doing this https://reactjs.org/docs/lists-and-keys.html
   //but unable to figure out function+require so go with this for now
   importAllImages() {
-    const imgFiles = require.context("../data", false, /\.(jpg)$/);
+    const imgFiles = require.context("../data/images", false, /\.(jpg)$/);
     this.state.images = imgFiles.keys().map((item) =>
       <div><Image
         src={imgFiles(item)}
