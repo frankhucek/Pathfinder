@@ -7,7 +7,6 @@ import Main from './Main.js';
 ReactDOM.render(
   <Router>
     <div>
-      <Route path='/' component={Main} />
       <Route path='/job-page' component={Main} />
       <Route path='/login' component={Main} />
     </div>
