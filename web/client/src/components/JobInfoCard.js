@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Images from './Images.js'
 import AnalyzedMap from './AnalyzedMap.js'
+import AnalyzedInfo from './AnalyzedInfo.js'
 import Whitespace from './Whitespace.js'
 
 class JobInfoCard extends Component {
@@ -25,6 +26,10 @@ class JobInfoCard extends Component {
                 {this.state.cardType === "heatmap" &&
                     <AnalyzedMap height={this.state.height}
                                  width={this.state.width}/>
+                }
+                {this.state.cardType === "overlay" &&
+                    <AnalyzedInfo height={this.state.height}
+                                  width={this.state.width}/>
                 }
             </div>
         )

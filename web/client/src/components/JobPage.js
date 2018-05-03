@@ -9,6 +9,7 @@ class JobPage extends Component {
                 <NavBar/>
                 <JobInfoCard cardType="images" header="your images" />
                 <JobInfoCard cardType="heatmap" header="analyzed heatmap" />
+                <JobInfoCard cardType="overlay" header="overlayed heatmap" />
             </div>
         )
     }
