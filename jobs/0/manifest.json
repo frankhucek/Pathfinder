@@ -17,6 +17,9 @@
             "window_size": 2,
             "color_thresh": 11,
             "interval": 10
+        },
+        {
+          "type": "image_copy_processing"
         }
     ],
     "overlay": {

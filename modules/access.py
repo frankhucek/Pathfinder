@@ -40,6 +40,7 @@ IMAGES_DIR = "images"
 HEATMAPS_DIR = "heatmaps"
 SERIES_DIR = "heatmaps/series"
 OUT_DIR = "out"
+WEB_DIR = "web/client/src/data"
 
 MANIFEST_FILENAME = "manifest.json"
 
@@ -137,6 +138,14 @@ def image_filepaths(jobid):
     filepaths = [join(data_dir, f) for f in filenames]
     return filepaths
 
+def web_filepath(jobid):
+    return pathfinder_filepath(WEB_DIR)
+
+def web_data_images_filepath(jobid):
+    return join(web_filepath(jobid), "images")
+
+def web_data_out_filepath(jobid):
+    return join(web_filepath(jobid), "out")
 
 ###############################################################################
 # Helpers                                                                     #

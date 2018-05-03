@@ -251,6 +251,23 @@ class SeriesProcessing(Processing):
         interval_proc = IntervalProcessing(self.manifest, self.json)
         interval_proc.process(jobid, filename, subheatmap_fp)
 
+class ImageCopyProcessing(Processing):
+    processing_type = "image_copy_processing"
+
+    def setup(self, jobid):
+        super().setup(jobid)
+        #make sure top level data directory exists
+        os.makedirs(access.web_filepath(jobid), exist_ok=True)
+        #make sure images directory exists
+        os.makedirs(access.web_data_images_filepath(jobid), exist_ok=True)
+
+    def process(self, jobid, filename):
+        basename = os.path.basename(filename)
+        web_filepath = access.web_data_images_filepath(jobid)
+        new_data_filepath = os.path.join(web_filepath, basename)
+
+        shutil.copy(filename, new_data_filepath)
+
 
 ###############################################################################
 # Utilities                                                                   #
