@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
+import Image from 'react-image-resizer';
 import Whitespace from './Whitespace.js';
-import retailmap from '../data/heatmap.png';
+import overlay from '../data/out/overlay.bmp';
 
 class AnalyzedInfo extends Component {
   constructor(props) {
       super(props);
 
       this.state = {
-          traffic: 0,
+          height: props.height,
+          width: props.width,
+          crowd: 0,
           retailmap: null
       };
   }
 
   render() {
-      let content = null;
-      content = <img src={retailmap} />;
-      content += <Whitespace />;
-
       return(
-          <div className="analyzed-info">
-              { content }
+          <div className="image-display">
+            <Image
+                  src={overlay}
+                  height={ this.state.height }
+                  width={ this.state.width }
+            />
           </div>
       )
   }

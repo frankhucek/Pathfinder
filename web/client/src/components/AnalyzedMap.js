@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Image from 'react-image-resizer';
-import job_image_0 from '../data/out/heatmap.bmp';
+import heatmap from '../data/out/heatmap.bmp';
 
 class AnalyzedMap extends Component {
     constructor(props) {
@@ -16,7 +16,7 @@ class AnalyzedMap extends Component {
       return (
           <div className="image-display">
               <div><Image
-                    src={job_image_0}
+                    src={heatmap}
                     height={ this.state.height }
                     width={ this.state.width }
               /></div>
