@@ -10,6 +10,7 @@ class JobPage extends Component {
                 <JobInfoCard cardType="images" header="your images" />
                 <JobInfoCard cardType="heatmap" header="analyzed heatmap" />
                 <JobInfoCard cardType="overlay" header="overlayed heatmap" />
+                <JobInfoCard cardType="crowd" header="crowd info" />
             </div>
         )
     }

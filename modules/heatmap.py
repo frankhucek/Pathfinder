@@ -112,6 +112,9 @@ class NullTimePeriod(object):
     def expand_to_include(self, dt):
         return TimePeriod(dt, dt)
 
+    def duration(self):
+        return timedelta(seconds=0)
+
 
 class CoordRange(object):
 

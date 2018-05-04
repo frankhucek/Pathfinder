@@ -37,6 +37,7 @@ from heatmap import *
 from image import ImageData
 import heatmap
 import access
+import crowd
 
 
 ###############################################################################
@@ -209,6 +210,38 @@ class AllResultsProcessing(Processing):
                                 overlay_fp,
                                 self.manifest.scale(),
                                 self.manifest.blur())
+
+
+class CrowdProcessing(Processing):
+
+    processing_type = "crowd_processing"
+
+    UNITS = "units"
+    AGGREGATE = "aggregate"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+        units_string = json[CrowdProcessing.UNITS]
+        self.units = crowd.FrequencyUnits.of(units_string)
+        self.aggregate = json[CrowdProcessing.AGGREGATE]
+
+    def setup(self, jobid):
+        super().setup(jobid)
+
+    def process(self, jobid, filename):
+
+        heatmap_filepath = access.heatmap_filepath(jobid)
+
+        crowd_total_fp = access.out_filepath(jobid, "total.json")
+        crowd.write_total(heatmap_filepath,
+                          crowd_total_fp)
+
+        series_filepath = access.series_filepath(jobid)
+        crowd_frequencies_fp = access.out_filepath(jobid, "frequencies.json")
+        crowd.write_frequency(series_filepath,
+                              crowd_frequencies_fp,
+                              self.units,
+                              self.aggregate)
 
 
 class SeriesProcessing(Processing):

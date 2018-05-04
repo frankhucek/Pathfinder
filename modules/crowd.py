@@ -5,6 +5,7 @@
 ###############################################################################
 
 import argparse
+import json
 
 from heatmap import Heatmap, HeatmapSeries, TimePeriod
 from enum import Enum
@@ -35,6 +36,9 @@ class FrequencyUnits(Enum):
         except KeyError:
             raise ValueError("Invalid frequency unit {}".format(key))
 
+    def unit_name(self):
+        return self.name.lower()[0:-1]
+
     @classmethod
     def choices(cls):
         return [e for e in cls]
@@ -44,30 +48,35 @@ class FrequencyUnits(Enum):
 # API                                                                         #
 ###############################################################################
 
+def write_total(heatmap_filepath,
+                output_filepath):
+    total = estimate_total(heatmap_filepath)
+    with open(output_filepath, 'w') as f:
+        dct = {"total": total}
+        json.dump(dct, f, indent=3)
+
+
+def write_frequency(series_heatmap_fp,
+                    output_filepath,
+                    units,
+                    aggregate):
+    with open(output_filepath, 'w') as f:
+        intervals = estimate_frequency(series_heatmap_fp, units, aggregate)
+        dct = dict_format(intervals, units)
+        json.dump(dct, f, indent=3)
+
+
+###############################################################################
+# Helper functions                                                            #
+###############################################################################
+
 def estimate_total(heatmap_filepath):
     hm = Heatmap.load(heatmap_filepath)
     return estimate_total_hm(hm)
 
 
-def estimate_total_hm(hm):
-    rate = estimate_obj_per_sec(hm)
-    seconds = hm.period.duration().seconds
-    total = rate * seconds
-    return total
-
-
-def estimate_obj_per_sec(hm):
-    count = hm.count
-    seconds = hm.period.duration().seconds
-    count_per_sec = count / seconds
-
-    obj_per_sec = count_per_sec * CROWD_FACTOR
-
-    return obj_per_sec
-
-
-def estimate_frequency(series_heatmap, units, aggregate):
-    series = HeatmapSeries.load(series_heatmap)
+def estimate_frequency(series_heatmap_fp, units, aggregate):
+    series = HeatmapSeries.load(series_heatmap_fp)
     heatmaps = series.subheatmaps()
 
     obj_per_sec = {}
@@ -86,9 +95,22 @@ def estimate_frequency(series_heatmap, units, aggregate):
     return converted_intervals
 
 
-###############################################################################
-# Helper functions                                                            #
-###############################################################################
+def estimate_total_hm(hm):
+    rate = estimate_obj_per_sec(hm)
+    seconds = hm.period.duration().seconds
+    total = rate * seconds
+    return total
+
+
+def estimate_obj_per_sec(hm):
+    count = hm.count
+    seconds = hm.period.duration().seconds
+    count_per_sec = count / seconds if seconds else 0
+
+    obj_per_sec = count_per_sec * CROWD_FACTOR
+
+    return obj_per_sec
+
 
 def average_frequency(obj_per_sec):
     total_period = None
@@ -102,7 +124,7 @@ def average_frequency(obj_per_sec):
         total_seconds += duration
         total_obj += obj
 
-    frequency = total_obj / total_seconds
+    frequency = total_obj / total_seconds if total_seconds else 0
     return [(total_period, frequency)]
 
 
@@ -113,9 +135,26 @@ def tabled_frequencies(obj_per_sec):
     return table
 
 
-def format_frequencies(intervals):
+def str_format(intervals, units):
+    units_line = ["Units: people per {}".format(units.unit_name())]
     strs = ["{}: {}".format(p, r) for p, r in intervals]
-    return "\n".join(strs)
+    lines = units_line + strs
+    return "\n".join(lines)
+
+
+def dict_format(intervals, units):
+    dct = {
+        "units": "people per {}".format(units.unit_name()),
+        "data": [dict_of_entry(i) for i in intervals]
+    }
+    return dct
+
+
+def dict_of_entry(entry):
+    period, rate = entry
+    return {"start": str(period.start),
+            "end": str(period.end),
+            "rate": rate}
 
 
 def convert(intervals, units):
@@ -156,6 +195,8 @@ def get_args():
                                          help="estimate crowd number")
     total_parser.add_argument("heatmap_filepath",
                               help="file containing heatmap")
+    total_parser.add_argument("--write", "-w",
+                              help="write or not")
 
     frequency_parser = subparsers.add_parser("estimate_frequency")
     frequency_parser.add_argument("series_filepath",
@@ -167,6 +208,8 @@ def get_args():
     frequency_parser.add_argument("aggregate",
                                   type=valid_aggregate,
                                   help="flag of whether to aggregate results")
+    frequency_parser.add_argument("--write", "-w",
+                                  help="write or not")
 
     return parser.parse_args()
 
@@ -179,15 +222,25 @@ def main():
     args = get_args()
 
     if args.op == "estimate_total":
-        total = estimate_total(args.heatmap_filepath)
-        print(total)
+        if args.write:
+            write_total(args.heatmap_filepath,
+                        args.write)
+        else:
+            total = estimate_total(args.heatmap_filepath)
+            print(total)
 
     elif args.op == "estimate_frequency":
-        intervals = estimate_frequency(args.series_filepath,
-                                       args.units,
-                                       args.aggregate)
-        report = format_frequencies(intervals)
-        print(report)
+        if args.write:
+            write_frequency(args.series_filepath,
+                            args.write,
+                            args.units,
+                            args.aggregate)
+        else:
+            intervals = estimate_frequency(args.series_filepath,
+                                           args.units,
+                                           args.aggregate)
+            report = str_format(intervals, args.units)
+            print(report)
 
 
 if __name__ == '__main__':

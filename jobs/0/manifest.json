@@ -19,6 +19,11 @@
             "interval": 10
         },
         {
+            "type": "crowd_processing",
+            "units": "seconds",
+            "aggregate": false
+        },
+        {
           "type": "image_copy_processing"
         }
     ],
