@@ -89,7 +89,6 @@ class Processing(object):
     def setup_all(cls, manifest, jobid):
         for processing in cls.all_from(manifest, jobid):
             processing.setup(jobid)
-        # map(cls.setup, cls.all_from(manifest, jobid))
 
     def __init__(self, manifest, json):
         super().__init__()
@@ -212,6 +211,24 @@ class AllResultsProcessing(Processing):
                                 self.manifest.blur())
 
 
+class ProjectProcessing(Processing):
+
+    processing_type = "project_processing"
+
+    PROJECT_WIDTH = "project_width"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+        self.project_width = json[ProjectProcessing.PROJECT_WIDTH]
+
+    def process(self, jobid, filename):
+        heatmap_filepath = access.heatmap_filepath(jobid)
+        project_fp = access.out_filepath(jobid, "project.bmp")
+        heatmap.project_heatmap(heatmap_filepath,
+                                project_fp,
+                                self.project_width)
+
+
 class CrowdProcessing(Processing):
 
     processing_type = "crowd_processing"
@@ -284,14 +301,18 @@ class SeriesProcessing(Processing):
         interval_proc = IntervalProcessing(self.manifest, self.json)
         interval_proc.process(jobid, filename, subheatmap_fp)
 
-class ImageCopyProcessing(Processing):
-    processing_type = "image_copy_processing"
+
+class OutputCopyProcessing(Processing):
+
+    processing_type = "output_copy_processing"
 
     def setup(self, jobid):
         super().setup(jobid)
-        #make sure top level data directory exists
+
+        # make sure top level data directory exists
         os.makedirs(access.web_filepath(jobid), exist_ok=True)
-        #make sure images directory exists
+
+        # make sure images directory exists
         os.makedirs(access.web_data_images_filepath(jobid), exist_ok=True)
 
     def process(self, jobid, filename):

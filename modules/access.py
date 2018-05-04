@@ -20,7 +20,6 @@ is this file's parent directory.
 ###############################################################################
 
 import os
-import shutil
 from pathlib import Path
 
 from manifest import Manifest

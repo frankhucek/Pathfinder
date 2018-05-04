@@ -247,7 +247,9 @@ class Heatmap(object):
             if valid_coord((p_y, p_x), blueprint_values.shape):
                 blueprint_values[p_y, p_x] += val
 
-        normalized = blueprint_values / np.max(blueprint_values)
+        maximum = np.max(blueprint_values)
+        div = maximum if maximum else 1
+        normalized = blueprint_values / div
         self.write_bw_binary(normalized, filepath)
 
     def overlay(self, img, filepath, scale, blur):
@@ -399,9 +401,11 @@ def view_heatmap(heatmap_filepath,
 
 
 def project_heatmap(heatmap_filepath,
-                    project_filepath):
-    hm = Heatmap.load(heatmap_filepath)
-    hm.project(project_filepath)
+                    project_filepath,
+                    desired_width):
+    heatmap = Heatmap.load(heatmap_filepath)
+    heatmap.project(project_filepath,
+                    desired_width)
 
 
 def overlay_heatmap(heatmap_filepath,
@@ -607,8 +611,8 @@ def main():
                      args.output_filepath)
 
     elif args.op == "project_heatmap":
-        heatmap = Heatmap.load(args.heatmap_filename)
-        heatmap.project(args.project_filename,
+        project_heatmap(args.heatmap_filepath,
+                        args.project_filepath,
                         args.desired_width)
 
     elif args.op == "overlay_heatmap":
