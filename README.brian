@@ -7,6 +7,9 @@ Brian Clark (bpc30)
 * Create a setup function for each processing step that is run when a new job is created.
 * Worked with Jo on getting outputs to refresh on the website
 * Reorganized the way that the access module calls the chunk module
+* Add processing step that automatically runs the crowd module
+* Add JSON output to crowd module
+* Modify website to display crowd JSON results.
 
 
 ## Files 5/4
@@ -14,12 +17,16 @@ Brian Clark (bpc30)
 modules/heatmap.py
 modules/access.py
 modules/chunk.py
+modules/crowd.py
 modules/test/test_heatmpap.py
+web/client/src/components/CrowdInfo.js
+web/client/src/components/JobInfoCard.js
 
 
 ## Time 5/4
 
-Wednesday: 4:45-5:45                1:00
-Thursday: 11:00-2:00                3:00
-----------------------------------------
-Total                               1:00
+Wednesday: 4:45-5:45                        1:00
+Thursday: 11:00-2:00, 4:00-5:30, 8:30-9:00  5:00
+------------------------------------------------
+Total                                       6:00
+
