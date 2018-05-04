@@ -90,6 +90,11 @@ class Processing(object):
         for processing in cls.all_from(manifest, jobid):
             processing.setup(jobid)
 
+    @classmethod
+    def process_all(cls, manifest, jobid, filename):
+        for processing in cls.all_from(manifest, jobid):
+            processing.process(jobid, filename)
+
     def __init__(self, manifest, json):
         super().__init__()
         self.manifest = manifest
@@ -191,9 +196,6 @@ class AllResultsProcessing(Processing):
 
     processing_type = "all_results_processing"
 
-    def setup(self, jobid):
-        super().setup(jobid)
-
     def process(self, jobid, filename):
 
         heatmap_filepath = access.heatmap_filepath(jobid)
@@ -241,9 +243,6 @@ class CrowdProcessing(Processing):
         units_string = json[CrowdProcessing.UNITS]
         self.units = crowd.FrequencyUnits.of(units_string)
         self.aggregate = json[CrowdProcessing.AGGREGATE]
-
-    def setup(self, jobid):
-        super().setup(jobid)
 
     def process(self, jobid, filename):
 
@@ -326,9 +325,7 @@ class OutputCopyProcessing(Processing):
     def process_out_dir(self, jobid, filepath):
         web_out_filepath = access.web_data_out_filepath(jobid)
         out_filepath = access.out_dir_filepath(jobid)
-        if (os.path.exists(access.web_data_out_filepath(jobid))):
-            shutil.rmtree(web_out_filepath)
-        shutil.copytree(out_filepath, web_out_filepath)
+        force_copy(out_filepath, web_out_filepath)
 
 
 ###############################################################################
@@ -338,12 +335,8 @@ class OutputCopyProcessing(Processing):
 def update_job(jobid, incoming_data_filepath):
     manifest = access.manifest(jobid)
     access.save_new_data(jobid, incoming_data_filepath, manifest)
-    instructions = manifest.processing()
 
-    # execute each of the processing instructions found in job's manifest
-    for instruction in instructions:
-        processing = Processing.of(manifest, instruction)
-        processing.process(jobid, incoming_data_filepath)
+    Processing.process_all(manifest, jobid, incoming_data_filepath)
 
 
 def new_job(incoming_manifest):
@@ -370,6 +363,12 @@ def new_job(incoming_manifest):
 ###############################################################################
 # Helper functions                                                            #
 ###############################################################################
+
+def force_copy(src, dest):
+    if (os.path.exists(dest)):
+            shutil.rmtree(dest)
+    shutil.copytree(src, dest)
+
 
 def gen_heatmap(jobid):
     heatmap_filepath = access.heatmap_filepath(jobid)
