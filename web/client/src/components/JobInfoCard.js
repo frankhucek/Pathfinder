@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Images from './Images.js'
 import AnalyzedMap from './AnalyzedMap.js'
 import AnalyzedInfo from './AnalyzedInfo.js'
+import Projection from './Projection.js'
 import Whitespace from './Whitespace.js'
 import CrowdInfo from './CrowdInfo.js'
 
@@ -30,6 +31,10 @@ class JobInfoCard extends Component {
                 }
                 {this.state.cardType === "overlay" &&
                     <AnalyzedInfo height={this.state.height}
+                                  width={this.state.width}/>
+                }
+                {this.state.cardType === "project" &&
+                    <Projection height={this.state.height}
                                   width={this.state.width}/>
                 }
                 {this.state.cardType === "crowd" &&
