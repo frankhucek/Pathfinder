@@ -347,6 +347,8 @@ def update_job(jobid, incoming_data_filepath):
 
     access.save_new_data(jobid, incoming_data_filepath, manifest)
 
+    logging.info("saved new data")
+
     Processing.process_all(manifest, jobid, incoming_data_filepath)
 
 
