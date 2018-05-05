@@ -27,6 +27,7 @@ function. It also provides a CLI in this file.
 
 import argparse
 import shutil
+import logging
 from datetime import timedelta
 
 # star import required for unpickling
@@ -38,6 +39,7 @@ from image import ImageData
 import heatmap
 import access
 import crowd
+import log
 
 
 ###############################################################################
@@ -101,7 +103,7 @@ class Processing(object):
         self.json = json
 
     def setup(self, jobid):
-        print("setting up {}".format(self.processing_type))
+        logging.info("Setting up {}".format(self.processing_type))
 
     def process(self, jobid, filename):
         raise NotImplementedError("implement in subclass")
@@ -161,7 +163,6 @@ class IntervalProcessing(Processing):
         self.interval = timedelta(seconds=interval_sec)
 
     def _period(self, hm, img_data):
-        print("last update: {}".format(hm.last_update()))
         return heatmap.TimePeriod(hm.last_update(),
                                   img_data.time_taken())
 
@@ -180,7 +181,8 @@ class IntervalProcessing(Processing):
         img_data = ImageData.create(self.manifest, filename)
 
         if self._should_update(hm, img_data):
-            print("Updating for img: {}".format(img_data.time_taken()))
+            msg = "Updating for img: {}".format(img_data.time_taken())
+            logging.info(msg)
             period = self._period(hm, img_data)
             img_files = access.image_filepaths(jobid)
             heatmap.record_heatmap(heatmap_filepath,
@@ -189,7 +191,8 @@ class IntervalProcessing(Processing):
                                    self.window_size,
                                    self.color_thresh)
         else:
-            print("Not updating for img: {}".format(img_data.time_taken()))
+            msg = "Not updating for img: {}".format(img_data.time_taken())
+            logging.info(msg)
 
 
 class AllResultsProcessing(Processing):
@@ -403,6 +406,8 @@ def get_args():
 
 def main():
 
+    log.start_log()
+
     args = get_args()
 
     if args.op == "update_job":
@@ -411,7 +416,9 @@ def main():
 
     elif args.op == "new_job":
         jobid = new_job(args.manifest_filepath)
-        print("Created new job: {}".format(jobid))
+        msg = "Created new job: {}".format(jobid)
+        print(msg)
+        loggin.info(msg)
 
 
 if __name__ == '__main__':

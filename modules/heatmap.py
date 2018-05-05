@@ -40,6 +40,7 @@ import argparse
 import json
 import pickle
 import os
+import logging
 
 from datetime import datetime, timedelta
 
@@ -52,6 +53,7 @@ from mapping import Geometry
 import mapping
 import cli
 import image
+import log
 
 
 ###############################################################################
@@ -190,8 +192,6 @@ class Heatmap(object):
 
         for idx, image_set in enumerate(image_sets):
 
-            print("image_set: {}".format(idx))
-
             all_coordinates = data_type.coordinates(self.manifest,
                                                     self.size)
             for coord in all_coordinates:
@@ -226,6 +226,8 @@ class Heatmap(object):
 
     def project(self, filepath, desired_width):
 
+        logging.debug("Project: filepath = {}".format(filepath))
+
         image_corners = self.manifest.image_corners()
         lower_right = image_corners[3]
         b_x, b_y = self.project_point(lower_right, 1)
@@ -233,6 +235,8 @@ class Heatmap(object):
         scale = desired_width / b_x
         new_size = (int(b_y * scale), int(b_x * scale))
         blueprint_values = np.zeros(new_size)
+
+        logging.debug("Project: new size = {}".format)
 
         def valid_coord(coord, shape):
             return all(c >= 0 and c < s
@@ -592,6 +596,8 @@ def get_args():
 ###############################################################################
 
 def main():
+
+    log.start_log()
 
     args = get_args()
 

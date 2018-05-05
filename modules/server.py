@@ -9,6 +9,8 @@ import os
 import re
 from heatmap import *
 import jobmanager
+import log
+import access
 
 local_host = ""
 local_host_port = 3001 # port forwarded and ready to go
@@ -111,5 +113,8 @@ def handle_sig_data(sigfile, client_socket):
     sig_file.write(detached_sig_data)
     sig_file.close()
     return
+
+log.start_log()
+logging.info("Starting server.")
 
 listen_for_photos()

@@ -33,6 +33,10 @@ from chunk import create_chunks
 DEF_PATHFINDER_DIR = str(Path(__file__).parents[1])
 PATHFINDER_DIR = os.environ.get("PATHFINDER_DIR",
                                 DEF_PATHFINDER_DIR)
+
+LOGS_DIR = "logs"
+LOG_FILENAME = "pathfinder.log"
+
 JOBS_DIR = "jobs"
 DATA_DIR = "data"
 IMAGES_DIR = "images"
@@ -147,6 +151,11 @@ def web_data_images_filepath(jobid):
 
 def web_data_out_filepath(jobid):
     return join(web_filepath(jobid), "out")
+
+
+def log_filepath():
+    log_dir = pathfinder_filepath(LOGS_DIR)
+    return join(log_dir, LOG_FILENAME)
 
 
 ###############################################################################
