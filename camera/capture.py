@@ -15,6 +15,7 @@ def capture(resolutionX, resolutionY, photo_number, job_directory):
     with picamera.PiCamera() as camera:
         camera.resolution = (resolutionX,resolutionY)
         camera.start_preview()
+        camera.rotation = 180
         # Camera init time slightly > 1 second
         time.sleep(2)
         filename = str(photo_number) + ".jpg"
@@ -30,7 +31,7 @@ def capture_and_send_series(photo_count, job_dir):
     i = 0
     while i < photo_count:
         print("CAPTURING IMG #" + str(i))
-        filename = capture(1024, 768, i, job_dir)
+        filename = capture(1280, 720, i, job_dir)
         print("SENDING " + filename)
         if filename != "":
             client.send_photo(job_dir + "/" + filename)
