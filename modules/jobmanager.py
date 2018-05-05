@@ -94,7 +94,9 @@ class Processing(object):
 
     @classmethod
     def process_all(cls, manifest, jobid, filename):
+        logging.info("process all")
         for processing in cls.all_from(manifest, jobid):
+            logging.info("processing a step")
             processing.process(jobid, filename)
 
     def __init__(self, manifest, json):
@@ -336,6 +338,9 @@ class OutputCopyProcessing(Processing):
 ###############################################################################
 
 def update_job(jobid, incoming_data_filepath):
+
+    logging.info("updating job")
+
     manifest = access.manifest(jobid)
     access.save_new_data(jobid, incoming_data_filepath, manifest)
 
