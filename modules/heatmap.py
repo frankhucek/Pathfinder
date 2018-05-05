@@ -217,6 +217,7 @@ class Heatmap(object):
             return self._points / m
 
     def project_point(self, coord, scale):
+        logging.info("projecting coord {} at size {}".format(coord, self.size))
         raw = mapping.image_to_blueprint(coord,
                                          self.geom,
                                          self.size)
@@ -226,7 +227,7 @@ class Heatmap(object):
 
     def project(self, filepath, desired_width):
 
-        logging.debug("Project: filepath = {}".format(filepath))
+        logging.info("Project: filepath = {}".format(filepath))
 
         image_corners = self.manifest.image_corners()
         lower_right = image_corners[3]
@@ -236,7 +237,7 @@ class Heatmap(object):
         new_size = (int(b_y * scale), int(b_x * scale))
         blueprint_values = np.zeros(new_size)
 
-        logging.debug("Project: new size = {}".format)
+        logging.info("Project: new size = {}".format)
 
         def valid_coord(coord, shape):
             return all(c >= 0 and c < s
