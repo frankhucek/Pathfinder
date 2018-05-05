@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import Image from 'react-image-resizer';
 import Whitespace from './Whitespace.js';
 
-import frequencies from '../data/out/frequencies.json';
-import total from '../data/out/total.json'
-
 class CrowdInfo extends Component {
   constructor(props) {
       super(props);
@@ -18,18 +15,30 @@ class CrowdInfo extends Component {
   }
 
   render() {
+    let content = null;
+    try {
+      var frequencies = require('../data/out/frequencies.json');
+      var total = require('../data/out/total.json');
+      content = <div className="image-display">
+        <p>Units: {frequencies.units}</p>
+        Total: {total.total}
+        <ul>
+        {
+          frequencies.data.map(function(period){
+            return <li>{period.start} to {period.end}: {period.rate}</li>;
+          })
+        }
+        </ul>
+      </div>;
+    }
+    catch (e) {
+      content = null;
+    }
+
     return(
-        <div className="image-display">
-          <p>Units: {frequencies.units}</p>
-          Total: {total.total}
-          <ul>
-          {
-            frequencies.data.map(function(period){
-              return <li>{period.start} to {period.end}: {period.rate}</li>;
-            })
-          }
-          </ul>
-        </div>
+      <div>
+        { content }
+      </div>
     );
   }
 }

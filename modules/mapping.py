@@ -194,7 +194,8 @@ def image_to_blueprint(pixel_coord, geom, dim):
     if any_negative(pixel_coord):
         raise ValueError("All pixel positions must be positive")
     elif pixel_out_of_bounds(pixel_coord, dim):
-        raise ValueError("Pixel positions must be inside img dimensions")
+        raise ValueError("Pixel positions must be inside img dimensions: {} in {}"
+                         .format(pixel_coord, dim))
 
     image_coord = center_img_coord(pixel_coord, dim)
     blueprint_coord = geom.transform_itb(image_coord)

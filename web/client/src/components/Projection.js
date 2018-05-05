@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Image from 'react-image-resizer';
-import project from '../data/out/project.bmp';
 
 class Projection extends Component {
     constructor(props) {
@@ -13,14 +12,25 @@ class Projection extends Component {
     }
 
   render() {
+    let content = null;
+    try {
+      var project = require('../data/out/project.bmp');
+      content = <div className="image-display">
+          <div><Image
+                src={project}
+                height={ this.state.height }
+                width={ this.state.width }
+          /></div>
+      </div>;
+    }
+    catch (e) {
+      content = null;
+    }
+
       return (
-          <div className="image-display">
-              <div><Image
-                    src={project}
-                    height={ this.state.height }
-                    width={ this.state.width }
-              /></div>
-          </div>
+        <div>
+          { content }
+        </div>
       )
   }
 }

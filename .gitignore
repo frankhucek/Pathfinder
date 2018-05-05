@@ -25,3 +25,6 @@ rpi_camera_modules/~/**
 
 # outputs
 out/
+
+# logs
+logs/
