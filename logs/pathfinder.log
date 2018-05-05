@@ -325,3 +325,14 @@ DEBUG:2018:05:05 11:48:43:gpg:          There is no indication that the signatur
 DEBUG:2018:05:05 11:48:43:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
 DEBUG:2018:05:05 11:48:43:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
 DEBUG:2018:05:05 11:48:43:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+INFO:2018:05:05 11:56:30:Starting server.
+INFO:2018:05:05 11:56:41:updating job
+INFO:2018:05:05 11:56:45:updating job
+INFO:2018:05:05 11:56:49:updating job
+INFO:2018:05:05 11:56:53:updating job
+INFO:2018:05:05 11:56:56:updating job
+INFO:2018:05:05 11:57:00:updating job
+INFO:2018:05:05 11:57:04:updating job
+INFO:2018:05:05 11:57:08:updating job
+INFO:2018:05:05 11:57:12:updating job
+INFO:2018:05:05 11:57:16:updating job
