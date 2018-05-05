@@ -418,7 +418,7 @@ def main():
         jobid = new_job(args.manifest_filepath)
         msg = "Created new job: {}".format(jobid)
         print(msg)
-        loggin.info(msg)
+        logging.info(msg)
 
 
 if __name__ == '__main__':

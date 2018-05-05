@@ -1,0 +1,327 @@
+INFO:2018:05:05 11:23:21:Setting up interval_processing
+INFO:2018:05:05 11:23:21:Setting up all_results_processing
+INFO:2018:05:05 11:23:21:Setting up project_processing
+INFO:2018:05:05 11:23:21:Setting up series_processing
+INFO:2018:05:05 11:23:21:Setting up crowd_processing
+INFO:2018:05:05 11:23:21:Setting up output_copy_processing
+INFO:2018:05:05 11:23:54:Setting up interval_processing
+INFO:2018:05:05 11:23:54:Setting up all_results_processing
+INFO:2018:05:05 11:23:54:Setting up project_processing
+INFO:2018:05:05 11:23:54:Setting up series_processing
+INFO:2018:05:05 11:23:54:Setting up crowd_processing
+INFO:2018:05:05 11:23:54:Setting up output_copy_processing
+INFO:2018:05:05 11:23:54:Created new job: 3
+INFO:2018:05:05 11:24:36:Setting up interval_processing
+INFO:2018:05:05 11:24:36:Setting up all_results_processing
+INFO:2018:05:05 11:24:36:Setting up project_processing
+INFO:2018:05:05 11:24:36:Setting up series_processing
+INFO:2018:05:05 11:24:36:Setting up crowd_processing
+INFO:2018:05:05 11:24:36:Setting up output_copy_processing
+INFO:2018:05:05 11:24:36:Created new job: 0
+INFO:2018:05:05 11:40:03:Starting server.
+DEBUG:2018:05:05 11:43:37:45157: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:43:37:stderr reader: <Thread(Thread-1, initial daemon)>
+DEBUG:2018:05:05 11:43:37:stdout reader: <Thread(Thread-2, initial daemon)>
+DEBUG:2018:05:05 11:43:37:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:43:37:verify_data: 'client.sig', b'' ...
+DEBUG:2018:05:05 11:43:37:45158: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:43:37:data copier: <Thread(Thread-3, initial daemon)>, <_io.BytesIO object at 0x8058fcfc0>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:43:37:stderr reader: <Thread(Thread-4, initial daemon)>
+DEBUG:2018:05:05 11:43:37:closed output, 0 bytes sent
+DEBUG:2018:05:05 11:43:37:stdout reader: <Thread(Thread-5, initial daemon)>
+DEBUG:2018:05:05 11:43:37:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:43:37:[GNUPG:] NODATA 2
+DEBUG:2018:05:05 11:43:37:message ignored: NODATA, 2
+DEBUG:2018:05:05 11:43:37:gpg: verify signatures failed: Unknown system error
+DEBUG:2018:05:05 11:43:37:[GNUPG:] FAILURE verify 4294967295
+INFO:2018:05:05 11:47:46:Starting server.
+DEBUG:2018:05:05 11:48:09:45176: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:09:stderr reader: <Thread(Thread-1, initial daemon)>
+DEBUG:2018:05:05 11:48:09:stdout reader: <Thread(Thread-2, initial daemon)>
+DEBUG:2018:05:05 11:48:09:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:09:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:09:45177: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:09:data copier: <Thread(Thread-3, initial daemon)>, <_io.BytesIO object at 0x8058f7eb8>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:09:stderr reader: <Thread(Thread-4, initial daemon)>
+DEBUG:2018:05:05 11:48:09:stdout reader: <Thread(Thread-5, initial daemon)>
+DEBUG:2018:05:05 11:48:09:closed output, 586468 bytes sent
+DEBUG:2018:05:05 11:48:09:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:09:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:09:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:09:gpg: Signature made Sat May  5 11:48:08 2018 EDT
+DEBUG:2018:05:05 11:48:09:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:09:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:09:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:09:[GNUPG:] SIG_ID 5Rkz2PYzqzp6r32VhZQCpMgmkRg 2018-05-05 1525535288
+DEBUG:2018:05:05 11:48:09:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:09:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:09:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:09:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:09:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535288 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:09:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:09:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:09:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:09:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:09:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:09:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:13:45178: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:13:stderr reader: <Thread(Thread-6, initial daemon)>
+DEBUG:2018:05:05 11:48:13:stdout reader: <Thread(Thread-7, initial daemon)>
+DEBUG:2018:05:05 11:48:13:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:13:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:13:45179: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:13:data copier: <Thread(Thread-8, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:13:stderr reader: <Thread(Thread-9, initial daemon)>
+DEBUG:2018:05:05 11:48:13:stdout reader: <Thread(Thread-10, initial daemon)>
+DEBUG:2018:05:05 11:48:13:closed output, 587966 bytes sent
+DEBUG:2018:05:05 11:48:13:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:13:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:13:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:13:gpg: Signature made Sat May  5 11:48:12 2018 EDT
+DEBUG:2018:05:05 11:48:13:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:13:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:13:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:13:[GNUPG:] SIG_ID GsW6A9QAe15rQwh9QVy3rQLWLiA 2018-05-05 1525535292
+DEBUG:2018:05:05 11:48:13:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:13:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:13:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:13:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:13:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535292 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:13:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:13:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:13:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:13:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:13:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:13:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:16:45180: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:16:stderr reader: <Thread(Thread-11, initial daemon)>
+DEBUG:2018:05:05 11:48:16:stdout reader: <Thread(Thread-12, initial daemon)>
+DEBUG:2018:05:05 11:48:16:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:17:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:17:45181: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:17:data copier: <Thread(Thread-13, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:17:stderr reader: <Thread(Thread-14, initial daemon)>
+DEBUG:2018:05:05 11:48:17:stdout reader: <Thread(Thread-15, initial daemon)>
+DEBUG:2018:05:05 11:48:17:closed output, 586761 bytes sent
+DEBUG:2018:05:05 11:48:17:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:17:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:17:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:17:gpg: Signature made Sat May  5 11:48:16 2018 EDT
+DEBUG:2018:05:05 11:48:17:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:17:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:17:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:17:[GNUPG:] SIG_ID 1a1y2vIpmFvqK2irdAIyiC3hnCQ 2018-05-05 1525535296
+DEBUG:2018:05:05 11:48:17:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:17:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:17:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:17:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:17:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535296 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:17:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:17:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:17:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:17:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:17:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:17:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:20:45182: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:20:stderr reader: <Thread(Thread-16, initial daemon)>
+DEBUG:2018:05:05 11:48:20:stdout reader: <Thread(Thread-17, initial daemon)>
+DEBUG:2018:05:05 11:48:20:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:21:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:21:45183: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:21:data copier: <Thread(Thread-18, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:21:stderr reader: <Thread(Thread-19, initial daemon)>
+DEBUG:2018:05:05 11:48:21:stdout reader: <Thread(Thread-20, initial daemon)>
+DEBUG:2018:05:05 11:48:21:closed output, 588317 bytes sent
+DEBUG:2018:05:05 11:48:21:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:21:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:21:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:21:gpg: Signature made Sat May  5 11:48:20 2018 EDT
+DEBUG:2018:05:05 11:48:21:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:21:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:21:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:21:[GNUPG:] SIG_ID oHRRRbuCXsAbX3lWklG850Wel18 2018-05-05 1525535300
+DEBUG:2018:05:05 11:48:21:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:21:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:21:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:21:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:21:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535300 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:21:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:21:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:21:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:21:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:21:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:21:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:24:45184: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:24:stderr reader: <Thread(Thread-21, initial daemon)>
+DEBUG:2018:05:05 11:48:24:stdout reader: <Thread(Thread-22, initial daemon)>
+DEBUG:2018:05:05 11:48:24:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:24:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:24:45185: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:24:data copier: <Thread(Thread-23, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:24:stderr reader: <Thread(Thread-24, initial daemon)>
+DEBUG:2018:05:05 11:48:24:stdout reader: <Thread(Thread-25, initial daemon)>
+DEBUG:2018:05:05 11:48:24:closed output, 588059 bytes sent
+DEBUG:2018:05:05 11:48:24:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:24:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:24:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:24:gpg: Signature made Sat May  5 11:48:24 2018 EDT
+DEBUG:2018:05:05 11:48:24:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:24:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:24:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:24:[GNUPG:] SIG_ID L8w+bTsmpHLQYiumaCX8heA1TWY 2018-05-05 1525535304
+DEBUG:2018:05:05 11:48:24:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:24:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:24:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:24:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:24:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535304 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:24:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:24:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:24:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:24:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:24:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:24:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:28:45186: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:28:stderr reader: <Thread(Thread-26, initial daemon)>
+DEBUG:2018:05:05 11:48:28:stdout reader: <Thread(Thread-27, initial daemon)>
+DEBUG:2018:05:05 11:48:28:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:28:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:28:45187: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:28:data copier: <Thread(Thread-28, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:28:stderr reader: <Thread(Thread-29, initial daemon)>
+DEBUG:2018:05:05 11:48:28:stdout reader: <Thread(Thread-30, initial daemon)>
+DEBUG:2018:05:05 11:48:28:closed output, 585029 bytes sent
+DEBUG:2018:05:05 11:48:28:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:28:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:28:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:28:gpg: Signature made Sat May  5 11:48:27 2018 EDT
+DEBUG:2018:05:05 11:48:28:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:28:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:28:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:28:[GNUPG:] SIG_ID 2NccyEBOE9VyDHKpuZ2Qr1B7+ww 2018-05-05 1525535307
+DEBUG:2018:05:05 11:48:28:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:28:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:28:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:28:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:28:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535307 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:28:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:28:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:28:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:28:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:28:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:28:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:31:45188: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:31:stderr reader: <Thread(Thread-31, initial daemon)>
+DEBUG:2018:05:05 11:48:31:stdout reader: <Thread(Thread-32, initial daemon)>
+DEBUG:2018:05:05 11:48:31:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:32:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:32:45189: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:32:data copier: <Thread(Thread-33, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:32:stderr reader: <Thread(Thread-34, initial daemon)>
+DEBUG:2018:05:05 11:48:32:stdout reader: <Thread(Thread-35, initial daemon)>
+DEBUG:2018:05:05 11:48:32:closed output, 543848 bytes sent
+DEBUG:2018:05:05 11:48:32:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:32:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:32:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:32:gpg: Signature made Sat May  5 11:48:31 2018 EDT
+DEBUG:2018:05:05 11:48:32:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:32:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:32:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:32:[GNUPG:] SIG_ID VijEm9uqA6iL9s6XktPsklZYV+A 2018-05-05 1525535311
+DEBUG:2018:05:05 11:48:32:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:32:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:32:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:32:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:32:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535311 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:32:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:32:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:32:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:32:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:32:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:32:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:35:45190: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:35:stderr reader: <Thread(Thread-36, initial daemon)>
+DEBUG:2018:05:05 11:48:35:stdout reader: <Thread(Thread-37, initial daemon)>
+DEBUG:2018:05:05 11:48:35:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:36:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:36:45191: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:36:data copier: <Thread(Thread-38, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:36:stderr reader: <Thread(Thread-39, initial daemon)>
+DEBUG:2018:05:05 11:48:36:stdout reader: <Thread(Thread-40, initial daemon)>
+DEBUG:2018:05:05 11:48:36:closed output, 568329 bytes sent
+DEBUG:2018:05:05 11:48:36:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:36:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:36:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:36:gpg: Signature made Sat May  5 11:48:35 2018 EDT
+DEBUG:2018:05:05 11:48:36:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:36:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:36:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:36:[GNUPG:] SIG_ID dKLiD8924k1V2a0Of/gMjeuuMMg 2018-05-05 1525535315
+DEBUG:2018:05:05 11:48:36:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:36:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:36:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:36:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:36:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535315 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:36:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:36:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:36:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:36:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:36:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:36:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:39:45192: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:39:stderr reader: <Thread(Thread-41, initial daemon)>
+DEBUG:2018:05:05 11:48:39:stdout reader: <Thread(Thread-42, initial daemon)>
+DEBUG:2018:05:05 11:48:39:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:39:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:39:45193: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:39:data copier: <Thread(Thread-43, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:39:stderr reader: <Thread(Thread-44, initial daemon)>
+DEBUG:2018:05:05 11:48:39:stdout reader: <Thread(Thread-45, initial daemon)>
+DEBUG:2018:05:05 11:48:39:closed output, 567132 bytes sent
+DEBUG:2018:05:05 11:48:39:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:39:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:39:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:39:gpg: Signature made Sat May  5 11:48:39 2018 EDT
+DEBUG:2018:05:05 11:48:39:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:39:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:39:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:39:[GNUPG:] SIG_ID gaKbghpAR9LjyM/cogytrk4HC9U 2018-05-05 1525535319
+DEBUG:2018:05:05 11:48:39:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:39:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:39:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:39:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:39:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535319 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:39:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:39:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:39:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:39:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:39:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:39:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
+DEBUG:2018:05:05 11:48:43:45194: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --version
+DEBUG:2018:05:05 11:48:43:stderr reader: <Thread(Thread-46, initial daemon)>
+DEBUG:2018:05:05 11:48:43:stdout reader: <Thread(Thread-47, initial daemon)>
+DEBUG:2018:05:05 11:48:43:chunk: b'gpg (GnuPG) 2.2.5\nlibgcrypt 1.8.2\nCopyright (C) 2018 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to t'
+DEBUG:2018:05:05 11:48:43:verify_data: 'client.sig', b'\xff\xd8\xff\xe1c\xfcExif\x00\x00MM\x00*' ...
+DEBUG:2018:05:05 11:48:43:45195: gpg --status-fd 2 --no-tty --fixed-list-mode --batch --with-colons --verify client.sig -
+DEBUG:2018:05:05 11:48:43:data copier: <Thread(Thread-48, initial daemon)>, <_io.BytesIO object at 0x8059a3620>, <_io.BufferedWriter name=8>
+DEBUG:2018:05:05 11:48:43:stderr reader: <Thread(Thread-49, initial daemon)>
+DEBUG:2018:05:05 11:48:43:stdout reader: <Thread(Thread-50, initial daemon)>
+DEBUG:2018:05:05 11:48:43:closed output, 567899 bytes sent
+DEBUG:2018:05:05 11:48:43:gpg: Warning: using insecure memory!
+DEBUG:2018:05:05 11:48:43:[GNUPG:] NEWSIG
+DEBUG:2018:05:05 11:48:43:message ignored: NEWSIG, 
+DEBUG:2018:05:05 11:48:43:gpg: Signature made Sat May  5 11:48:42 2018 EDT
+DEBUG:2018:05:05 11:48:43:gpg:                using RSA key 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:43:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:43:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:43:[GNUPG:] SIG_ID L/qlJxAxtw/uqDZuhQmW5yWICO0 2018-05-05 1525535322
+DEBUG:2018:05:05 11:48:43:[GNUPG:] KEY_CONSIDERED 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:43:message ignored: KEY_CONSIDERED, 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 0
+DEBUG:2018:05:05 11:48:43:[GNUPG:] GOODSIG F88C26BAAF28CDB7 pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>
+DEBUG:2018:05:05 11:48:43:gpg: Good signature from "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>" [unknown]
+DEBUG:2018:05:05 11:48:43:[GNUPG:] VALIDSIG 21389A664629E12B5BCCFA18F88C26BAAF28CDB7 2018-05-05 1525535322 0 4 0 1 8 00 21389A664629E12B5BCCFA18F88C26BAAF28CDB7
+DEBUG:2018:05:05 11:48:43:[GNUPG:] TRUST_UNDEFINED 0 pgp
+DEBUG:2018:05:05 11:48:43:gpg: WARNING: This key is not certified with a trusted signature!
+DEBUG:2018:05:05 11:48:43:gpg:          There is no indication that the signature belongs to the owner.
+DEBUG:2018:05:05 11:48:43:Primary key fingerprint: 2138 9A66 4629 E12B 5BCC  FA18 F88C 26BA AF28 CDB7
+DEBUG:2018:05:05 11:48:43:[GNUPG:] VERIFICATION_COMPLIANCE_MODE 23
+DEBUG:2018:05:05 11:48:43:message ignored: VERIFICATION_COMPLIANCE_MODE, 23
