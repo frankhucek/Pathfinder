@@ -21,6 +21,7 @@ is this file's parent directory.
 
 import os
 from pathlib import Path
+import logging
 
 from manifest import Manifest
 from chunk import create_chunks
