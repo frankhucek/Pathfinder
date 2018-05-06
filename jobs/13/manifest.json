@@ -41,8 +41,8 @@
         "chunk_width": 40
     },
     "geometry": {
-        "height": 1280,
-        "width": 720,
+        "height": 720,
+        "width": 1280,
         "fov": [6.0, 3.375, 6.0],
         "upperleft": {
             "position": [250, 250],

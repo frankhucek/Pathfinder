@@ -32,32 +32,32 @@
         }
     ],
     "overlay": {
-        "control_img": "jobs/0/images/1.jpg",
+        "control_img": "jobs/0/images/0.jpg",
         "scale": 100,
         "blur": 15
     },
     "chunk": {
-        "chunk_height": 36,
-        "chunk_width": 36
+        "chunk_height": 40,
+        "chunk_width": 40
     },
     "geometry": {
-        "height": 1944,
-        "width": 2592,
-        "fov": [1.0, 1.0, 1.0],
+        "height": 720,
+        "width": 1280,
+        "fov": [6.0, 3.375, 6.0],
         "upperleft": {
             "position": [250, 250],
             "distance": 21.21320344
         },
         "upperright": {
-            "position": [750, 250],
+            "position": [720, 250],
             "distance": 21.21320344
         },
         "lowerleft": {
-            "position": [250, 750],
+            "position": [250, 720],
             "distance": 21.21320344
         },
         "lowerright": {
-            "position": [750, 750],
+            "position": [700, 700],
             "distance": 21.21320344
         }
     }

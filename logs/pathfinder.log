@@ -336,3 +336,235 @@ INFO:2018:05:05 11:57:04:updating job
 INFO:2018:05:05 11:57:08:updating job
 INFO:2018:05:05 11:57:12:updating job
 INFO:2018:05:05 11:57:16:updating job
+INFO:2018:05:05 12:03:15:Starting server.
+INFO:2018:05:05 12:03:29:updating job
+INFO:2018:05:05 12:03:29:got manifest
+INFO:2018:05:05 12:03:29:saving data
+INFO:2018:05:05 12:03:29:creating chunks
+INFO:2018:05:05 12:03:38:updating job
+INFO:2018:05:05 12:03:38:got manifest
+INFO:2018:05:05 12:03:38:saving data
+INFO:2018:05:05 12:03:38:creating chunks
+INFO:2018:05:05 12:03:42:updating job
+INFO:2018:05:05 12:03:42:got manifest
+INFO:2018:05:05 12:03:42:saving data
+INFO:2018:05:05 12:03:42:creating chunks
+INFO:2018:05:05 12:03:47:updating job
+INFO:2018:05:05 12:03:47:got manifest
+INFO:2018:05:05 12:03:47:saving data
+INFO:2018:05:05 12:03:47:creating chunks
+INFO:2018:05:05 12:03:51:updating job
+INFO:2018:05:05 12:03:51:got manifest
+INFO:2018:05:05 12:03:51:saving data
+INFO:2018:05:05 12:03:51:creating chunks
+INFO:2018:05:05 12:03:55:updating job
+INFO:2018:05:05 12:03:55:got manifest
+INFO:2018:05:05 12:03:55:saving data
+INFO:2018:05:05 12:03:55:creating chunks
+INFO:2018:05:05 12:03:59:updating job
+INFO:2018:05:05 12:03:59:got manifest
+INFO:2018:05:05 12:03:59:saving data
+INFO:2018:05:05 12:03:59:creating chunks
+INFO:2018:05:05 12:04:03:updating job
+INFO:2018:05:05 12:04:03:got manifest
+INFO:2018:05:05 12:04:03:saving data
+INFO:2018:05:05 12:04:03:creating chunks
+INFO:2018:05:05 12:04:07:updating job
+INFO:2018:05:05 12:04:07:got manifest
+INFO:2018:05:05 12:04:07:saving data
+INFO:2018:05:05 12:04:07:creating chunks
+INFO:2018:05:05 12:04:12:updating job
+INFO:2018:05:05 12:04:12:got manifest
+INFO:2018:05:05 12:04:12:saving data
+INFO:2018:05:05 12:04:12:creating chunks
+INFO:2018:05:05 12:07:37:updating job
+INFO:2018:05:05 12:07:37:got manifest
+INFO:2018:05:05 12:07:37:saving data
+INFO:2018:05:05 12:07:37:creating chunks
+INFO:2018:05:05 12:08:22:updating job
+INFO:2018:05:05 12:08:22:got manifest
+INFO:2018:05:05 12:08:22:saving data
+INFO:2018:05:05 12:08:22:creating chunks
+INFO:2018:05:05 12:08:23:process all
+INFO:2018:05:05 12:08:23:processing a step
+INFO:2018:05:05 12:08:23:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:08:24:processing a step
+INFO:2018:05:05 12:12:01:updating job
+INFO:2018:05:05 12:12:01:got manifest
+INFO:2018:05:05 12:12:01:saving data
+INFO:2018:05:05 12:12:01:creating chunks
+INFO:2018:05:05 12:13:16:updating job
+INFO:2018:05:05 12:13:16:got manifest
+INFO:2018:05:05 12:13:16:saving data
+INFO:2018:05:05 12:13:16:creating chunks
+INFO:2018:05:05 12:13:17:process all
+INFO:2018:05:05 12:13:17:processing a step
+INFO:2018:05:05 12:13:17:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:13:17:processing a step
+INFO:2018:05:05 12:16:22:Setting up interval_processing
+INFO:2018:05:05 12:16:22:Setting up all_results_processing
+INFO:2018:05:05 12:16:22:Setting up project_processing
+INFO:2018:05:05 12:16:22:Setting up series_processing
+INFO:2018:05:05 12:16:22:Setting up crowd_processing
+INFO:2018:05:05 12:16:22:Setting up output_copy_processing
+INFO:2018:05:05 12:16:22:Created new job: 0
+INFO:2018:05:05 12:17:29:updating job
+INFO:2018:05:05 12:17:29:got manifest
+INFO:2018:05:05 12:17:29:saving data
+INFO:2018:05:05 12:17:29:creating chunks
+INFO:2018:05:05 12:17:30:process all
+INFO:2018:05:05 12:17:30:processing a step
+INFO:2018:05:05 12:17:30:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:17:30:processing a step
+INFO:2018:05:05 12:17:30:processing a step
+INFO:2018:05:05 12:19:30:updating job
+INFO:2018:05:05 12:19:30:got manifest
+INFO:2018:05:05 12:19:30:saving data
+INFO:2018:05:05 12:19:30:creating chunks
+INFO:2018:05:05 12:19:31:process all
+INFO:2018:05:05 12:19:31:processing a step
+INFO:2018:05:05 12:19:31:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:19:31:processing a step
+INFO:2018:05:05 12:19:31:processing a step
+INFO:2018:05:05 12:20:06:updating job
+INFO:2018:05:05 12:20:06:got manifest
+INFO:2018:05:05 12:20:06:saving data
+INFO:2018:05:05 12:20:06:creating chunks
+INFO:2018:05:05 12:20:07:process all
+INFO:2018:05:05 12:20:07:processing a step
+INFO:2018:05:05 12:20:07:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:20:07:processing a step
+INFO:2018:05:05 12:20:07:processing a step
+INFO:2018:05:05 12:21:47:updating job
+INFO:2018:05:05 12:21:47:got manifest
+INFO:2018:05:05 12:21:47:saving data
+INFO:2018:05:05 12:21:47:creating chunks
+INFO:2018:05:05 12:21:48:process all
+INFO:2018:05:05 12:21:48:processing a step
+INFO:2018:05:05 12:21:48:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:21:48:processing a step
+INFO:2018:05:05 12:21:49:processing a step
+INFO:2018:05:05 12:21:49:Updating for img: 2018-05-05 12:03:26
+INFO:2018:05:05 12:21:49:processing a step
+INFO:2018:05:05 12:21:49:processing a step
+INFO:2018:05:05 12:22:07:Starting server.
+INFO:2018:05:05 12:22:20:updating job
+INFO:2018:05:05 12:22:20:got manifest
+INFO:2018:05:05 12:22:20:saving data
+INFO:2018:05:05 12:22:20:creating chunks
+INFO:2018:05:05 12:22:21:process all
+INFO:2018:05:05 12:22:21:processing a step
+INFO:2018:05:05 12:22:21:Updating for img: 2018-05-05 12:22:18
+INFO:2018:05:05 12:22:21:processing a step
+INFO:2018:05:05 12:22:21:processing a step
+INFO:2018:05:05 12:22:21:Updating for img: 2018-05-05 12:22:18
+INFO:2018:05:05 12:22:21:processing a step
+INFO:2018:05:05 12:22:21:processing a step
+INFO:2018:05:05 12:22:24:updating job
+INFO:2018:05:05 12:22:24:got manifest
+INFO:2018:05:05 12:22:24:saving data
+INFO:2018:05:05 12:22:24:creating chunks
+INFO:2018:05:05 12:22:25:process all
+INFO:2018:05:05 12:22:25:processing a step
+INFO:2018:05:05 12:22:25:Updating for img: 2018-05-05 12:22:22
+INFO:2018:05:05 12:22:25:processing a step
+INFO:2018:05:05 12:22:25:processing a step
+INFO:2018:05:05 12:22:25:Updating for img: 2018-05-05 12:22:22
+INFO:2018:05:05 12:22:26:processing a step
+INFO:2018:05:05 12:22:26:processing a step
+INFO:2018:05:05 12:22:29:updating job
+INFO:2018:05:05 12:22:29:got manifest
+INFO:2018:05:05 12:22:29:saving data
+INFO:2018:05:05 12:22:29:creating chunks
+INFO:2018:05:05 12:22:30:process all
+INFO:2018:05:05 12:22:30:processing a step
+INFO:2018:05:05 12:22:30:Not updating for img: 2018-05-05 12:22:26
+INFO:2018:05:05 12:22:30:processing a step
+INFO:2018:05:05 12:22:30:processing a step
+INFO:2018:05:05 12:22:30:Not updating for img: 2018-05-05 12:22:26
+INFO:2018:05:05 12:22:30:processing a step
+INFO:2018:05:05 12:22:30:processing a step
+INFO:2018:05:05 12:22:33:updating job
+INFO:2018:05:05 12:22:33:got manifest
+INFO:2018:05:05 12:22:33:saving data
+INFO:2018:05:05 12:22:33:creating chunks
+INFO:2018:05:05 12:22:34:process all
+INFO:2018:05:05 12:22:34:processing a step
+INFO:2018:05:05 12:22:34:Not updating for img: 2018-05-05 12:22:31
+INFO:2018:05:05 12:22:34:processing a step
+INFO:2018:05:05 12:22:34:processing a step
+INFO:2018:05:05 12:22:34:Not updating for img: 2018-05-05 12:22:31
+INFO:2018:05:05 12:22:34:processing a step
+INFO:2018:05:05 12:22:34:processing a step
+INFO:2018:05:05 12:22:37:updating job
+INFO:2018:05:05 12:22:37:got manifest
+INFO:2018:05:05 12:22:37:saving data
+INFO:2018:05:05 12:22:37:creating chunks
+INFO:2018:05:05 12:22:38:process all
+INFO:2018:05:05 12:22:38:processing a step
+INFO:2018:05:05 12:22:38:Updating for img: 2018-05-05 12:22:35
+INFO:2018:05:05 12:22:39:processing a step
+INFO:2018:05:05 12:22:39:processing a step
+INFO:2018:05:05 12:22:39:Updating for img: 2018-05-05 12:22:35
+INFO:2018:05:05 12:22:39:processing a step
+INFO:2018:05:05 12:22:39:processing a step
+INFO:2018:05:05 12:22:41:updating job
+INFO:2018:05:05 12:22:41:got manifest
+INFO:2018:05:05 12:22:41:saving data
+INFO:2018:05:05 12:22:41:creating chunks
+INFO:2018:05:05 12:22:42:process all
+INFO:2018:05:05 12:22:42:processing a step
+INFO:2018:05:05 12:22:42:Not updating for img: 2018-05-05 12:22:40
+INFO:2018:05:05 12:22:42:processing a step
+INFO:2018:05:05 12:22:43:processing a step
+INFO:2018:05:05 12:22:43:Not updating for img: 2018-05-05 12:22:40
+INFO:2018:05:05 12:22:43:processing a step
+INFO:2018:05:05 12:22:43:processing a step
+INFO:2018:05:05 12:22:46:updating job
+INFO:2018:05:05 12:22:46:got manifest
+INFO:2018:05:05 12:22:46:saving data
+INFO:2018:05:05 12:22:46:creating chunks
+INFO:2018:05:05 12:22:47:process all
+INFO:2018:05:05 12:22:47:processing a step
+INFO:2018:05:05 12:22:47:Not updating for img: 2018-05-05 12:22:44
+INFO:2018:05:05 12:22:47:processing a step
+INFO:2018:05:05 12:22:47:processing a step
+INFO:2018:05:05 12:22:47:Not updating for img: 2018-05-05 12:22:44
+INFO:2018:05:05 12:22:47:processing a step
+INFO:2018:05:05 12:22:47:processing a step
+INFO:2018:05:05 12:22:50:updating job
+INFO:2018:05:05 12:22:50:got manifest
+INFO:2018:05:05 12:22:50:saving data
+INFO:2018:05:05 12:22:50:creating chunks
+INFO:2018:05:05 12:22:51:process all
+INFO:2018:05:05 12:22:51:processing a step
+INFO:2018:05:05 12:22:51:Updating for img: 2018-05-05 12:22:48
+INFO:2018:05:05 12:22:51:processing a step
+INFO:2018:05:05 12:22:51:processing a step
+INFO:2018:05:05 12:22:51:Updating for img: 2018-05-05 12:22:48
+INFO:2018:05:05 12:22:52:processing a step
+INFO:2018:05:05 12:22:52:processing a step
+INFO:2018:05:05 12:22:55:updating job
+INFO:2018:05:05 12:22:55:got manifest
+INFO:2018:05:05 12:22:55:saving data
+INFO:2018:05:05 12:22:55:creating chunks
+INFO:2018:05:05 12:22:56:process all
+INFO:2018:05:05 12:22:56:processing a step
+INFO:2018:05:05 12:22:56:Not updating for img: 2018-05-05 12:22:52
+INFO:2018:05:05 12:22:56:processing a step
+INFO:2018:05:05 12:22:56:processing a step
+INFO:2018:05:05 12:22:56:Not updating for img: 2018-05-05 12:22:52
+INFO:2018:05:05 12:22:56:processing a step
+INFO:2018:05:05 12:22:56:processing a step
+INFO:2018:05:05 12:22:59:updating job
+INFO:2018:05:05 12:22:59:got manifest
+INFO:2018:05:05 12:22:59:saving data
+INFO:2018:05:05 12:22:59:creating chunks
+INFO:2018:05:05 12:23:00:process all
+INFO:2018:05:05 12:23:00:processing a step
+INFO:2018:05:05 12:23:00:Not updating for img: 2018-05-05 12:22:57
+INFO:2018:05:05 12:23:00:processing a step
+INFO:2018:05:05 12:23:00:processing a step
+INFO:2018:05:05 12:23:00:Not updating for img: 2018-05-05 12:22:57
+INFO:2018:05:05 12:23:00:processing a step
+INFO:2018:05:05 12:23:00:processing a step
