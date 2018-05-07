@@ -10,6 +10,7 @@ class JobInfoCard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            jobID: props.jobID,
             images: props.images,
             heatmap: props.heatmap,
             retailmap: props.retailmap,
@@ -27,12 +28,14 @@ class JobInfoCard extends Component {
                 {this.state.cardType === "images" &&
                     <Images height={this.state.height}
                             width={this.state.width}
-                            images={this.state.images}/>
+                            images={this.state.images}
+                            jobID={this.state.jobID}/>
                 }
                 {this.state.cardType === "heatmap" &&
                     <AnalyzedMap height={this.state.height}
                                  width={this.state.width}
-                                 heatmap={this.state.heatmap}/>
+                                 heatmap={this.state.heatmap}
+                                 jobID={this.state.jobID}/>
                 }
                 {this.state.cardType === "overlay" &&
                     <AnalyzedInfo height={this.state.height}

@@ -6,57 +6,27 @@ class JobPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jobID: this.props.location.state.jobID,
-      images: props.images,
-      heatmap: props.heatmap,
-      retailmap: props.retailmap
+      jobID: this.props.location.state.jobID
     }
   }
 
-    getDependencies() {
-      var frequencies;
-      var total;
-      var project;
-      try {
-        frequencies = require('../data/out/frequencies.json');
-      }
-      catch (e) {
-        frequencies = null;
-      }
-      try {
-        total = require('../data/out/total.json');
-      }
-      catch (e) {
-        total = null;
-      }
-      try {
-        project = require('../data/out/project.bmp');
-      }
-      catch (e) {
-        project = null;
-      }
-      return [frequencies, total, project]
-    }
+  render() {
+      //console.log(this.state.jobID);
 
-    render() {
-        var values = this.getDependencies()
-        let crowd_data = values.frequencies != null && values.total != null;
-        let project_data = values.project != null;
-
-        return (
-            <div className="job-info-page">
-                <NavBar jobID={this.state.jobID}/>
-                <JobInfoCard cardType="images" header="your images"
-                              images={this.state.images}/>
-                <JobInfoCard cardType="heatmap" header="analyzed heatmap"
-                              heatmap={this.state.heatmap}/>
-                <JobInfoCard cardType="overlay" header="overlayed heatmap"
-                              retailmap={this.state.retailmap}/>
-                {project_data && <JobInfoCard cardType="project" header="projected heatmap" />}
-                {crowd_data && <JobInfoCard cardType="crowd" header="crowd usage" />}
-            </div>
-        )
-    }
+      return (
+        <div className="job-info-page">
+            <NavBar jobID={this.state.jobID}/>
+            <JobInfoCard cardType="images" header="your images"
+                          images={this.state.images}/>
+            <JobInfoCard cardType="heatmap" header="analyzed heatmap"
+                          jobID={this.state.jobID}/>
+            <JobInfoCard cardType="overlay" header="overlayed heatmap"
+                          retailmap={this.state.retailmap}/>
+            <JobInfoCard cardType="project" header="projected heatmap" />
+            <JobInfoCard cardType="crowd" header="crowd usage" />
+        </div>
+      )
+  }
 }
 
 export default JobPage;

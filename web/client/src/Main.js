@@ -23,8 +23,7 @@ class Main extends Component {
         if (this.state.loggedIn) {
           return(
             <div className="main">
-              <JobPage images={this.state.images}
-                        jobID={this.state.jobID}/>
+              <JobPage jobID={this.state.jobID}/>
             </div>
           )
         }
