@@ -4,7 +4,8 @@ class NavBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        jobID: 1,
+        jobID: props.jobID,
+        response: ''
     }
   }
 

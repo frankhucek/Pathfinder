@@ -3,6 +3,15 @@ import NavBar from './NavBar.js';
 import JobInfoCard from './JobInfoCard.js'
 
 class JobPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      images: props.images,
+      heatmap: props.heatmap,
+      retailmap: props.retailmap
+    }
+  }
+
     getDependencies() {
       var frequencies;
       var total;
@@ -36,9 +45,12 @@ class JobPage extends Component {
         return (
             <div className="job-info-page">
                 <NavBar/>
-                <JobInfoCard cardType="images" header="your images" />
-                <JobInfoCard cardType="heatmap" header="analyzed heatmap" />
-                <JobInfoCard cardType="overlay" header="overlayed heatmap" />
+                <JobInfoCard cardType="images" header="your images"
+                              images={this.state.images}/>
+                <JobInfoCard cardType="heatmap" header="analyzed heatmap"
+                              heatmap={this.state.heatmap}/>
+                <JobInfoCard cardType="overlay" header="overlayed heatmap"
+                              retailmap={this.state.retailmap}/>
                 {project_data && <JobInfoCard cardType="project" header="projected heatmap" />}
                 {crowd_data && <JobInfoCard cardType="crowd" header="crowd usage" />}
             </div>

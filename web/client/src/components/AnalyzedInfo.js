@@ -10,8 +10,7 @@ class AnalyzedInfo extends Component {
       this.state = {
           height: props.height,
           width: props.width,
-          crowd: 0,
-          retailmap: null
+          retailmap: props.retailmap
       };
   }
 

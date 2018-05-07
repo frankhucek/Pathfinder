@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import Main from './Main.js';
+import Login from './components/Login.js'
 
 ReactDOM.render(
   <Router>
     <div>
-      <Route path='/job-page' component={Main} />
-      <Route path='/login' component={Main} />
+      <Route path='/' component={Main} />
     </div>
   </Router>
   , document.getElementById('root')

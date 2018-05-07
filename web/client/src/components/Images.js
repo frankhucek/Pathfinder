@@ -7,8 +7,8 @@ class Images extends Component {
     super(props);
 
     this.state = {
-        images: null,
-        jobID: 0,
+        images: props.images,
+        jobID: props.jobID,
         height: props.height,
         width: props.width,
     }

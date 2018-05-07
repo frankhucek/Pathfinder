@@ -7,6 +7,7 @@ class AnalyzedMap extends Component {
         super(props);
 
         this.state = {
+            heatmap: props.heatmap,
             height: props.height,
             width: props.width
         }

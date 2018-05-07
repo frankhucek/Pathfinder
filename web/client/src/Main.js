@@ -12,20 +12,25 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: true
+            loggedIn: true,
+            jobID: null,
+            images: null
         };
     }
 
     render() {
-        let content = null;
         if (this.state.loggedIn) {
-            content = <JobPage/>;
-        } else {
-            content = <Login />;
+          return(
+            <div className="main">
+              <JobPage images={this.state.images}
+                        jobID={this.state.jobID}/>
+            </div>
+          )
         }
+
         return (
             <div className="main">
-                {content}
+                <Login/>
             </div>
         )
     }
