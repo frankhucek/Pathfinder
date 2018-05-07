@@ -8,8 +8,11 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(cookieParser())
 
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
+app.use('/static', express.static(__dirname + '/public'));
+
+app.get('/jobid/1', (req, res) => {
+  res.send({ images: 'should send images',
+              out: 'should send out'});
 });
 
 app.listen(4000);
