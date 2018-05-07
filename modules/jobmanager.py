@@ -39,6 +39,7 @@ from image import ImageData
 import heatmap
 import access
 import crowd
+import retail
 import log
 
 
@@ -333,6 +334,21 @@ class OutputCopyProcessing(Processing):
         web_out_filepath = access.web_data_out_filepath(jobid)
         out_filepath = access.out_dir_filepath(jobid)
         force_copy(out_filepath, web_out_filepath)
+
+class RetailProcessing(Processing):
+
+    processing_type = "retail_processing"
+
+    HOTDOG_LIMIT = "hotdog_limit"
+
+    def __init__(self, manifest, json):
+        super().__init__(manifest, json)
+        self.hotdog_limit = json[RetailProcessing.HOTDOG_LIMIT]
+
+    def process(self, jobid, filename):
+        heatmap_filepath = access.heatmap_filepath(jobid)
+        retail_json = access.out_filepath(jobid, "retail.json")
+        retail.create_retail(heatmap_filepath, retail_json, self.hotdog_limit)
 
 
 ###############################################################################
