@@ -19,7 +19,7 @@ class Images extends Component {
       .then(res => {
           console.log(res.images)
           for (var image in res.images) {
-            var img_file = this.getImage(res.images[image]);
+            var img_file = this.getImage(res.images[image]).then(res);
             var joined = this.state.images.concat(
               <div><Image
                 src={img_file}
@@ -32,7 +32,7 @@ class Images extends Component {
       });
   }
 
-  getImage = aynsyc (image) => {
+  getImage = async (image) => {
     const file = '/job/' + this.state.jobID + '/image/' + image;
     const response = await fetch(file);
 
