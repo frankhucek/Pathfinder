@@ -121,5 +121,7 @@ def handle_sig_data(sigfile, client_socket):
 
 log.start_log()
 logger = logging.getLogger(__name__)
+logger.info("Starting server.")
+
 
 listen_for_photos()
