@@ -127,8 +127,8 @@ class CoordRange(object):
     def __init__(self, image_corners):
         self._min_x = min(x for x, y in image_corners)
         self._max_x = max(x for x, y in image_corners)
-        self._min_y = min(x for x, y in image_corners)
-        self._max_y = max(x for x, y in image_corners)
+        self._min_y = min(y for x, y in image_corners)
+        self._max_y = max(y for x, y in image_corners)
 
     def contains(self, coord):
         x, y = coord
