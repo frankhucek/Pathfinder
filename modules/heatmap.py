@@ -47,6 +47,7 @@ from datetime import datetime, timedelta
 import numpy as np
 from PIL import Image
 from PIL import ImageFilter
+from PIL import ImageOps
 
 from manifest import Manifest
 from mapping import Geometry
@@ -62,6 +63,9 @@ import log
 
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
+
+PROJECT_BG = (105, 180, 234)
+PROJECT_FG = (255, 193, 119)
 
 
 ###############################################################################
@@ -123,8 +127,8 @@ class CoordRange(object):
     def __init__(self, image_corners):
         self._min_x = min(x for x, y in image_corners)
         self._max_x = max(x for x, y in image_corners)
-        self._min_y = min(x for x, y in image_corners)
-        self._max_y = max(x for x, y in image_corners)
+        self._min_y = min(y for x, y in image_corners)
+        self._max_y = max(y for x, y in image_corners)
 
     def contains(self, coord):
         x, y = coord
@@ -217,7 +221,7 @@ class Heatmap(object):
             return self._points / m
 
     def project_point(self, coord, scale):
-        logging.info("projecting coord {} at size {}".format(coord, self.size))
+        logger.debug("projecting coord {} at size {}".format(coord, self.size))
         raw = mapping.image_to_blueprint(coord,
                                          self.geom,
                                          self.size)
@@ -227,7 +231,7 @@ class Heatmap(object):
 
     def project(self, filepath, desired_width):
 
-        logging.info("Project: filepath = {}".format(filepath))
+        logger.debug("Project: filepath = {}".format(filepath))
 
         image_corners = self.manifest.image_corners()
         lower_right = image_corners[3]
@@ -237,7 +241,7 @@ class Heatmap(object):
         new_size = (int(b_y * scale), int(b_x * scale))
         blueprint_values = np.zeros(new_size)
 
-        logging.info("Project: new size = {}".format)
+        logger.debug("Project: new size = {}".format)
 
         def valid_coord(coord, shape):
             return all(c >= 0 and c < s
@@ -255,7 +259,7 @@ class Heatmap(object):
         maximum = np.max(blueprint_values)
         div = maximum if maximum else 1
         normalized = blueprint_values / div
-        self.write_bw_binary(normalized, filepath)
+        self.write_project_binary(normalized, filepath)
 
     def overlay(self, img, filepath, scale, blur):
 
@@ -300,6 +304,18 @@ class Heatmap(object):
         uint_points = write_points.astype('uint8')
         im = Image.fromarray(uint_points, 'L')
         im.save(filepath)
+
+    @staticmethod
+    def write_project_binary(arr, filepath):
+        write_points = arr * 255
+        uint_points = write_points.astype('uint8')
+        im = Image.fromarray(uint_points, 'L')
+        rgb_im = ImageOps.colorize(im,
+                                   PROJECT_BG,
+                                   PROJECT_FG)
+        rgb_im.save(filepath)
+        filter_im = rgb_im.filter(ImageFilter.GaussianBlur(10))
+        filter_im.save(filepath)
 
     def __str__(self):
         attrs = [self.size[0],
@@ -484,6 +500,13 @@ def is_movement(images, coord,
 
     spread = np.ptp(color_set)
     return spread > color_thresh
+
+
+###############################################################################
+# Logging                                                                     #
+###############################################################################
+
+logger = logging.getLogger(__name__)
 
 
 ###############################################################################

@@ -63,8 +63,6 @@ class DuplicateJobError(Exception):
 
 def save_new_data(jobid, old_data_filepath, manifest):
 
-    logging.info("saving data")
-
     basename = os.path.basename(old_data_filepath)
 
     new_dir = sub_dir(jobid, DATA_DIR)
@@ -73,11 +71,16 @@ def save_new_data(jobid, old_data_filepath, manifest):
     new_basename = filename + '.txt'
     new_data_filepath = join(new_dir, new_basename)
 
-    logging.info("creating chunks")
-
     # Create chunks
     chunk_width, chunk_height = manifest.chunk_dimensions()
-    create_chunks(old_data_filepath, new_data_filepath, chunk_width, chunk_height)
+
+    msg = "Calling create_chunks with dim: {}".format(chunk_width,
+                                                      chunk_height)
+    logger.debug(msg)
+    create_chunks(old_data_filepath,
+                  new_data_filepath,
+                  chunk_width,
+                  chunk_height)
 
 
 def new_job_root():
@@ -196,3 +199,10 @@ def available_jobid():
 
     next_jobid = len(jobids)
     return next_jobid
+
+
+###############################################################################
+# Logging                                                                     #
+###############################################################################
+
+logger = logging.getLogger(__name__)
