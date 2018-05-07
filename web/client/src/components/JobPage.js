@@ -6,6 +6,7 @@ class JobPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      jobID: this.props.location.state.jobID,
       images: props.images,
       heatmap: props.heatmap,
       retailmap: props.retailmap

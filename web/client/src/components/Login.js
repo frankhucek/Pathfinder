@@ -50,7 +50,10 @@ class LoginForm extends Component {
                     <input type="submit" value="Enter" />
                 </form>
                 {this.state.fireRedirect && (
-                  <Redirect to={'/job-page'}/>
+                  <Redirect to={{
+                      pathname: '/job',
+                      state: { jobID: this.state.jobID }
+                    }}/>
                 )}
             </div>
         )

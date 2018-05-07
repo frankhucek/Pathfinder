@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom';
 import Login from './components/Login.js';
 import JobPage from './components/JobPage.js';
@@ -12,7 +13,7 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: true,
+            loggedIn: props.loggedIn,
             jobID: null,
             images: null
         };
@@ -29,9 +30,7 @@ class Main extends Component {
         }
 
         return (
-            <div className="main">
-                <Login/>
-            </div>
+            <Redirect to={'/login'}/>
         )
     }
 }
