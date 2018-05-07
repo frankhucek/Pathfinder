@@ -7,29 +7,44 @@ class Images extends Component {
     super(props);
 
     this.state = {
-        images: props.images,
         jobID: props.jobID,
+        images: [],
         height: props.height,
         width: props.width,
     }
   }
 
-  //https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack/42118728
-  //should be doing this https://reactjs.org/docs/lists-and-keys.html
-  //but unable to figure out function+require so go with this for now
-  importAllImages() {
-    const imgFiles = require.context("../data/images", false, /\.(jpg)$/);
-    this.state.images = imgFiles.keys().map((item) =>
-      <div><Image
-        src={imgFiles(item)}
-        height={ this.state.height }
-        width={ this.state.width }
-      /></div>
-    );
+  importAllImages(filepath) {
+    var images = [];
+    
+    return images;
   }
 
+  componentDidMount() {
+    var filepath = /job/ + this.state.jobID + '/image/';
+    var all_images = this.importAllImages(filepath);
+    for (var image in all_images) {
+      var res = this.getImage(image);
+      var complete_link = 'http://localhost:4000' + res;
+      var joined = this.state.images.concat(
+        <div><Image
+          src={complete_link}
+          height={ this.state.height }
+          width={ this.state.width }
+        /></div>
+      );
+      this.setState({ images: joined });
+    }
+  }
+
+  getImage = async (image) => {
+    const image_get = /job/ + this.state.jobID + '/image/' + image;
+    const response = await fetch(image_get);
+
+    return image_get;
+  };
+
   render() {
-    this.importAllImages();
     const sliderSettings = {
         dots: true,
         infinite: true,
