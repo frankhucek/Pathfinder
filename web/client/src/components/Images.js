@@ -37,7 +37,7 @@ class Images extends Component {
     const response = await fetch(file);
 
     return response;
-  }
+  };
 
   getImageFileNames = async () => {
     const filenames = /job/ + this.state.jobID + '/allimages/';
