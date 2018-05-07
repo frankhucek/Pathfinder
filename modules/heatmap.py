@@ -47,6 +47,7 @@ from datetime import datetime, timedelta
 import numpy as np
 from PIL import Image
 from PIL import ImageFilter
+from PIL import ImageOps
 
 from manifest import Manifest
 from mapping import Geometry
@@ -62,6 +63,9 @@ import log
 
 DEFAULT_WINDOW_SIZE = 2
 DEFAULT_COLOR_THRESH = 50
+
+PROJECT_BG = (105, 180, 234)
+PROJECT_FG = (255, 193, 119)
 
 
 ###############################################################################
@@ -255,7 +259,7 @@ class Heatmap(object):
         maximum = np.max(blueprint_values)
         div = maximum if maximum else 1
         normalized = blueprint_values / div
-        self.write_bw_binary(normalized, filepath)
+        self.write_project_binary(normalized, filepath)
 
     def overlay(self, img, filepath, scale, blur):
 
@@ -300,6 +304,18 @@ class Heatmap(object):
         uint_points = write_points.astype('uint8')
         im = Image.fromarray(uint_points, 'L')
         im.save(filepath)
+
+    @staticmethod
+    def write_project_binary(arr, filepath):
+        write_points = arr * 255
+        uint_points = write_points.astype('uint8')
+        im = Image.fromarray(uint_points, 'L')
+        rgb_im = ImageOps.colorize(im,
+                                   PROJECT_BG,
+                                   PROJECT_FG)
+        rgb_im.save(filepath)
+        filter_im = rgb_im.filter(ImageFilter.GaussianBlur(10))
+        filter_im.save(filepath)
 
     def __str__(self):
         attrs = [self.size[0],
