@@ -186,8 +186,8 @@ def rgb_variance_rough_covariance_term(average_red, average_green, average_blue)
 
 
 def total_chunk_coordinates(coordinate,
-                            chunk_width=DEFAULT_CHUNK_WIDTH,
-                            chunk_height=DEFAULT_CHUNK_HEIGHT):
+                            chunk_width,
+                            chunk_height):
     x = coordinate[0]
     x_end = x + chunk_width
     y = coordinate[1]
@@ -216,15 +216,17 @@ def create_chunks(image_filepath, new_filepath, chunk_width, chunk_height):
     chunk_json = PixelChunk.new(image_filepath, chunk_width, chunk_height)
 
     dimensions = chunk_json.dimensions()
-    all_coordinates = coordinates(dimensions)
+    all_coordinates = coordinates(dimensions,
+                                  chunk_width,
+                                  chunk_height)
     for coordinate in all_coordinates:
         chunk_json.add_chunk(coordinate)
     chunk_json.write(new_filepath)
 
 
 def coordinates(dim,
-                chunk_width=DEFAULT_CHUNK_WIDTH,
-                chunk_height=DEFAULT_CHUNK_HEIGHT):
+                chunk_width,
+                chunk_height):
     xs, ys = range(0, dim[0], chunk_width), range(0, dim[1], chunk_height)
     return set(itertools.product(xs, ys))
 
