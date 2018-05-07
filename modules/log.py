@@ -17,9 +17,9 @@ import image
 ###############################################################################
 
 FORMAT = "\
-%(levelname)s \
-%(module)s:%(lineno)s/%(funcName)s(%(asctime)s): \
-%(message)s"
+{levelname} \
+{module}:{lineno}/{funcName}({asctime}): \
+{message}"
 
 SYSLOG_FORMAT = "\
 [pathfinder]: {}"\
@@ -41,10 +41,12 @@ BACKUP_COUNT = 10
 ###############################################################################
 
 formatter = logging.Formatter(fmt=FORMAT,
-                              datefmt=image.DATETIME_FMT)
+                              datefmt=image.DATETIME_FMT,
+                              style="{")
 
 syslog_formatter = logging.Formatter(fmt=SYSLOG_FORMAT,
-                                     datefmt=image.DATETIME_FMT)
+                                     datefmt=image.DATETIME_FMT,
+                                     style="{")
 
 
 ###############################################################################
