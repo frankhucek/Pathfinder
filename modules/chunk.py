@@ -15,8 +15,8 @@ from PIL import Image
 
 # Constants
 # Chosen arbitrarly, can test different chunk sizes and determine which is best
-DEFAULT_CHUNK_WIDTH = 36
-DEFAULT_CHUNK_HEIGHT = 36
+DEFAULT_CHUNK_WIDTH = 40
+DEFAULT_CHUNK_HEIGHT = 40
 
 # Values for analyzing RGB values
 RED_INDEX = 0
