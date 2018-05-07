@@ -15,7 +15,6 @@ app.get('/job/:job_id/allimages', (req, res) => {
   var images = [];
   filepath = __dirname + '/public/data/' + req.params.job_id + "/images/";
   fs.readdirSync(filepath).forEach(file => {
-    console.log(file);
     images.push(file);
   });
   res.send({ images: images });
@@ -60,6 +59,48 @@ app.get('/job/:job_id/heatmap/', function (req, res) {
     }
   };
   var filepath = '/data/' + req.params.job_id + "/out/heatmap.bmp";
+
+  res.sendFile(filepath, options);
+});
+
+app.get('/job/:job_id/projection/', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/project.bmp";
+
+  res.sendFile(filepath, options);
+});
+
+app.get('/job/:job_id/crowd/freq', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/frequencies.json";
+
+  res.sendFile(filepath, options);
+});
+
+app.get('/job/:job_id/crowd/total', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/total.json";
 
   res.sendFile(filepath, options);
 });

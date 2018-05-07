@@ -39,11 +39,13 @@ class JobInfoCard extends Component {
                 }
                 {this.state.cardType === "project" &&
                     <Projection height={this.state.height}
-                                  width={this.state.width}/>
+                                  width={this.state.width}
+                                  jobID={this.state.jobID}/>
                 }
                 {this.state.cardType === "crowd" &&
                     <CrowdInfo height={this.state.height}
-                               width={this.state.width}/>
+                               width={this.state.width}
+                               jobID={this.state.jobID}/>
                 }
             </div>
         )

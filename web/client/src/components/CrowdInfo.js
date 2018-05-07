@@ -7,24 +7,49 @@ class CrowdInfo extends Component {
       super(props);
 
       this.state = {
+          jobID: props.jobID,
           height: props.height,
           width: props.width,
-          crowd: 0,
-          retailmap: null
+          freqdata: '',
+          frequnits: '',
+          crowdtotal: '',
+
       };
   }
 
+  componentDidMount() {
+    this.getCrowdTotal()
+      .then(res => this.setState({ crowdtotal : res.total }));
+    this.getCrowdFrequencies()
+      .then(res => this.setState({ freqdata: res.data, frequnits: res.units}));
+  }
+
+  getCrowdTotal = async () => {
+    const filenames = /job/ + this.state.jobID + '/crowd/total';
+    console.log(filenames);
+    const response = await fetch(filenames);
+    const body = response.json();
+
+    return body;
+  };
+
+  getCrowdFrequencies = async () => {
+    const filenames = /job/ + this.state.jobID + '/crowd/freq';
+    console.log(filenames);
+    const response = await fetch(filenames);
+    const body = response.json();
+
+    return body;
+  };
   render() {
     let content = null;
     try {
-      var frequencies = require('../data/out/frequencies.json');
-      var total = require('../data/out/total.json');
       content = <div className="image-display">
-        <p>Units: {frequencies.units}</p>
-        Total: {total.total}
+        <p>Units: {this.state.frequnits}</p>
+        Total: {this.state.crowdtotal}
         <ul>
         {
-          frequencies.data.map(function(period){
+          this.state.freqdata.map(function(period){
             return <li>{period.start} to {period.end}: {period.rate}</li>;
           })
         }

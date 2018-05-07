@@ -7,29 +7,21 @@ class Projection extends Component {
 
         this.state = {
             height: props.height,
-            width: props.width
+            width: props.width,
+            project: 'http://localhost:4000/job/' + props.jobID + '/projection/',
         }
     }
 
   render() {
-    let content = null;
-    try {
-      var project = require('../data/out/project.bmp');
-      content = <div className="image-display">
-          <div><Image
-                src={project}
-                height={ this.state.height }
-                width={ this.state.width }
-          /></div>
-      </div>;
-    }
-    catch (e) {
-      content = null;
-    }
-
       return (
         <div>
-          { content }
+          <div className="image-display">
+              <div><Image
+                    src={this.state.project}
+                    height={ this.state.height }
+                    width={ this.state.width }
+              /></div>
+          </div>
         </div>
       )
   }
