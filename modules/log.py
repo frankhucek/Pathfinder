@@ -18,7 +18,7 @@ import image
 
 FORMAT = "\
 %(levelname)s \
-%(module)s/%(funcName)s(%(asctime)s): \
+%(module)s:%(lineno)s/%(funcName)s(%(asctime)s): \
 %(message)s"
 
 SYSLOG_FORMAT = "\
