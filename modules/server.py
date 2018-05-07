@@ -17,7 +17,7 @@ local_host_port = 3001 # port forwarded and ready to go
 verified_usernames = ["pathfinder_camera <pathfinder_camera@frankhucek.com>", "pathfinder_cam_0 <pathfinder_cam_0@frankhucek.com>"]
 #verified_usernames = "pathfinder_cam_0"
 client_sig_file = "client.sig"
-base_job_dir = "/home/frank/Code/srproj/2018_spring_395_pathfinder/jobs/"
+base_job_dir = access.jobs_dir() + "/"
 TIMEOUT = 10
 
 def recv_photo(filename, sigfile, client_socket):
