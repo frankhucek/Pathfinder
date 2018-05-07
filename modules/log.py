@@ -7,6 +7,7 @@
 import os
 import sys
 import logging
+import logging.handlers
 import access
 import image
 
@@ -24,6 +25,10 @@ LOG_LEVEL_ENV = "PATHFINDER_LOG_LEVEL"
 
 DEFAULT_FILE_LEVEL = logging.INFO
 DEFAULT_STDERR_LEVEL = logging.WARNING
+
+BYTES_PER_MEGABYTE = 1024 * 1024
+LOG_SIZE = 10 * BYTES_PER_MEGABYTE
+BACKUP_COUNT = 10
 
 
 ###############################################################################
@@ -58,7 +63,11 @@ def start_log():
 ###############################################################################
 
 def make_file_handler(level, log_path):
-    file_handler = logging.FileHandler(log_path)
+    file_handler = \
+        logging.handlers\
+        .RotatingFileHandler(log_path,
+                             maxBytes=LOG_SIZE,
+                             backupCount=BACKUP_COUNT)
     file_handler.setLevel(level)
     file_handler.setFormatter(formatter)
     return file_handler
