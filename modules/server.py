@@ -51,6 +51,9 @@ def recv_photo(filename, sigfile, client_socket):
 
 ### temp sig file gets written no matter what is sent in
 def listen_for_photos():
+
+    logger.info("Listening for photos")
+
     s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
     s.bind((local_host, local_host_port))
@@ -71,6 +74,7 @@ def listen_for_photos():
             filename = client_socket.recv(1024)
             filename = filename.decode("utf-8")
             print("received filename")
+            logger.info("Received filename {}".format(filename))
 
             # ACK for filename received
             client_socket.send(b"SEND_FILE")
@@ -86,8 +90,8 @@ def listen_for_photos():
             #### INVOKE JOB MANAGER HERE ####
             jobmanager_job_dir = base_job_dir + "0/images/" + filename
             print("invoking job manager in directory " + jobmanager_job_dir)
-            #jobmanager.update_job(0,job_dir+filename)
-            jobmanager.update_job(0,jobmanager_job_dir)
+            logger.info("Invoke jobmanager on {}".format(jobmanager.update_job))
+            jobmanager.update_job(0, jobmanager_job_dir)
             #################################
 
 
@@ -114,7 +118,8 @@ def handle_sig_data(sigfile, client_socket):
     sig_file.close()
     return
 
+
 log.start_log()
-logging.info("Starting server.")
+logger = logging.getLogger(__name__)
 
 listen_for_photos()
