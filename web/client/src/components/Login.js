@@ -47,7 +47,9 @@ class LoginForm extends Component {
                         Job ID:
                         <input type="number" value={this.state.jobID} onChange={this.handleChange} />
                     </label>
-                    <input type="submit" value="Enter" />
+                    <button type="submit" className="general-button" onClick="switch-job-button">
+                        Enter
+                    </button>
                 </form>
                 {this.state.fireRedirect && (
                   <Redirect to={{
