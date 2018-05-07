@@ -10,9 +10,18 @@ app.use(cookieParser())
 
 app.use('/static', express.static(__dirname + '/public'));
 
-app.get('/jobid/1', (req, res) => {
-  res.send({ images: 'should send images',
-              out: 'should send out'});
+app.get('/job/:job_id/heatmap/', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/heatmap.bmp";
+
+  res.sendFile(filepath, options);
 });
 
 app.listen(4000);
