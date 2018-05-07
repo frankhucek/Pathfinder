@@ -94,9 +94,11 @@ class Processing(object):
 
     @classmethod
     def process_all(cls, manifest, jobid, filename):
-        logging.info("process all")
         for processing in cls.all_from(manifest, jobid):
-            logging.info("processing a step")
+            proc_type = processing.processing_type
+            msg = "Processing job {}: {}".format(jobid, proc_type)
+            logger.info(msg)
+
             processing.process(jobid, filename)
 
     def __init__(self, manifest, json):
@@ -105,10 +107,10 @@ class Processing(object):
         self.json = json
 
     def setup(self, jobid):
-        logging.info("Setting up {}".format(self.processing_type))
+        logger.info("Setting up {}".format(self.processing_type))
 
     def process(self, jobid, filename):
-        raise NotImplementedError("implement in subclass")
+        pass
 
 
 class ProcessEveryImage(Processing):
@@ -184,7 +186,7 @@ class IntervalProcessing(Processing):
 
         if self._should_update(hm, img_data):
             msg = "Updating for img: {}".format(img_data.time_taken())
-            logging.info(msg)
+            logger.debug(msg)
             period = self._period(hm, img_data)
             img_files = access.image_filepaths(jobid)
             heatmap.record_heatmap(heatmap_filepath,
@@ -194,7 +196,7 @@ class IntervalProcessing(Processing):
                                    self.color_thresh)
         else:
             msg = "Not updating for img: {}".format(img_data.time_taken())
-            logging.info(msg)
+            logger.debug(msg)
 
 
 class AllResultsProcessing(Processing):
@@ -339,15 +341,11 @@ class OutputCopyProcessing(Processing):
 
 def update_job(jobid, incoming_data_filepath):
 
-    logging.info("updating job")
+    logger.info("Updating job: {}".format(jobid))
 
     manifest = access.manifest(jobid)
 
-    logging.info("got manifest")
-
     access.save_new_data(jobid, incoming_data_filepath, manifest)
-
-    logging.info("saved new data")
 
     Processing.process_all(manifest, jobid, incoming_data_filepath)
 
@@ -371,6 +369,13 @@ def new_job(incoming_manifest):
 
     # report new jobid
     return jobid
+
+
+###############################################################################
+# Logging                                                                     #
+###############################################################################
+
+logger = logging.getLogger(__name__)
 
 
 ###############################################################################
@@ -426,9 +431,7 @@ def main():
 
     elif args.op == "new_job":
         jobid = new_job(args.manifest_filepath)
-        msg = "Created new job: {}".format(jobid)
-        print(msg)
-        loggin.info(msg)
+        print("Created new job: {}".format(jobid))
 
 
 if __name__ == '__main__':
