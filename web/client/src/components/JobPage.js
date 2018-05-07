@@ -20,10 +20,6 @@ class JobPage extends Component {
                           jobID={this.state.jobID}/>
             <JobInfoCard cardType="overlay" header="overlayed heatmap"
                           jobID={this.state.jobID}/>
-            <JobInfoCard cardType="project" header="projected heatmap"
-                          jobID={this.state.jobID}/>
-            <JobInfoCard cardType="crowd" header="crowd usage"
-                          jobID={this.state.jobID}/>
         </div>
       )
   }

@@ -32,8 +32,11 @@ class Images extends Component {
       });
   }
 
-  getImage(image) {
-    return 'http://localhost:4000/job/' + this.state.jobID + '/image/' + image;
+  getImage = aynsyc (image) => {
+    const file = '/job/' + this.state.jobID + '/image/' + image;
+    const response = await fetch(file);
+
+    return response;
   }
 
   getImageFileNames = async () => {

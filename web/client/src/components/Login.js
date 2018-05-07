@@ -8,7 +8,7 @@ class Login extends Component {
             <div className="login-box centered">
                 <h2>Pathfinder</h2>
                 <LoginForm />
-                <FileDrop />
+
             </div>
         )
     }
@@ -47,7 +47,8 @@ class LoginForm extends Component {
                         Job ID:
                         <input type="number" value={this.state.jobID} onChange={this.handleChange} />
                     </label>
-                    <button type="submit" className="general-button" onClick="switch-job-button">
+                    <br></br> <br></br> <br></br>
+                    <button type="submit" className="general-button centered" onClick="switch-job-button">
                         Enter
                     </button>
                 </form>
