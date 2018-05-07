@@ -11,17 +11,15 @@ class JobPage extends Component {
   }
 
   render() {
-      //console.log(this.state.jobID);
-
       return (
         <div className="job-info-page">
             <NavBar jobID={this.state.jobID}/>
             <JobInfoCard cardType="images" header="your images"
-                          images={this.state.images}/>
+                          jobID={this.state.jobID}/>
             <JobInfoCard cardType="heatmap" header="analyzed heatmap"
                           jobID={this.state.jobID}/>
             <JobInfoCard cardType="overlay" header="overlayed heatmap"
-                          retailmap={this.state.retailmap}/>
+                          jobID={this.state.jobID}/>
             <JobInfoCard cardType="project" header="projected heatmap" />
             <JobInfoCard cardType="crowd" header="crowd usage" />
         </div>

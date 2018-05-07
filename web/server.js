@@ -10,6 +10,20 @@ app.use(cookieParser())
 
 app.use('/static', express.static(__dirname + '/public'));
 
+app.get('/job/:job_id/overlay/', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/overlay.bmp";
+
+  res.sendFile(filepath, options);
+});
+
 app.get('/job/:job_id/heatmap/', function (req, res) {
   var options = {
     root: __dirname + '/public/',
