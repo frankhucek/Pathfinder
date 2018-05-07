@@ -341,7 +341,8 @@ class OutputCopyProcessing(Processing):
 
 def update_job(jobid, incoming_data_filepath):
 
-    logger.info("Updating job: {}".format(jobid))
+    logger.info("Updating job {} with {}"
+                .format(jobid, incoming_data_filepath))
 
     manifest = access.manifest(jobid)
 
