@@ -367,6 +367,8 @@ def new_job(incoming_manifest):
     manifest = access.manifest(jobid)
     Processing.setup_all(manifest, jobid)
 
+    logger.info("Created new job: {}".format(jobid))
+
     # report new jobid
     return jobid
 

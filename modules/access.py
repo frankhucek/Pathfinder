@@ -73,7 +73,14 @@ def save_new_data(jobid, old_data_filepath, manifest):
 
     # Create chunks
     chunk_width, chunk_height = manifest.chunk_dimensions()
-    create_chunks(old_data_filepath, new_data_filepath, chunk_width, chunk_height)
+
+    msg = "Calling create_chunks with dim: {}".format(chunk_width,
+                                                      chunk_height)
+    logger.debug(msg)
+    create_chunks(old_data_filepath,
+                  new_data_filepath,
+                  chunk_width,
+                  chunk_height)
 
 
 def new_job_root():
