@@ -9,21 +9,9 @@ class AnalyzedInfo extends Component {
           jobID: props.jobID,
           height: props.height,
           width: props.width,
-          overlay: ''
+          overlay: '/job/' + props.jobID + '/overlay.bmp'
       };
   }
-
-  componentDidMount() {
-    this.getOverlay()
-      .then(res => this.setState({ overlay : res }));
-  }
-
-  getOverlay = async () => {
-    const file = '/job/' + this.state.jobID + '/overlay/';
-    const response = await fetch(file);
-
-    return response;
-  };
 
   render() {
       return(

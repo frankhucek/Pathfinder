@@ -8,21 +8,9 @@ class Projection extends Component {
         this.state = {
             height: props.height,
             width: props.width,
-            project: '',
+            project: '/job/' + props.jobID + '/project.bmp',
         }
     }
-
-    componentDidMount() {
-      this.getProjection()
-        .then(res => this.setState({ project : res }));
-    }
-
-    getProjection = async () => {
-      const file = '/job/' + this.state.jobID + '/projection/';
-      const response = await fetch(file);
-
-      return response;
-    };
 
   render() {
       return (

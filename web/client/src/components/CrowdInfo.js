@@ -23,8 +23,7 @@ class CrowdInfo extends Component {
   }
 
   getCrowdTotal = async () => {
-    const filenames = /job/ + this.state.jobID + '/crowd/total.json';
-    console.log(filenames);
+    const filenames = /job/ + this.state.jobID + '/total.json';
     const response = await fetch(filenames);
     const body = response.json();
 
@@ -32,13 +31,13 @@ class CrowdInfo extends Component {
   };
 
   getCrowdFrequencies = async () => {
-    const filenames = /job/ + this.state.jobID + '/crowd/freq.json';
-    console.log(filenames);
+    const filenames = /job/ + this.state.jobID + '/frequencies.json';
     const response = await fetch(filenames);
     const body = response.json();
 
     return body;
   };
+
   render() {
     let content = null;
     try {

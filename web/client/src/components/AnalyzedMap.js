@@ -7,23 +7,11 @@ class AnalyzedMap extends Component {
 
         this.state = {
             jobID: props.jobID,
-            heatmap: '',
+            heatmap: '/job/' + props.jobID + '/heatmap.bmp',
             height: props.height,
             width: props.width
         }
     }
-
-    componentDidMount() {
-      this.getHeatmap()
-        .then(res => this.setState({ heatmap : res }));
-    }
-
-    getHeatmap = async () => {
-      const file = '/job/' + this.state.jobID + '/heatmap/';
-      const response = await fetch(file);
-
-      return response;
-    };
 
   render() {
       return (
