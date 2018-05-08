@@ -19,15 +19,18 @@ class Images extends Component {
       .then(res => {
           console.log(res.images)
           for (var image in res.images) {
-            var img_file = this.getImage(res.images[image]).then(res);
-            var joined = this.state.images.concat(
-              <div><Image
-                src={img_file}
-                height={ this.state.height }
-                width={ this.state.width }
-              /></div>
-            );
-            this.setState({ images: joined });
+            console.log(res.images[image]);
+            var img_file = this.getImage(res.images[image])
+              .then(res => {
+                var joined = this.state.images.concat(
+                  <div><Image
+                    src={res.image}
+                    height={ this.state.height }
+                    width={ this.state.width }
+                  /></div>
+                );
+                this.setState({ images: joined });
+              });
           }
       });
   }

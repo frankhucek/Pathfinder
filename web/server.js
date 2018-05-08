@@ -77,7 +77,7 @@ app.get('/job/:job_id/projection/', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/crowd/freq', function (req, res) {
+app.get('/job/:job_id/crowd/frequencies.json', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',
@@ -91,7 +91,7 @@ app.get('/job/:job_id/crowd/freq', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/crowd/total', function (req, res) {
+app.get('/job/:job_id/crowd/total.json', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',

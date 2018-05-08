@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Image from 'react-image-resizer';
-import Whitespace from './Whitespace.js';
 
 class CrowdInfo extends Component {
   constructor(props) {
@@ -25,7 +23,7 @@ class CrowdInfo extends Component {
   }
 
   getCrowdTotal = async () => {
-    const filenames = /job/ + this.state.jobID + '/crowd/total';
+    const filenames = /job/ + this.state.jobID + '/crowd/total.json';
     console.log(filenames);
     const response = await fetch(filenames);
     const body = response.json();
@@ -34,7 +32,7 @@ class CrowdInfo extends Component {
   };
 
   getCrowdFrequencies = async () => {
-    const filenames = /job/ + this.state.jobID + '/crowd/freq';
+    const filenames = /job/ + this.state.jobID + '/crowd/freq.json';
     console.log(filenames);
     const response = await fetch(filenames);
     const body = response.json();

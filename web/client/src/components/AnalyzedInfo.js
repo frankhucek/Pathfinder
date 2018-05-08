@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Image from 'react-image-resizer';
-import Whitespace from './Whitespace.js';
 
 class AnalyzedInfo extends Component {
   constructor(props) {
@@ -10,9 +9,21 @@ class AnalyzedInfo extends Component {
           jobID: props.jobID,
           height: props.height,
           width: props.width,
-          overlay: 'http://localhost:4000/job/' + props.jobID + '/overlay/'
+          overlay: ''
       };
   }
+
+  componentDidMount() {
+    this.getOverlay()
+      .then(res => this.setState({ overlay : res }));
+  }
+
+  getOverlay = async () => {
+    const file = '/job/' + this.state.jobID + '/overlay/';
+    const response = await fetch(file);
+
+    return response;
+  };
 
   render() {
       return(

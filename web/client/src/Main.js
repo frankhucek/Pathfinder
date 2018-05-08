@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect
-} from 'react-router-dom';
-import Login from './components/Login.js';
+import { Redirect } from 'react-router-dom';
 import JobPage from './components/JobPage.js';
 import './css/default.css';
 
