@@ -164,16 +164,6 @@ class IntervalProcessing(Processing):
         super().__init__(manifest, json)
         self.window_size = json[IntervalProcessing.WINDOW_SIZE]
         self.color_thresh = json[IntervalProcessing.COLOR_THRESH]
-        interval_sec = json[IntervalProcessing.INTERVAL]
-        self.interval = timedelta(seconds=interval_sec)
-
-    def _period(self, hm, img_data):
-        return heatmap.TimePeriod(hm.last_update(),
-                                  img_data.time_taken())
-
-    def _should_update(self, hm, img_data):
-        period = self._period(hm, img_data)
-        return period.duration() > self.interval
 
     def setup(self, jobid):
         super().setup(jobid)
@@ -182,21 +172,23 @@ class IntervalProcessing(Processing):
     def process(self, jobid, filename, heatmap_filepath=None):
         if not heatmap_filepath:
             heatmap_filepath = access.heatmap_filepath(jobid)
-        hm = Heatmap.load(heatmap_filepath)
-        img_data = ImageData.create(self.manifest, filename)
 
-        if self._should_update(hm, img_data):
-            msg = "Updating for img: {}".format(img_data.time_taken())
+        interval = UpdateIntervalChecker(self.manifest,
+                                         self.json,
+                                         filename,
+                                         heatmap_filepath)
+
+        if interval.should_update():
+            msg = "Updating for img: {}".format(interval.time_taken())
             logger.debug(msg)
-            period = self._period(hm, img_data)
             img_files = access.image_filepaths(jobid)
             heatmap.record_heatmap(heatmap_filepath,
                                    img_files,
-                                   period,
+                                   interval.period(),
                                    self.window_size,
                                    self.color_thresh)
         else:
-            msg = "Not updating for img: {}".format(img_data.time_taken())
+            msg = "Not updating for img: {}".format(interval.time_taken())
             logger.debug(msg)
 
 
@@ -232,11 +224,19 @@ class ProjectProcessing(Processing):
         self.project_width = json[ProjectProcessing.PROJECT_WIDTH]
 
     def process(self, jobid, filename):
+
         heatmap_filepath = access.heatmap_filepath(jobid)
-        project_fp = access.out_filepath(jobid, "project.bmp")
-        heatmap.project_heatmap(heatmap_filepath,
-                                project_fp,
-                                self.project_width)
+        interval = ProjectIntervalChecker(self.manifest,
+                                          self.json,
+                                          filename,
+                                          heatmap_filepath)
+
+        if interval.should_update():
+            project_fp = access.out_filepath(jobid, "project.bmp")
+            heatmap.project_heatmap(heatmap_filepath,
+                                    project_fp,
+                                    self.project_width,
+                                    interval.time_taken())
 
 
 class CrowdProcessing(Processing):
@@ -335,6 +335,7 @@ class OutputCopyProcessing(Processing):
         out_filepath = access.out_dir_filepath(jobid)
         force_copy(out_filepath, web_out_filepath)
 
+
 class RetailProcessing(Processing):
 
     processing_type = "retail_processing"
@@ -349,6 +350,48 @@ class RetailProcessing(Processing):
         heatmap_filepath = access.heatmap_filepath(jobid)
         retail_json = access.out_filepath(jobid, "retail.json")
         retail.create_retail(heatmap_filepath, retail_json, self.hotdog_limit)
+
+
+class IntervalChecker(object):
+
+    INTERVAL = "interval"
+
+    def __init__(self, manifest, json, img_fp, heatmap_fp):
+        super().__init__()
+        self.manifest = manifest
+        self.json = json
+
+        interval_sec = json[self.INTERVAL]
+        self.interval = timedelta(seconds=interval_sec)
+
+        self.img = ImageData.create(manifest, img_fp)
+        self.hm = Heatmap.load(heatmap_fp)
+
+    def prev_time(self):
+        raise NotImplementedError("implement")
+
+    def period(self):
+        return heatmap.TimePeriod(self.prev_time(),
+                                  self.img.time_taken())
+
+    def should_update(self):
+        period = self.period()
+        return period.duration() > self.interval
+
+    def time_taken(self):
+        return self.img.time_taken()
+
+
+class UpdateIntervalChecker(IntervalChecker):
+
+    def prev_time(self):
+        return self.hm.last_update()
+
+
+class ProjectIntervalChecker(IntervalChecker):
+
+    def prev_time(self):
+        return self.hm.last_project()
 
 
 ###############################################################################

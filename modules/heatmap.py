@@ -164,6 +164,7 @@ class Heatmap(object):
         self._points = points
         self._rgb = np.zeros((points.shape[0], points.shape[1], 3))
         self.period = NullTimePeriod()
+        self.project_period = NullTimePeriod()
 
     def add(self, coord):
         self.count += 1
@@ -213,6 +214,9 @@ class Heatmap(object):
     def last_update(self):
         return self.period.end
 
+    def last_project(self):
+        return self.project_period.end
+
     def points(self):
         m = np.max(self._points)
         if m == 0:
@@ -229,7 +233,11 @@ class Heatmap(object):
         projected = tuple(int(round(x * scale)) for x in raw)
         return projected
 
-    def project(self, filepath, desired_width):
+    def project(self, filepath, desired_width, moment=None):
+
+        self.project_period = \
+            self.project_period\
+                .expand_to_include(moment)
 
         logger.debug("Project: filepath = {}".format(filepath))
 
@@ -423,10 +431,13 @@ def view_heatmap(heatmap_filepath,
 
 def project_heatmap(heatmap_filepath,
                     project_filepath,
-                    desired_width):
+                    desired_width,
+                    moment=None):
     heatmap = Heatmap.load(heatmap_filepath)
     heatmap.project(project_filepath,
-                    desired_width)
+                    desired_width,
+                    moment)
+    heatmap.save(heatmap_filepath)
 
 
 def overlay_heatmap(heatmap_filepath,
