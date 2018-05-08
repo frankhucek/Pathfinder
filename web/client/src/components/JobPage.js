@@ -24,6 +24,8 @@ class JobPage extends Component {
               jobID={this.state.jobID}/>
             <JobInfoCard cardType="crowd" header="crowd info"
               jobID={this.state.jobID}/>
+            <JobInfoCard cardType="retail" header="potential retail places"
+              jobID={this.state.jobID}/>
         </div>
       )
   }

@@ -77,6 +77,20 @@ app.get('/job/:job_id/project.bmp', function (req, res) {
   res.sendFile(filepath, options);
 });
 
+app.get('/job/:job_id/retail.jpeg', function (req, res) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+        'x-timestamp': Date.now(),
+        'x-sent': true
+    }
+  };
+  var filepath = '/data/' + req.params.job_id + "/out/retail.jpeg";
+
+  res.sendFile(filepath, options);
+});
+
 app.get('/job/:job_id/frequencies.json', function (req, res) {
   var options = {
     root: __dirname + '/public/'
