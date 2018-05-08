@@ -28,7 +28,7 @@ class CrowdInfo extends Component {
   getCrowdTotal = async () => {
     const filenames = /job/ + this.state.jobID + '/total.json';
     const response = await fetch(filenames);
-    if (response.status !== 200) throw Error(body.message);
+    if (response.status !== 200) throw Error("no crowd");
 
     const body = response.json();
     return body;
@@ -37,7 +37,7 @@ class CrowdInfo extends Component {
   getCrowdFrequencies = async () => {
     const filenames = /job/ + this.state.jobID + '/frequencies.json';
     const response = await fetch(filenames);
-    if (response.status !== 200) throw Error(body.message);
+    if (response.status !== 200) throw Error("no freq");
 
     const body = response.json();
     return body;
