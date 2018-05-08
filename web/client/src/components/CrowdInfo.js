@@ -37,8 +37,9 @@ class CrowdInfo extends Component {
   getCrowdFrequencies = async () => {
     const filenames = /job/ + this.state.jobID + '/frequencies.json';
     const response = await fetch(filenames);
-    const body = response.json();
+    if (response.status !== 200) throw Error(body.message);
 
+    const body = response.json();
     return body;
   };
 
