@@ -45,6 +45,7 @@ HEATMAPS_DIR = "heatmaps"
 SERIES_DIR = "heatmaps/series"
 OUT_DIR = "out"
 WEB_DIR = "web/client/src/data"
+ASSETS_DIR = "assets"
 
 MANIFEST_FILENAME = "manifest.json"
 
@@ -166,6 +167,12 @@ def log_filepath():
     log_dir = pathfinder_filepath(LOGS_DIR)
     return join(log_dir, LOG_FILENAME)
 
+def assets_filepath():
+    return pathfinder_filepath(ASSETS_DIR)
+
+def hotdog_filepath():
+    assets = assets_filepath()
+    return join(assets, "hotdog.jpeg")
 
 ###############################################################################
 # Helpers                                                                     #

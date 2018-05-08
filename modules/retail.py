@@ -2,7 +2,9 @@
 # Import
 import argparse
 import json
+import access
 from heatmap import Heatmap
+from PIL import Image
 
 #JSON constants
 COORDINATES = 'coordinates'
@@ -57,6 +59,17 @@ def create_retail(heatmap_filepath, new_filepath, hotdog_limit):
     retail.suggestions()
     retail.write_json(new_filepath)
 
+def create_retail_img(original_image, json_data, new_image_filepath):
+    original = Image.open(original_image)
+    new_img = original.copy()
+    hotdog = Image.open(access.hotdog_filepath())
+    with open(json_data) as f:
+        coords = json.load(f)[RETAIL_SPOTS]
+    for coordinate in coords:
+        x, y = coordinate[COORDINATES]
+        new_img.paste(hotdog, (x, y))
+    new_img.save(new_image_filepath)
+
 def in_space(x, y, height, width):
     if x < 0 or y < 0:
         return False
@@ -69,6 +82,7 @@ def main():
     args = get_args()
     if args.op == "create_retail":
         create_retail(args.image_filepath, args.out_filepath, args.hotdog_limit)
+        create_retail_img(args.original_image, args.out_filepath, args.new_retail_img)
 
 def get_args():
     parser = argparse.ArgumentParser()
@@ -81,6 +95,10 @@ def get_args():
     parser.add_argument("hotdog_limit",
                         type=float,
                         help="normalized to 1 the minimum value to put retail spots near")
+    parser.add_argument("new_retail_img",
+                        help="image filepath to save new img to")
+    parser.add_argument("original_image",
+                        help="image to overlay hotdogs on")
     return parser.parse_args()
 
 if __name__ == '__main__':
