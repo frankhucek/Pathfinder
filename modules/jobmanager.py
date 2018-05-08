@@ -347,8 +347,11 @@ class RetailProcessing(Processing):
 
     def process(self, jobid, filename):
         heatmap_filepath = access.heatmap_filepath(jobid)
+        control_image = access.specific_image(jobid, 0)
         retail_json = access.out_filepath(jobid, "retail.json")
+        retail_jpeg = access.out_filepath(jobid, "retail.jpeg")
         retail.create_retail(heatmap_filepath, retail_json, self.hotdog_limit)
+        retail.create_retail_img(control_image, retail_json, retail_jpeg)
 
 
 ###############################################################################

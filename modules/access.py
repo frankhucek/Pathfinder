@@ -174,6 +174,13 @@ def hotdog_filepath():
     assets = assets_filepath()
     return join(assets, "hotdog.jpeg")
 
+def images_filepath(jobid):
+    return sub_dir(jobid, IMAGES_DIR)
+
+def specific_image(jobid, img):
+    images_dir = images_filepath(jobid)
+    return join (images_dir, str(img) + ".jpg")
+
 ###############################################################################
 # Helpers                                                                     #
 ###############################################################################
