@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# constants
+OLD_JOBID=3
+JOBID=4
+
+# kill existing current job
+rm -rf jobs/$JOBID/
+
+# make new job and populate with images
+python3 modules/jobmanager.py new_job jobs/$OLD_JOBID/manifest.json
+cp jobs/$OLD_JOBID/images/* jobs/$JOBID/images
+
+# replace overlay image with correct base image
+sed -i 's/jobs\/3\/images\/0.jpg/jobs\/4\/images\/0.jpg/g' jobs/$JOBID/manifest.json
+
+# start image viewer
+feh jobs/$JOBID/images -g 640x360+0+0 &
+images_feh_pid=$(pgrep -f "feh jobs/$JOBID/images")
+
+seen_overlay=0;
+seen_project=0;
+
+# iterate over job images
+for img in jobs/$JOBID/images/* ; do
+
+	echo "Processing image: $img"
+
+	# invoke job manager on each
+	python3 modules/jobmanager.py update_job $JOBID $img 
+
+	# cycle to next image
+	kill -s SIGUSR1 $images_feh_pid
+
+	# try to show overlay
+	if [[ $seen_overlay -eq 0 ]] ; then
+		feh jobs/4/out/overlay.bmp -R 1 -g 640x360+0+360 &
+		seen_overlay=1
+	fi
+
+	# try to show projection
+	if [[ $seen_project -eq 0 ]] && [[ -e jobs/$JOBID/out/project.bmp ]] ; then
+		feh jobs/$JOBID/out/project.bmp -R 1 -g 250x188+0+720 &
+		seen_project=1
+	fi
+
+	# wait a bit
+	sleep 2
+
+done
+
+
