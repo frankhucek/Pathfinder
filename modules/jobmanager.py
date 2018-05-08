@@ -213,7 +213,7 @@ class AllResultsProcessing(Processing):
                              view_heatmap_fp)
 
         overlay_fp = access.out_filepath(jobid, "overlay.bmp")
-        control_fp = access.pathfinder_filepath(self.manifest.control_img())
+        control_fp = access.specific_image(jobid, self.manifest.control_img())
         heatmap.overlay_heatmap(heatmap_filepath,
                                 control_fp,
                                 overlay_fp,
