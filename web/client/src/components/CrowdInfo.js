@@ -11,22 +11,26 @@ class CrowdInfo extends Component {
           freqdata: '',
           frequnits: '',
           crowdtotal: '',
+          crowdInfoExists: false
 
       };
   }
 
   componentDidMount() {
     this.getCrowdTotal()
-      .then(res => this.setState({ crowdtotal : res.total }));
+      .then(res => this.setState({ crowdtotal : res.total, crowdInfoExists: true }))
+      .catch(err => this.setState({ crowdInfoExists : false }));
     this.getCrowdFrequencies()
-      .then(res => this.setState({ freqdata: res.data, frequnits: res.units}));
+      .then(res => this.setState({ freqdata: res.data, frequnits: res.units, crowdInfoExists : true}))
+      .catch(err => this.setState({ crowdInfoExists : false }));
   }
 
   getCrowdTotal = async () => {
     const filenames = /job/ + this.state.jobID + '/total.json';
     const response = await fetch(filenames);
-    const body = response.json();
+    if (response.status !== 200) throw Error(body.message);
 
+    const body = response.json();
     return body;
   };
 
@@ -54,7 +58,9 @@ class CrowdInfo extends Component {
       </div>;
     }
     catch (e) {
-      content = null;
+      content = <div>
+          No crowd info at this time.
+      </div>;
     }
 
     return(
