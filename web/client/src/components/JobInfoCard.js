@@ -5,6 +5,7 @@ import AnalyzedInfo from './AnalyzedInfo.js'
 import Projection from './Projection.js'
 import Whitespace from './Whitespace.js'
 import CrowdInfo from './CrowdInfo.js'
+import Retail from './Retail.js'
 
 class JobInfoCard extends Component {
     constructor(props) {
@@ -44,6 +45,11 @@ class JobInfoCard extends Component {
                 }
                 {this.state.cardType === "crowd" &&
                     <CrowdInfo height={this.state.height}
+                               width={this.state.width}
+                               jobID={this.state.jobID}/>
+                }
+                {this.state.cardType === "retail" &&
+                    <Retail height={this.state.height}
                                width={this.state.width}
                                jobID={this.state.jobID}/>
                 }

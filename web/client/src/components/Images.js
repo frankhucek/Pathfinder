@@ -17,9 +17,8 @@ class Images extends Component {
   componentDidMount() {
     this.getImageFileNames()
       .then(res => {
-          console.log(res.images)
           for (var image in res.images) {
-            var img_file = this.getImage(res.images[image]).then(res);
+            var img_file = '/job/' + this.state.jobID + '/image/' + res.images[image];
             var joined = this.state.images.concat(
               <div><Image
                 src={img_file}
@@ -41,7 +40,6 @@ class Images extends Component {
 
   getImageFileNames = async () => {
     const filenames = /job/ + this.state.jobID + '/allimages/';
-    console.log(filenames);
     const response = await fetch(filenames);
     const body = response.json();
 

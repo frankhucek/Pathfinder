@@ -1,29 +1,30 @@
 import React, { Component } from 'react';
 import Image from 'react-image-resizer';
 
-class AnalyzedMap extends Component {
+class Projection extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            jobID: props.jobID,
-            heatmap: '/job/' + props.jobID + '/heatmap.bmp',
             height: props.height,
-            width: props.width
+            width: props.width,
+            retail: '/job/' + props.jobID + '/retail.jpeg',
         }
     }
 
   render() {
       return (
+        <div>
           <div className="image-display">
               <div><Image
-                    src={this.state.heatmap}
+                    src={this.state.retail}
                     height={ this.state.height }
                     width={ this.state.width }
               /></div>
           </div>
+        </div>
       )
   }
 }
 
-export default AnalyzedMap;
+export default Projection;

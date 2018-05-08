@@ -35,7 +35,7 @@ app.get('/job/:job_id/image/:image_id', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/overlay/', function (req, res) {
+app.get('/job/:job_id/overlay.bmp', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',
@@ -49,7 +49,7 @@ app.get('/job/:job_id/overlay/', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/heatmap/', function (req, res) {
+app.get('/job/:job_id/heatmap.bmp', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',
@@ -63,7 +63,7 @@ app.get('/job/:job_id/heatmap/', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/projection/', function (req, res) {
+app.get('/job/:job_id/project.bmp', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',
@@ -77,7 +77,7 @@ app.get('/job/:job_id/projection/', function (req, res) {
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/crowd/freq', function (req, res) {
+app.get('/job/:job_id/retail.jpeg', function (req, res) {
   var options = {
     root: __dirname + '/public/',
     dotfiles: 'deny',
@@ -86,19 +86,23 @@ app.get('/job/:job_id/crowd/freq', function (req, res) {
         'x-sent': true
     }
   };
+  var filepath = '/data/' + req.params.job_id + "/out/retail.jpeg";
+
+  res.sendFile(filepath, options);
+});
+
+app.get('/job/:job_id/frequencies.json', function (req, res) {
+  var options = {
+    root: __dirname + '/public/'
+  };
   var filepath = '/data/' + req.params.job_id + "/out/frequencies.json";
 
   res.sendFile(filepath, options);
 });
 
-app.get('/job/:job_id/crowd/total', function (req, res) {
+app.get('/job/:job_id/total.json', function (req, res) {
   var options = {
-    root: __dirname + '/public/',
-    dotfiles: 'deny',
-    headers: {
-        'x-timestamp': Date.now(),
-        'x-sent': true
-    }
+    root: __dirname + '/public/'
   };
   var filepath = '/data/' + req.params.job_id + "/out/total.json";
 

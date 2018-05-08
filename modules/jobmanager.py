@@ -205,7 +205,7 @@ class AllResultsProcessing(Processing):
                              view_heatmap_fp)
 
         overlay_fp = access.out_filepath(jobid, "overlay.bmp")
-        control_fp = access.pathfinder_filepath(self.manifest.control_img())
+        control_fp = access.specific_image(jobid, self.manifest.control_img())
         heatmap.overlay_heatmap(heatmap_filepath,
                                 control_fp,
                                 overlay_fp,
@@ -348,8 +348,11 @@ class RetailProcessing(Processing):
 
     def process(self, jobid, filename):
         heatmap_filepath = access.heatmap_filepath(jobid)
+        control_image = access.specific_image(jobid, 0)
         retail_json = access.out_filepath(jobid, "retail.json")
+        retail_jpeg = access.out_filepath(jobid, "retail.jpeg")
         retail.create_retail(heatmap_filepath, retail_json, self.hotdog_limit)
+        retail.create_retail_img(control_image, retail_json, retail_jpeg)
 
 
 class IntervalChecker(object):

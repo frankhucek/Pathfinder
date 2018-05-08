@@ -8,7 +8,7 @@ class Projection extends Component {
         this.state = {
             height: props.height,
             width: props.width,
-            project: 'http://localhost:4000/job/' + props.jobID + '/projection/',
+            project: '/job/' + props.jobID + '/project.bmp',
         }
     }
 
