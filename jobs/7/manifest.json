@@ -9,10 +9,27 @@
         },
         {
             "type": "all_results_processing"
+        },
+        {
+            "type": "project_processing",
+            "project_width": 250
+        },
+        {
+            "type": "series_processing",
+            "series_interval": 25,
+            "series_start": "2018:05:07 13:04:00",
+            "window_size": 2,
+            "color_thresh": 11,
+            "interval": 10
+        },
+        {
+            "type": "crowd_processing",
+            "units": "seconds",
+            "aggregate": false
         }
     ],
     "overlay": {
-        "control_img": "0",
+        "control_img": "jobs/0/images/0.jpg",
         "scale": 100,
         "blur": 15
     },
