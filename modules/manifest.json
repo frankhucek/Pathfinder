@@ -13,7 +13,7 @@
     ],
     "overlay": {
         "control_img": "0",
-        "scale": 100,
+        "scale": 125,
         "blur": 15
     },
     "chunk": {
